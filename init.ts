@@ -1,59 +1,19 @@
 import { ArgumentsParser } from './deps.ts';
+import { writeFileOrWarn, mkDirOrWarn } from './utils.ts';
 
 const parser = new ArgumentsParser({
     yes: {
         names: ["-y", "--yes"],
-        parser: String,
+        parser: Boolean,
         isFlag: true,
-    },
+    }
 });
 
+const encoder = new TextEncoder();
+
 const args = parser.parseArgs();
-console.log(args);
 
-let ext = "ts";
-if (!args.yes) {
-    const ts = prompt("Use TypeScript? (y/n)", 'y');
-
-    if (ts === 'n' || ts === 'N') {
-        ext = "js";
-    }
-
-    let entrypoint = prompt(`Entrypoint:`, `mod.${ext}`);
-
-    if (!entrypoint) {
-        throw new Error("Invalid entrypoint");
-    }
-
-    if (!new RegExp(`\.${ext}$`).test(entrypoint)) {
-        entrypoint = entrypoint + '.' + ext;
-    }
-
-    const debug = prompt("Add debug configuration?", 'y');
-
-    const encoder = new TextEncoder();
-    const module = encoder.encode("export {};");
-
-    await Deno.writeFile(entrypoint, module);
-
-    try {
-        await Deno.mkdir(".vscode");
-    } catch(error) {
-
-    }
-
-    Deno.chdir(".vscode");
-
-    const settings = encoder.encode(
-`{
-    "deno.enable": true
-}`);
-
-    await Deno.writeFile("settings.json", settings);
-
-    if (debug === 'y' || debug === 'Y') {
-        const debug_config = encoder.encode(
-`{
+const defaultDebugConfig = `{
     "version": "0.2.0",
     "configurations": [
         {
@@ -66,12 +26,63 @@ if (!args.yes) {
             "port": 9229
         }
     ]
-}`
-        );
-        await Deno.writeFile("launch.json", debug_config);
+}`;
+
+const defaults = {
+    entrypoint: "mod.ts",
+    deps_entrypoint: "deps.ts",
+    module: encoder.encode("export {};"),
+    deno_settings: encoder.encode(`{\n\t"deno.enable": true\n}`),
+    debug_config: encoder.encode(defaultDebugConfig),
+    gitignore: ".gitignore",
+    gitignore_content: encoder.encode(".vscode/"),
+};
+
+if (args.yes === true) {
+    await writeFileOrWarn(defaults.entrypoint, defaults.module);
+    await writeFileOrWarn(defaults.deps_entrypoint, defaults.module);
+    await writeFileOrWarn(defaults.gitignore, defaults.gitignore_content);
+    await mkDirOrWarn(".vscode");
+
+    Deno.chdir(".vscode");
+
+    await writeFileOrWarn("settings.json", defaults.deno_settings);
+    await writeFileOrWarn("launch.json", defaults.debug_config);
+} 
+else {
+    const ts = prompt("Use TypeScript? (y/n)", 'y');
+    const ext = (ts !== 'y' && ts !== 'Y') ? "js" : "ts";
+    let entrypoint = prompt(`Entrypoint:`, `mod.${ext}`);
+    const debug = prompt("Add debug configuration? (y/n)", 'y');
+    const deps = prompt("Add entrypoint for project dependencies? (y/n)", `y`);
+
+    if (!entrypoint) {
+        throw new Error("Invalid entrypoint");
     }
 
-    Deno.chdir('..');
-    const ignoreData = encoder.encode(".vscode/");
-    await Deno.writeFile(".gitignore", ignoreData);
+    const hasExtension = new RegExp(`\.${ext}$`).test(entrypoint);
+
+    if (!hasExtension) {
+        entrypoint = `${entrypoint}.${ext}`;
+    }
+
+    const encoder = new TextEncoder();
+    const module = encoder.encode("export {};");
+
+    await writeFileOrWarn(entrypoint, module);
+    if (deps === 'y' || deps === 'Y') {
+        await writeFileOrWarn(`deps.${ext}`, module);
+    }
+    
+    await mkDirOrWarn(".vscode");
+    await writeFileOrWarn(defaults.gitignore, defaults.gitignore_content);
+
+    Deno.chdir(".vscode");
+
+    await writeFileOrWarn("settings.json", defaults.deno_settings);
+    
+    if (debug === 'y' || debug === 'Y') {
+        await writeFileOrWarn("launch.json", defaults.debug_config);
+    }
+
 }
