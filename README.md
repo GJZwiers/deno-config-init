@@ -10,5 +10,5 @@ Select a language (js/ts), entrypoint and optionally a debug configuration.
 
 ## Installation
 ```
-deno install -n deno-init https://deno.land/x/init/init.ts
+deno install --allow-read --allow-write -n deno-init https://deno.land/x/init/init.ts
 ```
