@@ -39,16 +39,17 @@ const defaultDebugConfig = `{
 
 const defaults = {
     entrypoint: "mod.ts",
-    deps_entrypoint: "deps.ts",
-    module: encoder.encode("export {};"),
-    deno_settings: encoder.encode(`{\n\t"deno.enable": true\n}`),
     debug_config: encoder.encode(defaultDebugConfig),
+    deps_entrypoint: "deps.ts",
+    deno_settings: encoder.encode(`{\n\t"deno.enable": true\n}`),
     gitignore: ".gitignore",
     gitignore_content: encoder.encode(".vscode/"),
+    module: encoder.encode("export {};"),
+    settings_dir: ".vscode",
 };
 
 if (args.name) {
-    await Deno.mkdir(args.name);
+    await mkDirOrWarn(args.name);
     Deno.chdir(args.name);
 }
 
@@ -56,9 +57,10 @@ if (args.yes === true) {
     await writeFileOrWarn(defaults.entrypoint, defaults.module);
     await writeFileOrWarn(defaults.deps_entrypoint, defaults.module);
     await writeFileOrWarn(defaults.gitignore, defaults.gitignore_content);
-    await mkDirOrWarn(".vscode");
 
-    Deno.chdir(".vscode");
+    await mkDirOrWarn(defaults.settings_dir);
+
+    Deno.chdir(defaults.settings_dir);
 
     await writeFileOrWarn("settings.json", defaults.deno_settings);
     await writeFileOrWarn("launch.json", defaults.debug_config);
@@ -88,10 +90,10 @@ else {
         await writeFileOrWarn(`deps.${ext}`, module);
     }
     
-    await mkDirOrWarn(".vscode");
+    await mkDirOrWarn(defaults.settings_dir);
     await writeFileOrWarn(defaults.gitignore, defaults.gitignore_content);
 
-    Deno.chdir(".vscode");
+    Deno.chdir(defaults.settings_dir);
 
     await writeFileOrWarn("settings.json", defaults.deno_settings);
     
