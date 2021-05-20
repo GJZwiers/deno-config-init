@@ -21,7 +21,7 @@ Specific version:
 deno install --allow-read --allow-write -n deno-init https://deno.land/x/init@0.4.0/init.ts
 ```
 
-To upgrade the executable it's already installed:
+To upgrade the executable when it's already installed:
 ```
 deno install --allow-read --allow-write --reload -f -n deno-init https://deno.land/x/init/init.ts
 ```
