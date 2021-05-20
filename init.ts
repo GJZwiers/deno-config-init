@@ -7,6 +7,10 @@ const parser = new ArgumentsParser({
         parser: Boolean,
         isFlag: true,
     },
+    name: {
+        names: ["-n", "--name"],
+        parser: String,
+    },
     yes: {
         names: ["-y", "--yes"],
         parser: Boolean,
@@ -42,6 +46,11 @@ const defaults = {
     gitignore: ".gitignore",
     gitignore_content: encoder.encode(".vscode/"),
 };
+
+if (args.name) {
+    await Deno.mkdir(args.name);
+    Deno.chdir(args.name);
+}
 
 if (args.yes === true) {
     await writeFileOrWarn(defaults.entrypoint, defaults.module);
