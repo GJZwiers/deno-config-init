@@ -12,8 +12,18 @@ Please note this module's API is not yet stable and there may be breaking change
 - Deno Language Extension for Visual Studio Code
 
 ## Installation
+Latest:
 ```
 deno install --allow-read --allow-write -n deno-init https://deno.land/x/init/init.ts
+```
+Specific version:
+```
+deno install --allow-read --allow-write -n deno-init https://deno.land/x/init@0.4.0/init.ts
+```
+
+To upgrade the executable it's already installed:
+```
+deno install --allow-read --allow-write --reload -f -n deno-init https://deno.land/x/init/init.ts
 ```
 
 ## Basic Usage
