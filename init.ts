@@ -2,16 +2,21 @@ import { ArgumentsParser } from './deps.ts';
 import { writeFileOrWarn, mkDirOrWarn } from './utils.ts';
 
 const parser = new ArgumentsParser({
+    force: {
+        names: ["-f", "--force"],
+        parser: Boolean,
+        isFlag: true,
+    },
     yes: {
         names: ["-y", "--yes"],
         parser: Boolean,
         isFlag: true,
-    }
+    },
 });
 
 const encoder = new TextEncoder();
 
-const args = parser.parseArgs();
+export const args = parser.parseArgs();
 
 const defaultDebugConfig = `{
     "version": "0.2.0",
