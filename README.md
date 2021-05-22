@@ -12,16 +12,16 @@ Start Deno projects in Visual Studio Code a little faster with `deno-init`, a sm
 ## Installation
 Latest:
 ```
-deno install --allow-read --allow-write -n deno-init https://deno.land/x/init/mod.ts
+deno install --allow-read --allow-net --allow-write -n deno-init https://deno.land/x/init/mod.ts
 ```
 Specific version:
 ```
-deno install --allow-read --allow-write -n deno-init https://deno.land/x/init@0.4.0/mod.ts
+deno install --allow-read  --allow-net--allow-write -n deno-init https://deno.land/x/init@0.4.0/mod.ts
 ```
 
-To upgrade the executable when it's already installed:
+To upgrade the executable when it's already installed add `--reload` and `-f`:
 ```
-deno install --allow-read --allow-write --reload -f -n deno-init https://deno.land/x/init/mod.ts
+deno install --allow-read --allow-net--allow-write --reload -f -n deno-init https://deno.land/x/init/mod.ts
 ```
 
 ## Basic Usage
