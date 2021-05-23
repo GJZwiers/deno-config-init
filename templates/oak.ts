@@ -10,4 +10,4 @@ app.use((context: any) => {
 await app.listen("127.0.0.1:8000");
 `;
 
-export const deps = `export { Application } from "https://deno.land/x/oak/mod.ts";\n`;
+export const deps = `export { Application } from "https://deno.land/x/oak@v7.5.0/mod.ts";\n`;

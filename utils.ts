@@ -27,6 +27,6 @@ export async function mkdirOrWarn(path: string | URL, options?: Deno.WriteFileOp
     }
 }
 
-export function validateFilename(filename: string, extension: string): boolean {
+export function hasFileExtension(filename: string, extension: string): boolean {
     return new RegExp(`^[_A-Za-z-]+\.${extension}$`).test(filename);
 }

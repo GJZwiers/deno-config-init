@@ -1,5 +1,6 @@
 import { ArgumentsParser } from './deps.ts';
-import { writeFileOrWarn, mkdirOrWarn, validateFilename } from './utils.ts';
+import { writeFileOrWarn, mkdirOrWarn, hasFileExtension } from './utils.ts';
+import { vsCodeDebugConfig } from './configs/debugconfig_vscode.ts';
 
 const parser = new ArgumentsParser({
     force: {
@@ -23,38 +24,49 @@ const parser = new ArgumentsParser({
     },
 });
 
-const encoder = new TextEncoder();
-
 export const args = parser.parseArgs();
 
-const defaultDebugConfig = `{
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Deno",
-            "type": "node",
-            "request": "launch",
-            "cwd": "\${workspaceFolder}",
-            "runtimeExecutable": "deno",
-            "runtimeArgs": ["run", "--inspect-brk", "-A", "\${file}"],
-            "port": 9229
-        }
-    ]
-}`;
-
+const encoder = new TextEncoder();
 const encodedModule = encoder.encode("export {};\n");
 
-const defaults = {
-    entrypoint: "mod.ts",
-    debugConfig: encoder.encode(defaultDebugConfig),
+export const defaults = {
+    debug: 'y',
+    debugConfig: encoder.encode(vsCodeDebugConfig),
+    debugFile: "launch.json",
     depsEntrypoint: "deps.ts",
-    denoSettings: encoder.encode(`{\n\t"deno.enable": true\n}`),
+    entrypoint: "mod.ts",
+    extension: "ts",
     gitignore: ".gitignore",
-    gitignoreContent: encoder.encode(".vscode/\n"),
+    gitignorePatterns: encoder.encode(".vscode/\n"),
     module: encodedModule,
     depsModule: encodedModule,
+    settings: encoder.encode(`{\n\t"deno.enable": true\n}`),
     settingsDir: ".vscode",
+    settingsFile: "settings.json",
 };
+
+async function checkTemplateArg() {   
+    if (args.template) {
+        const template = await import(`./templates/${args.template}.${defaults.extension}`);
+        defaults.module = encoder.encode(template.entrypoint.replace(/\$\{extension\}/g, defaults.extension));
+        defaults.depsModule = encoder.encode(template.deps);
+    }
+}
+
+async function addContents(entrypoint?: string, depsEntrypoint?: string) {  
+    await writeFileOrWarn(entrypoint ?? defaults.entrypoint, defaults.module);
+    await writeFileOrWarn(depsEntrypoint ?? defaults.depsEntrypoint, defaults.depsModule);
+    await writeFileOrWarn(defaults.gitignore, defaults.gitignorePatterns);
+
+    await mkdirOrWarn(defaults.settingsDir);
+    Deno.chdir(defaults.settingsDir);
+
+    await writeFileOrWarn(defaults.settingsFile, defaults.settings);
+    
+    if (defaults.debug === 'y' || defaults.debug === 'Y') {
+        await writeFileOrWarn(defaults.debugFile, defaults.debugConfig);
+    }
+}
 
 if (args.name) {
     await mkdirOrWarn(args.name);
@@ -62,70 +74,37 @@ if (args.name) {
 }
 
 if (args.yes === true) {
-    if (args.template) {
-        const template = await import(`./templates/${args.template}.ts`);
-        defaults.module = encoder.encode(template.entrypoint.replace(/\$\{extension\}/g, "ts"));
-        defaults.depsModule = encoder.encode(template.deps);
-    }
-
-    await writeFileOrWarn(defaults.entrypoint, defaults.module);
-    await writeFileOrWarn(defaults.depsEntrypoint, defaults.depsModule);
-
-    await writeFileOrWarn(defaults.gitignore, defaults.gitignoreContent);
-
-    await mkdirOrWarn(defaults.settingsDir);
-
-    Deno.chdir(defaults.settingsDir);
-
-    await writeFileOrWarn("settings.json", defaults.denoSettings);
-    await writeFileOrWarn("launch.json", defaults.debugConfig);
+    await checkTemplateArg();
+    await addContents();
 } 
 else {
-    const ts = prompt("Use TypeScript? (y/n)", 'y');
-    const ext = (ts === 'y' || ts === 'Y') ? "ts" : "js";
-    let entrypoint = prompt(`Entrypoint:`, `mod.${ext}`);
-    let depsEntrypoint = prompt("Dependency entrypoint", `deps.${ext}`);
-    const debug = prompt("Add debug configuration? (y/n)", 'y');
+    const ts = prompt("TypeScript? (y/n)", 'y');
+    const isTypeScript = (ts === 'y' || ts === 'Y');
 
-    if (!entrypoint) {
-        throw new Error("Invalid entrypoint");
+    if (!isTypeScript && args.template) {
+        console.warn("Warning: Selected JavaScript with a TypeScript template.");
     }
 
-    if (!depsEntrypoint) {
-        throw new Error("Invalid dependency entrypoint");
+    const extension = isTypeScript ? defaults.extension : "js";
+
+    let entrypoint = <string> prompt(`Entrypoint:`, `mod.${extension}`);
+
+    if (!hasFileExtension(entrypoint, extension)) {
+        entrypoint = `${entrypoint}.${extension}`;
     }
 
-    // Allow user to input file without extension
-    const isValidEntrypoint = validateFilename(entrypoint, ext);
-    const isValidDepsEntrypoint = validateFilename(depsEntrypoint, ext);
+    let depsEntrypoint = <string> prompt("Dependency entrypoint", `deps.${extension}`);
 
-    if (!isValidEntrypoint) {
-        entrypoint = `${entrypoint}.${ext}`;
+    if (!hasFileExtension(depsEntrypoint, extension)) {
+        depsEntrypoint = `${depsEntrypoint}.${extension}`;
     }
 
-    if (!isValidDepsEntrypoint) {
-        depsEntrypoint = `${depsEntrypoint}.${ext}`;
-    }
-
-    // TODO: DRY
-    if (args.template) {
-        const template = await import(`./templates/${args.template}.ts`);
-        defaults.module = encoder.encode(template.entrypoint.replace(/\$\{extension\}/g, "ts"));
-        defaults.depsModule = encoder.encode(template.deps);
-    }
-
-    await writeFileOrWarn(entrypoint, defaults.module);
-    await writeFileOrWarn(`deps.${ext}`, defaults.depsModule);
+    const addDebug = <string> prompt("Add debug configuration? (y/n)", defaults.debug);
     
-    await mkdirOrWarn(defaults.settingsDir);
-    await writeFileOrWarn(defaults.gitignore, defaults.gitignoreContent);
-
-    Deno.chdir(defaults.settingsDir);
-
-    await writeFileOrWarn("settings.json", defaults.denoSettings);
-    
-    if (debug === 'y' || debug === 'Y') {
-        await writeFileOrWarn("launch.json", defaults.debugConfig);
+    if (addDebug !== 'y' && addDebug !== 'Y') {
+        defaults.debug = addDebug;
     }
 
+    await checkTemplateArg();
+    await addContents(entrypoint, depsEntrypoint);
 }
