@@ -65,7 +65,7 @@ When you run the command with `--name` or `-n` the script will create a new dire
 deno-init -n myDenoProject
 ```
 
-`deno-init` will also provide some templates to get started with various deno frameworks. This is still being worked on but you can already initialize a very basic `oak` project right now:
+You can initialize project templates with `--template` to get started with various deno frameworks. This is a work in progress but you can already initialize a very basic `oak` project as well as an oak RESTful API with the `restful_oak` template.
 ```
 deno-init --template oak
 ```
