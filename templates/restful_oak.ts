@@ -25,9 +25,9 @@ app.addEventListener("listen", ({ hostname, port }) => {
 await app.listen({ hostname: "127.0.0.1", port: 8000 });`;
 
 export const deps = `export {
-Application,
-Router,
+  Application,
+  Router,
 } from "https://deno.land/x/oak/mod.ts";
 export type {
-RouterContext,
+  RouterContext,
 } from "https://deno.land/x/oak/mod.ts";`;
