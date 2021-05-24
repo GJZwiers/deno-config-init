@@ -1,30 +1,6 @@
-import { ArgumentsParser } from './deps.ts';
+import { args } from './parser.ts';
 import { writeFileOrWarn, mkdirOrWarn, hasFileExtension } from './utils.ts';
 import { vsCodeDebugConfig } from './configs/debugconfig_vscode.ts';
-
-const parser = new ArgumentsParser({
-    force: {
-        names: ["-f", "--force"],
-        parser: Boolean,
-        isFlag: true,
-    },
-    name: {
-        names: ["-n", "--name"],
-        parser: String,
-    },
-    template: {
-        names: ["-t", "--template"],
-        parser: String,
-        choices: ["oak", "restful_oak"],
-    },
-    yes: {
-        names: ["-y", "--yes"],
-        parser: Boolean,
-        isFlag: true,
-    },
-});
-
-export const args = parser.parseArgs();
 
 const encoder = new TextEncoder();
 const encodedModule = encoder.encode("export {};\n");

@@ -1,8 +1,7 @@
-import { args } from './init.ts';
+import { args } from './parser.ts';
 
 export async function writeFileOrWarn(path: string | URL, data: Uint8Array, options?: Deno.WriteFileOptions | undefined)
     : Promise<void> {
-
     if (args.force) {
         return await Deno.writeFile(path, data, options);
     }

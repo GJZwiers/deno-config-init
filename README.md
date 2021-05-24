@@ -16,10 +16,10 @@ deno install --allow-read --allow-net --allow-write -n deno-init https://deno.la
 ```
 Specific version:
 ```
-deno install --allow-read  --allow-net --allow-write -n deno-init https://deno.land/x/init@0.4.0/mod.ts
+deno install --allow-read --allow-net --allow-write -n deno-init https://deno.land/x/init@0.5.2/mod.ts
 ```
 
-To upgrade the executable when it's already installed add `--reload` and `-f`:
+Upgrade existing installation:
 ```
 deno install --allow-read --allow-net --allow-write --reload -f -n deno-init https://deno.land/x/init/mod.ts
 ```
@@ -65,7 +65,11 @@ When you run the command with `--name` or `-n` the script will create a new dire
 deno-init -n myDenoProject
 ```
 
-You can initialize project templates with `--template` to get started with various deno frameworks. This is still a work in progress. Right now the available templates are `oak` and `restful_oak`.
+You can initialize project templates with `--template` to get started with various deno frameworks. This is still a work in progress. Right now the available templates are `oak` and `restful_oak` and they will work with TypeScript only.
 ```
-deno-init --template oak
+deno-init -y --template oak
 ```
+
+## Roadmap
+* Support more editor/IDE setups
+* Add more project templates
