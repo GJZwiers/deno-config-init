@@ -1,4 +1,4 @@
-import { assertEquals, Rhum } from "./deps.ts";
+import { Rhum } from "./deps.ts";
 import { hasFileExtension, writeFileOrWarn, mkdirOrWarn } from './utils.ts';
 import { args } from './parser.ts';
 
