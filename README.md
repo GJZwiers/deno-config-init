@@ -1,3 +1,4 @@
+[![Build](https://github.com/GJZwiers/deno-init/actions/workflows/build.yaml/badge.svg)](https://github.com/GJZwiers/deno-init/actions/workflows/build.yaml)
 # init
 
 Start Deno projects in Visual Studio Code a little faster with `deno-init`, a small executable that scaffolds a Deno project structure for you.
