@@ -16,14 +16,9 @@ Latest:
 ```
 deno install --allow-read --allow-net --allow-write -n deno-init https://deno.land/x/init/mod.ts
 ```
-Specific version:
+Specific version/upgrade:
 ```
-deno install --allow-read --allow-net --allow-write -n deno-init https://deno.land/x/init@0.5.2/mod.ts
-```
-
-Upgrade existing installation:
-```
-deno install --allow-read --allow-net --allow-write --reload -f -n deno-init https://deno.land/x/init/mod.ts
+deno install --allow-read --allow-net --allow-write -n deno-init https://deno.land/x/init@0.5.3/mod.ts
 ```
 
 ## Basic Usage
