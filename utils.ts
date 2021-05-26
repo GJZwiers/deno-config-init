@@ -1,6 +1,6 @@
 import { args } from './parser.ts';
 
-export async function writeFileOrWarn(path: string | URL, data: Uint8Array, options?: Deno.WriteFileOptions | undefined)
+async function writeFileOrWarn(path: string | URL, data: Uint8Array, options?: Deno.WriteFileOptions | undefined)
     : Promise<void> {
     if (args.force) {
         return await Deno.writeFile(path, data, options);
@@ -16,7 +16,7 @@ export async function writeFileOrWarn(path: string | URL, data: Uint8Array, opti
     }
 }
 
-export async function mkdirOrWarn(path: string | URL, options?: Deno.WriteFileOptions | undefined)
+async function mkdirOrWarn(path: string | URL, options?: Deno.WriteFileOptions | undefined)
     : Promise<void> {
     try {
         await Deno.mkdir(path, options);
@@ -26,6 +26,8 @@ export async function mkdirOrWarn(path: string | URL, options?: Deno.WriteFileOp
     }
 }
 
-export function hasFileExtension(filename: string, extension: string): boolean {
+ function hasFileExtension(filename: string, extension: string): boolean {
     return new RegExp(`^[_A-Za-z-]+\.${extension}$`).test(filename);
 }
+
+export { writeFileOrWarn, mkdirOrWarn, hasFileExtension }

@@ -5,7 +5,7 @@ import { vsCodeDebugConfig } from './configs/debugconfig_vscode.ts';
 const encoder = new TextEncoder();
 const encodedModule = encoder.encode("export {};\n");
 
-export const defaults = {
+const defaults = {
     debug: 'y',
     debugConfig: encoder.encode(vsCodeDebugConfig),
     debugFile: "launch.json",
@@ -20,14 +20,6 @@ export const defaults = {
     settingsDir: ".vscode",
     settingsFile: "settings.json",
 };
-
-async function checkTemplateArg() {   
-    if (args.template) {
-        const template = await import(`./templates/${args.template}.${defaults.extension}`);
-        defaults.module = encoder.encode(template.entrypoint.replace(/\$\{extension\}/g, defaults.extension));
-        defaults.depsModule = encoder.encode(template.deps);
-    }
-}
 
 async function addContents(entrypoint?: string, depsEntrypoint?: string) {  
     await writeFileOrWarn(entrypoint ?? defaults.entrypoint, defaults.module);
@@ -84,3 +76,13 @@ else {
     await checkTemplateArg();
     await addContents(entrypoint, depsEntrypoint);
 }
+
+async function checkTemplateArg() { 
+    if (args.template) {
+        const template = await import(`./templates/${args.template}.${defaults.extension}`);
+        defaults.module = encoder.encode(template.entrypoint.replace(/\$\{extension\}/g, defaults.extension));
+        defaults.depsModule = encoder.encode(template.deps);
+    }
+}
+
+export { defaults }
