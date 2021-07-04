@@ -1,5 +1,5 @@
 
-async function writeFileOrWarn(path: string | URL, data: Uint8Array, force: boolean = false)
+async function writeFileOrWarn(path: string | URL, data: Uint8Array, force = false)
     : Promise<void> {
     if (force) {
         return await Deno.writeFile(path, data);
@@ -15,7 +15,7 @@ async function writeFileOrWarn(path: string | URL, data: Uint8Array, force: bool
     }
 }
 
-async function mkdirOrWarn(path: string | URL, force: boolean = false)
+async function mkdirOrWarn(path: string | URL, force = false)
     : Promise<void> {
     try {
         await Deno.mkdir(path);

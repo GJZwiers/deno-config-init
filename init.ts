@@ -35,7 +35,7 @@ await new Command()
         "Initialize the project with a template. Options: oak, restful_oak"
     )
     .option("-y, --yes [yes:boolean]", "Answer with 'y' to all prompts")
-    .action(async ({ force, name, template, yes }: any) => {  
+    .action(async ({ force, name, template, yes }) => {  
         if (yes === true) {
             if (name) {
                 await mkdirOrWarn(name, force);
@@ -84,7 +84,7 @@ await new Command()
     .parse(Deno.args);
 
 
-async function addContents(entrypoint?: string, depsEntrypoint?: string, force: boolean = false) {  
+async function addContents(entrypoint?: string, depsEntrypoint?: string, force = false) {  
     await writeFileOrWarn(entrypoint ?? defaults.entrypoint, defaults.module, force);
 
     await writeFileOrWarn(depsEntrypoint ?? defaults.depsEntrypoint, defaults.depsModule, force);
