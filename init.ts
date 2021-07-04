@@ -1,52 +1,79 @@
 import { Command, EnumType } from "./deps.ts";
-import { writeFileOrWarn, mkdirOrWarn, hasFileExtension } from './utils.ts';
-import { vsCodeDebugConfig } from './configs/debugconfig_vscode.ts';
+import { writeFileOrWarn, mkdirOrWarn, hasFileExtension } from "./utils.ts";
+import { vsCodeDebugConfig } from "./configs/debugconfig_vscode.ts";
 
 const encoder = new TextEncoder();
-const encodedModule = encoder.encode("export {};\n");
+const defaultModuleContent = encoder.encode("export {};\n");
 
 const defaults = {
-    debug: 'y',
-    debugConfig: encoder.encode(vsCodeDebugConfig),
-    debugFile: "launch.json",
+    debug: "y",
     depsEntrypoint: "deps.ts",
+    depsModule: defaultModuleContent,
     entrypoint: "mod.ts",
     extension: "ts",
     gitignore: ".gitignore",
-    gitignorePatterns: encoder.encode(".vscode/\n"),
-    module: encodedModule,
-    depsModule: encodedModule,
-    settings: encoder.encode(`{\n\t"deno.enable": true\n}`),
-    settingsDir: ".vscode",
-    settingsFile: "settings.json",
-};  
+    module: defaultModuleContent,
+};
 
-const choices = new EnumType(["oak", "restful_oak"]);   // aleph, opine
+type EditorConfig = {
+    debugFile: string,
+    debugFileContent: Uint8Array,
+    gitignoreContent: Uint8Array,
+    settings: Uint8Array
+    settingsDir: string,
+    settingsFile: string,
+}
+
+type EditorConfigs = {
+    [key: string]: EditorConfig
+}
+
+const editorConfigs: EditorConfigs = {
+    "vscode": {
+        debugFileContent: encoder.encode(vsCodeDebugConfig),
+        debugFile: "launch.json",
+        gitignoreContent: encoder.encode(".vscode/\n"),
+        settingsDir: ".vscode",
+        settingsFile: "settings.json",
+        settings: encoder.encode(`{\n\t"deno.enable": true\n}`)
+    }
+}
+
+const editor = new EnumType(["vscode"]);
+
+const template = new EnumType(["oak", "restful_oak"]);
 
 await new Command()
-    .type("choices", choices)
     .name("deno-init")
     .version("0.5.3")
     .description("Start a new Deno project with a single command")
+    .type("editor", editor)
+    .type("template", template)
+    .option<{ editor: typeof editor }>("-e, --editor [method:editor]", "Choose the editor to configure for.", { 
+        default: "vscode"
+    })
     .option("-f, --force [force:boolean]", "Force overwrite of existing files/directories. Helpful to re-initialize but use with caution!")
     .option("-n, --name [name:string]", "Create the project in a new directory.")
-    .option<{ choices: typeof choices }>(
-        "-t, --template [template:string]",
-        "Initialize the project with a template. Options: oak, restful_oak"
+    .option<{ template: typeof template }>(
+        "-t, --template [method:template]",
+        "Initialize the project with a template."
     )
     .option("-y, --yes [yes:boolean]", "Answer with 'y' to all prompts")
-    .action(async ({ force, name, template, yes }) => {  
+    .action(async ({ editor, force, name, template, yes }) => { 
         if (yes === true) {
             if (name) {
                 await mkdirOrWarn(name, force);
                 Deno.chdir(name);
             }
             await fetchTemplate(template);
-            await addContents(undefined, undefined, force);
+
+            await addEntryPoints(undefined, undefined, force);
+
+            await addEditorConfig(editor, force);
         } 
         else {
-            const ts = prompt("TypeScript? (y/n)", 'y');
-            const isTypeScript = (ts === 'y' || ts === 'Y');
+            const ts = prompt("TypeScript? (y/n)", "y");
+            const isTypeScript = (ts === "y" || ts === "Y");
         
             if (!isTypeScript && template) {
                 console.warn("Warning: Selected JavaScript with a TypeScript template.");
@@ -68,7 +95,7 @@ await new Command()
         
             const addDebug = <string> prompt("Add debug configuration? (y/n)", defaults.debug);
             
-            if (addDebug !== 'y' && addDebug !== 'Y') {
+            if (addDebug !== "y" && addDebug !== "Y") {
                 defaults.debug = addDebug;
             }
 
@@ -78,34 +105,38 @@ await new Command()
             }
         
             await fetchTemplate(template);
-            await addContents(entrypoint, depsEntrypoint, force);
+
+            await addEntryPoints(entrypoint, depsEntrypoint, force);
+            
+            await addEditorConfig(editor, force);
         }
     })
     .parse(Deno.args);
 
-
-async function addContents(entrypoint?: string, depsEntrypoint?: string, force = false) {  
+async function addEntryPoints(entrypoint?: string, depsEntrypoint?: string, force = false) {  
     await writeFileOrWarn(entrypoint ?? defaults.entrypoint, defaults.module, force);
 
     await writeFileOrWarn(depsEntrypoint ?? defaults.depsEntrypoint, defaults.depsModule, force);
+}
 
-    await writeFileOrWarn(defaults.gitignore, defaults.gitignorePatterns, force);
+async function addEditorConfig(editor: string, force = false) {  
+    await writeFileOrWarn(defaults.gitignore, editorConfigs[editor].gitignoreContent, force);
 
-    await mkdirOrWarn(defaults.settingsDir, force);
-    Deno.chdir(defaults.settingsDir);
+    await mkdirOrWarn(editorConfigs[editor].settingsDir, force);
+    Deno.chdir(editorConfigs[editor].settingsDir);
 
-    await writeFileOrWarn(defaults.settingsFile, defaults.settings, force);
+    await writeFileOrWarn(editorConfigs[editor].settingsFile, editorConfigs[editor].settings, force);
     
-    if (defaults.debug === 'y' || defaults.debug === 'Y') {
-        await writeFileOrWarn(defaults.debugFile, defaults.debugConfig, force);
+    if (defaults.debug === "y" || defaults.debug === "Y") {
+        await writeFileOrWarn(editorConfigs[editor].debugFile, editorConfigs[editor].debugFileContent, force);
     }
 }
 
-async function fetchTemplate(t: string | undefined) { 
-    if (t) {
-        const template = await import(`./templates/${t}.${defaults.extension}`);
-        defaults.module = encoder.encode(template.entrypoint.replace(/\$\{extension\}/g, defaults.extension));
-        defaults.depsModule = encoder.encode(template.deps);
+async function fetchTemplate(template: string | undefined) { 
+    if (template) {
+        const templateContent = await import(`./templates/${template}.${defaults.extension}`);
+        defaults.module = encoder.encode(templateContent.entrypoint.replace(/\$\{extension\}/g, defaults.extension));
+        defaults.depsModule = encoder.encode(templateContent.deps);
     }
 }
 
