@@ -41,7 +41,7 @@ const editorConfigs: EditorConfigs = {
 
 const editor = new EnumType(["vscode"]);
 
-const template = new EnumType(["oak", "restful_oak", "opine"]);
+const template = new EnumType(["cliffy", "oak", "opine", "restful_oak"]);
 
 await new Command()
     .name("deno-init")
@@ -81,13 +81,21 @@ await new Command()
         
             const extension = isTypeScript ? defaults.extension : "js";
         
-            let entrypoint = <string> prompt(`Entrypoint:`, `mod.${extension}`);
+            let entrypoint = prompt(`Entrypoint:`, `mod.${extension}`);
+
+            if (entrypoint === null) {
+                entrypoint = "mod.ts";
+            }
         
             if (!hasFileExtension(entrypoint, extension)) {
                 entrypoint = `${entrypoint}.${extension}`;
             }
         
             let depsEntrypoint = <string> prompt("Dependency entrypoint", `deps.${extension}`);
+
+            if (depsEntrypoint === null) {
+                depsEntrypoint = "deps.ts";
+            }
         
             if (!hasFileExtension(depsEntrypoint, extension)) {
                 depsEntrypoint = `${depsEntrypoint}.${extension}`;
