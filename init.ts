@@ -65,7 +65,7 @@ await new Command()
                 await mkdirOrWarn(name, force);
                 Deno.chdir(name);
             }
-            await fetchTemplate(template);
+            await fetchTemplate(template, name);
 
             await addEntryPoints(undefined, undefined, force);
 
@@ -104,7 +104,7 @@ await new Command()
                 Deno.chdir(name);
             }
         
-            await fetchTemplate(template);
+            await fetchTemplate(template, name);
 
             await addEntryPoints(entrypoint, depsEntrypoint, force);
             
@@ -132,12 +132,21 @@ async function addEditorConfig(editor: string, force = false) {
     }
 }
 
-async function fetchTemplate(template: string | undefined) { 
-    if (template) {
-        const templateContent = await import(`./templates/${template}.${defaults.extension}`);
-        defaults.module = encoder.encode(templateContent.entrypoint.replace(/\$\{extension\}/g, defaults.extension));
-        defaults.depsModule = encoder.encode(templateContent.deps);
+async function fetchTemplate(template: string | undefined, name: string) { 
+    if (!template) {
+        throw new Error("Error: Undefined template");
     }
+
+    const pathStart = name ? ".." : ".";
+    const deps = await Deno.readFile(`${pathStart}/templates/${template}_deps.txt`);
+    const entrypoint = await Deno.readFile(`${pathStart}/templates/${template}_entrypoint.txt`);
+    
+    const decoder = new TextDecoder();
+    
+    defaults.module = encoder.encode(decoder
+        .decode(entrypoint)
+        .replace(/\{\{extension\}\}/g, defaults.extension));
+    defaults.depsModule = encoder.encode(decoder.decode(deps));
 }
 
 export { defaults }
