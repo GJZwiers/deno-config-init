@@ -1,6 +1,5 @@
 import { Rhum } from "./deps.ts";
-import { hasFileExtension, writeFileOrWarn, mkdirOrWarn } from './utils.ts';
-import { args } from './parser.ts';
+import { hasFileExtension, writeFileOrWarn, mkdirOrWarn, } from './utils.ts';
 
 const testFilePath = "./foo.ts";
 const testDirPath = "./dir";
@@ -26,10 +25,8 @@ Rhum.testPlan("utils.test.ts", () => {
         });
 
         Rhum.testCase("should overwrite when the force flag is set", async () => {
-            await writeFileOrWarn(testFilePath, testFileContent);
-            args.force = true;
-            await writeFileOrWarn(testFilePath, encoder.encode("bar"));
-            args.force = false;
+            await writeFileOrWarn(testFilePath, testFileContent, false);
+            await writeFileOrWarn(testFilePath, encoder.encode("bar"), true);
         
             const file = await Deno.readFile(testFilePath);
         
@@ -61,10 +58,8 @@ Rhum.testPlan("utils.test.ts", () => {
         });
 
         Rhum.testCase("should not warn when directory already exists and force flag is set", async () => {
-            args.force = true;
             await Deno.mkdir(testDirPath);
-            await mkdirOrWarn(testDirPath);
-            args.force = false;
+            await mkdirOrWarn(testDirPath, true);
         });
     });
 
@@ -73,8 +68,8 @@ Rhum.testPlan("utils.test.ts", () => {
             Rhum.asserts.assertEquals(hasFileExtension("mod.ts", "ts"), true);
             Rhum.asserts.assertEquals(hasFileExtension("mod.ts", "js"), false);
             Rhum.asserts.assertEquals(hasFileExtension("mod", "ts"), false);
-        })
-    })
+        });
+    });
 });
 
 Rhum.run();
