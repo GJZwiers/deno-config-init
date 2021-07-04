@@ -77,7 +77,7 @@ Use `--name` or `-n` to make a new directory in the current directory where the 
 deno-init --name my_deno_project
 ```
 
-Use `--template` or `-t` to initialize project templates for various Deno frameworks. This is still a work in progress. Right now the available templates are `oak` and `restful_oak` and they are TypeScript-only.
+Use `--template` or `-t` to initialize project templates for various Deno frameworks. This is still a work in progress. Right now the available templates are `oak`,`restful_oak` and `opine`.
 
 ```cmd
 deno-init --template oak
