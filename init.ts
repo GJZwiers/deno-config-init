@@ -41,7 +41,7 @@ const editorConfigs: EditorConfigs = {
 
 const editor = new EnumType(["vscode"]);
 
-const template = new EnumType(["oak", "restful_oak"]);
+const template = new EnumType(["oak", "restful_oak", "opine"]);
 
 await new Command()
     .name("deno-init")
