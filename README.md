@@ -1,39 +1,40 @@
-[![Build](https://github.com/GJZwiers/deno-init/actions/workflows/build.yaml/badge.svg)](https://github.com/GJZwiers/deno-init/actions/workflows/build.yaml)
-[![Coverage Status](https://coveralls.io/repos/github/GJZwiers/deno-init/badge.svg?branch=main)](https://coveralls.io/github/GJZwiers/deno-init?branch=main)
 # init
 
-Start Deno projects in Visual Studio Code a little faster with `deno-init`, a small executable that scaffolds a Deno project structure for you.
+[![Build](https://github.com/GJZwiers/deno-init/actions/workflows/build.yaml/badge.svg)](https://github.com/GJZwiers/deno-init/actions/workflows/build.yaml)
+[![Coverage Status](https://coveralls.io/repos/github/GJZwiers/deno-init/badge.svg?branch=main)](https://coveralls.io/github/GJZwiers/deno-init?branch=main)
 
-> Please note this module's API is not yet stable and there may be breaking changes on `0.x` version increments.
+Start Deno projects faster with `deno-init`, a simple executable that scaffolds the project structure for you.
 
-## Prerequisites
-- Deno
-- Visual Studio Code
-- Deno Language Extension for Visual Studio Code
+> Please note this module's API is not stable yet and there may be breaking changes on `0.x` version increments.
+
+## Requirements
+
+- `deno` installed and available on a terminal.
 
 ## Installation
-Latest:
-```
-deno install --allow-read --allow-net --allow-write -n deno-init https://deno.land/x/init/mod.ts
-```
-Specific version/upgrade:
-```
-deno install --allow-read --allow-net --allow-write -n deno-init https://deno.land/x/init@0.5.3/mod.ts
+
+use the `deno install` command to install or upgrade the executable. If you download it without specifying a version the latest will be installed.
+
+```cmd
+deno install --allow-read --allow-net --allow-write -n deno-init https://deno.land/x/init@0.6.0/mod.ts
 ```
 
 ## Basic Usage
-You can run the command without specifying any options. This will prompt you for a few values:
-* TypeScript? (default `y`)
-* Entrypoint? (default `mod.ts`)
-* Dependency entrypoint? (default `deps.ts`) 
-* Add debug configuration? (default `y`).
 
-```
+You can run the command without specifying any options. This will prompt you for a few values:
+
+- TypeScript? (default `y`)
+- Entrypoint? (default `mod.ts`)
+- Dependency entrypoint? (default `deps.ts`)
+- Add debug configuration? (default `y`).
+
+```cmd
 deno-init
 ```
 
 Choosing all defaults will create the following structure in the current directory:
-```
+
+```cmd
 .
 │   .gitignore
 │   deps.ts  
@@ -47,26 +48,42 @@ Choosing all defaults will create the following structure in the current directo
 The generated `.gitignore` will include `.vscode` and `launch.json` as well as `settings.json` will contain the necessary setup.
 
 ## Available Options
-If you simply want to use all the default values without being prompted you can pass `--yes` or `-y`. Note that `deno-init` will not overwrite anything by default in case you already made some of the files/directories:
-```
+
+Use `--help` to print all available options. In addition, they are listed below:
+
+Use `--yes` or `-y` if you simply want to use all the default values without being prompted:
+
+```cmd
 deno-init -y
 ```
 
-In case you explicitly want to overwrite existing files you can pass `--force` or `-f`:
+`deno-init` will not overwrite files or directories unless `--force` is passed.
+
+Use `--editor` or `-e` to generate editor-specific configuration for a project. At this moment only the option `vscode` is supported and it is also set as the default.
+
+```cmd
+deno-init --editor vscode
 ```
+
+Use `--force` or `-f` in case you explicitly want to overwrite existing files. This can be helpful to re-initialize but use with caution.
+
+```cmd
 deno-init -f
 ```
 
-When you run the command with `--name` or `-n` the script will create a new directory and the add the files in there instead of the current directory:
-```
-deno-init -n myDenoProject
+Use `--name` or `-n` to make a new directory in the current directory where the files will be placed.
+
+```cmd
+deno-init --name my_deno_project
 ```
 
-You can initialize project templates with `--template` to get started with various deno frameworks. This is still a work in progress. Right now the available templates are `oak` and `restful_oak` and they will work with TypeScript only.
-```
-deno-init -y --template oak
+Use `--template` or `-t` to initialize project templates for various Deno frameworks. This is still a work in progress. Right now the available templates are `oak` and `restful_oak` and they are TypeScript-only.
+
+```cmd
+deno-init --template oak
 ```
 
 ## Roadmap
-* Support more editor/IDE setups
-* Add more project templates
+
+- Support more editor/IDE setups
+- Add more project templates
