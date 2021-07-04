@@ -1,0 +1,2 @@
+export { opine } from "https://deno.land/x/opine@1.5.4/mod.ts";
+export type { Request, Response } from "https://deno.land/x/opine@1.5.4/mod.ts";
