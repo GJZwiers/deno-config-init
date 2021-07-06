@@ -133,20 +133,18 @@ async function addEditorConfig(editor: string, force = false) {
 }
 
 async function fetchTemplate(template: string | undefined, name: string) { 
-    if (!template) {
-        throw new Error("Error: Undefined template");
+    if (template) {
+        const pathStart = name ? ".." : ".";
+        const deps = await Deno.readFile(`${pathStart}/templates/${template}_deps.txt`);
+        const entrypoint = await Deno.readFile(`${pathStart}/templates/${template}_entrypoint.txt`);
+        
+        const decoder = new TextDecoder();
+        
+        defaults.module = encoder.encode(decoder
+            .decode(entrypoint)
+            .replace(/\{\{extension\}\}/g, defaults.extension));
+        defaults.depsModule = encoder.encode(decoder.decode(deps));
     }
-
-    const pathStart = name ? ".." : ".";
-    const deps = await Deno.readFile(`${pathStart}/templates/${template}_deps.txt`);
-    const entrypoint = await Deno.readFile(`${pathStart}/templates/${template}_entrypoint.txt`);
-    
-    const decoder = new TextDecoder();
-    
-    defaults.module = encoder.encode(decoder
-        .decode(entrypoint)
-        .replace(/\{\{extension\}\}/g, defaults.extension));
-    defaults.depsModule = encoder.encode(decoder.decode(deps));
 }
 
 export { defaults }
