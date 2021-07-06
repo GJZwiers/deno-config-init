@@ -43,9 +43,39 @@ const editor = new EnumType(["vscode"]);
 
 const template = new EnumType(["cliffy", "oak", "opine", "restful_oak"]);
 
+const apiTemplate = new EnumType(["opine", "oak", "drash"]);
+
+const cliTemplate = new EnumType(["cliffy"]);
+
+// deno-init api --template oak
+// deno-init app --template aleph
+// deno-init cli --template cliffy
+
+const api = new Command()
+     .name("api")
+     .type("template", apiTemplate)
+     .option<{ template: typeof apiTemplate }>(
+        "-t, --template [method:template]",
+        "Use a template to initialize the RESTful API."
+    )
+     .action(({ template }) => {
+         console.log("Initializing RESTful API with template: " + template);
+     })
+
+const cli = new Command()
+     .name("cli")
+     .type("template", cliTemplate)
+     .option<{ template: typeof cliTemplate }>(
+        "-t, --template [method:template]",
+        "Use a template to initialize the CLI."
+    )
+     .action(({ template }) => {
+         console.log("Initializing CLI with template: " + template);
+     })
+
 await new Command()
     .name("deno-init")
-    .version("0.5.3")
+    .version("0.9.0")
     .description("Start a new Deno project with a single command")
     .type("editor", editor)
     .type("template", template)
@@ -119,6 +149,8 @@ await new Command()
             await addEditorConfig(editor, force);
         }
     })
+    .command("api", api)
+    .command("cli", cli)
     .parse(Deno.args);
 
 async function addEntryPoints(entrypoint?: string, depsEntrypoint?: string, force = false) {  
@@ -147,10 +179,12 @@ async function fetchTemplate(template: string | undefined, name: string) {
         const entrypoint = await Deno.readFile(`${pathStart}/templates/${template}_entrypoint.txt`);
         
         const decoder = new TextDecoder();
+
+        const placeholderNotEscaped = /(?<!\\)\{\{extension\}\}/g;
         
         defaults.module = encoder.encode(decoder
             .decode(entrypoint)
-            .replace(/\{\{extension\}\}/g, defaults.extension));
+            .replace(placeholderNotEscaped, defaults.extension));
         defaults.depsModule = encoder.encode(decoder.decode(deps));
     }
 }
