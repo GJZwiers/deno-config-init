@@ -2,7 +2,7 @@ import { Application } from "./deps.{{extension}}";
 
 const app = new Application();
 
-app.use((context: any) => {
+app.use((context{{type:any}}) => {
   context.response.body = "Hello world!";
 });
 

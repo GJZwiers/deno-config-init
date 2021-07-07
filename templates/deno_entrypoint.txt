@@ -1,0 +1,12 @@
+import { assertEquals } from "./deps.{{extension}}";
+
+function greet(){{type:string}} {
+    return "Hello World!";
+}
+
+Deno.test({
+    name: "my test",
+    fn(){{type:void}} {
+        assertEquals(greet(), "Hello World!");
+    }
+});

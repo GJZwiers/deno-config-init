@@ -7,7 +7,7 @@ import type {
 } from "./deps.{{extension}}";
 
 const router = new Router();
-router.get("/", (context: RouterContext) => {
+router.get("/", (context{{type:RouterContext}}) => {
   context.response.body = "Hello world!";
 });
 
@@ -16,7 +16,7 @@ const app = new Application();
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-app.addEventListener("listen", ({ hostname, port }: any) => {
+app.addEventListener("listen", ({ hostname, port }{{type:any}}) => {
   console.log("Listening on " + hostname + ':' + port);
 });
 
