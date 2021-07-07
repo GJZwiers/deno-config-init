@@ -2,7 +2,9 @@ import { Select } from "../deps.ts";
 import { fetchTemplate, addEntryPoints, addEditorConfig } from "../init.ts";
 import { mkdirOrWarn } from "../utils.ts";
 
-export async function chooseTemplate(template: any, options: string[]) {
+type CLIOption = string | undefined;
+
+export async function chooseTemplate(template: CLIOption, options: string[]) {
     let choice: string | undefined = undefined;
     if (!template) {
         choice = await Select.prompt({
@@ -13,7 +15,7 @@ export async function chooseTemplate(template: any, options: string[]) {
     return choice;
 }
 
-export async function act(editor: any, force: any, name: any, template: any) {
+export async function act(editor: string, force: boolean | undefined, name: CLIOption, template: CLIOption) {
     await fetchTemplate(template);
 
     if (name) {

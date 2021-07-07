@@ -22,7 +22,7 @@ jobs:
 
       - name: Test
         run: |
-          deno test -A --allow-env --allow-read --allow-write --coverage=./cov
+          deno test -A --unstable --allow-env --allow-read --allow-write --coverage=./cov
 
       - name: Generate coverage report
         run: deno coverage --unstable --lcov ./cov > cov.lcov

@@ -47,6 +47,8 @@ const editor = new EnumType(["vscode"]);
 
 const template = new EnumType(["oak"]);
 
+let extension = "ts";
+
 function ask() {
     const ts = prompt("TypeScript? (y/n)", "y");
     const isTypeScript = (ts === "y" || ts === "Y");
@@ -55,7 +57,7 @@ function ask() {
         throw new Error("Error: Cannot select JavaScript when initializing with a TypeScript template.");
     }
 
-    const extension = isTypeScript ? defaults.extension : "js";
+    extension = isTypeScript ? defaults.extension : "js";
 
     let entrypoint = prompt(`Entrypoint:`, `mod.${extension}`);
 
@@ -104,7 +106,7 @@ await new Command()
         "Initialize the project with a basic template. For more specific application templates use one of the subcommands."
     )
     .option("-y, --yes [yes:boolean]", "Answer 'y' to all prompts")
-    .action(async ({ editor, force, name, template, yes }) => { 
+    .action(({ editor, force, name, template, yes }) => { 
         if (yes === true) {
             act(editor, force, name, template);
         }
@@ -147,13 +149,13 @@ export async function fetchTemplate(template: string | undefined) {
 
         const placeholderNotEscaped = /(?<!\\)\{\{extension\}\}/g;
 
-        const tsType = /\{\{type(:)([A-Za-z0-9_]*?)\}\}/g;
+        const typeAnnotation = /\{\{type(:)([A-Za-z0-9_]*?)\}\}/g;
         
         defaults.module = encoder.encode(decoder
             .decode(entrypoint)
             .replace(placeholderNotEscaped, defaults.extension)
-            .replace(tsType, function(_match: string, group1: string, type: string): string {
-                return group1 + " " + type;
+            .replace(typeAnnotation, function(_match: string, group1: string, type: string): string {
+                return (extension === "ts") ? group1 + " " + type : "";
             })
         );
         defaults.depsModule = encoder.encode(decoder.decode(deps));
