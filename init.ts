@@ -1,6 +1,9 @@
 import { Command, EnumType, Select } from "./deps.ts";
 import { writeFileOrWarn, mkdirOrWarn, hasFileExtension } from "./utils.ts";
 import { vsCodeDebugConfig } from "./configs/debugconfig_vscode.ts";
+import { tdd } from "./commands/tdd.ts";
+import { api } from "./commands/api.ts";
+import { cli } from "./commands/cli.ts";
 
 const encoder = new TextEncoder();
 const defaultModuleContent = encoder.encode("export {};\n");
@@ -43,13 +46,7 @@ const editor = new EnumType(["vscode"]);
 
 const template = new EnumType(["oak"]);
 
-const apiTemplate = new EnumType(["opine", "restful_oak", "drash"]);
-
-const cliTemplate = new EnumType(["cliffy"]);
-
-const tddTemplate = new EnumType(["deno", "rhum"]);
-
-async function act(editor: any, force: any, name: any, template: any, options: string[]) {
+export async function act(editor: any, force: any, name: any, template: any, options: string[]) {
     let choice: string | undefined = undefined;
     if (!template) {
         choice = await Select.prompt({
@@ -69,42 +66,6 @@ async function act(editor: any, force: any, name: any, template: any, options: s
     
     await addEditorConfig(editor, force);
 }
-
-const tdd = new Command()
-    .name("tdd")
-    .description("Initialize a test-driven project.")
-    .type("template", tddTemplate)
-    .option<{ template: typeof tddTemplate }>(
-        "-t, --template [method:template]",
-        "Initialize the test-driven project from a template."
-    )
-    .action(async ({ editor, force, name, template }) => {
-        await act(editor,force, name, template, tddTemplate.values());
-    });
-
-const api = new Command()
-    .name("api")
-    .description("Initialize a Deno RESTful Application Programming Interface (API).")
-    .type("template", apiTemplate)
-    .option<{ template: typeof apiTemplate }>(
-    "-t, --template [method:template]",
-    "Initialize the RESTful API from a template."
-    )
-    .action(async ({ editor, force, name, template }) => {
-        await act(editor,force, name, template, apiTemplate.values());
-    });
-
-const cli = new Command()
-    .name("cli")
-    .description("Initialize a Deno Command Line Interface (CLI).")
-    .type("template", cliTemplate)
-    .option<{ template: typeof cliTemplate }>(
-    "-t, --template [method:template]",
-    "Initialize the CLI from a template."
-    )
-    .action(async ({ editor, force, name, template }) => {
-        await act(editor,force, name, template, cliTemplate.values());
-    });
 
 await new Command()
     .name("deno-init")
