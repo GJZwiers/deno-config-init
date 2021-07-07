@@ -41,37 +41,35 @@ const editorConfigs: EditorConfigs = {
 
 const editor = new EnumType(["vscode"]);
 
-const template = new EnumType(["cliffy", "oak", "opine", "restful_oak"]);
+const template = new EnumType(["oak"]);
 
-const apiTemplate = new EnumType(["opine", "oak", "drash"]);
+const apiTemplate = new EnumType(["opine", "restful_oak", "drash"]);
 
 const cliTemplate = new EnumType(["cliffy"]);
 
-// deno-init api --template oak
-// deno-init app --template aleph
-// deno-init cli --template cliffy
-
 const api = new Command()
      .name("api")
+     .description("Initialize a Deno RESTful Application Programming Interface (API).")
      .type("template", apiTemplate)
      .option<{ template: typeof apiTemplate }>(
         "-t, --template [method:template]",
-        "Use a template to initialize the RESTful API."
+        "Initialize the RESTful API from a template."
     )
      .action(({ template }) => {
          console.log("Initializing RESTful API with template: " + template);
-     })
+     });
 
 const cli = new Command()
      .name("cli")
+     .description("Initialize a Deno Command Line Interface (CLI).")
      .type("template", cliTemplate)
      .option<{ template: typeof cliTemplate }>(
         "-t, --template [method:template]",
-        "Use a template to initialize the CLI."
+        "Initialize the CLI from a template."
     )
      .action(({ template }) => {
          console.log("Initializing CLI with template: " + template);
-     })
+     });
 
 await new Command()
     .name("deno-init")
@@ -82,8 +80,11 @@ await new Command()
     .option<{ editor: typeof editor }>("-e, --editor [method:editor]", "Choose the editor to configure for.", { 
         default: "vscode"
     })
-    .option("-f, --force [force:boolean]", "Force overwrite of existing files/directories. Helpful to re-initialize but use with caution!")
-    .option("-n, --name [name:string]", "Create the project in a new directory.")
+    .option(
+        "-f, --force [force:boolean]",
+        "Force overwrite of existing files/directories. Helpful to re-initialize a project but use with caution!",
+        { global: true })
+    .option("-n, --name [name:string]", "Create the project in a new directory.", { global: true })
     .option<{ template: typeof template }>(
         "-t, --template [method:template]",
         "Initialize the project with a template."
@@ -184,7 +185,8 @@ async function fetchTemplate(template: string | undefined, name: string) {
         
         defaults.module = encoder.encode(decoder
             .decode(entrypoint)
-            .replace(placeholderNotEscaped, defaults.extension));
+            .replace(placeholderNotEscaped, defaults.extension)
+        );
         defaults.depsModule = encoder.encode(decoder.decode(deps));
     }
 }
