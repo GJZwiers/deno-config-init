@@ -16,7 +16,7 @@ Start Deno projects faster with `deno-init`, a simple executable that scaffolds 
 Use the `deno install` command to install or upgrade the executable. If you download it without specifying a version the latest will be installed.
 
 ```bash
-deno install --allow-read --allow-write -n deno-init https://deno.land/x/init@0.9.1/mod.ts
+deno install --allow-read --allow-write -n deno-init https://deno.land/x/init@0.10.0/mod.ts
 ```
 
 `deno-init` can also be installed directly from GitHub:
@@ -90,6 +90,8 @@ deno-init --template oak
 ```
 
 ## Subcommands
+
+Use `--help` to get more detailed information on any of the subcommands.
 
 ### `api`
 
