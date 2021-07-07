@@ -1,4 +1,4 @@
-import { Command, EnumType, Select } from "./deps.ts";
+import { Command, EnumType } from "./deps.ts";
 import { writeFileOrWarn, mkdirOrWarn, hasFileExtension } from "./utils.ts";
 import { vsCodeDebugConfig } from "./configs/debugconfig_vscode.ts";
 import { tdd } from "./commands/tdd.ts";
@@ -46,27 +46,6 @@ const editor = new EnumType(["vscode"]);
 
 const template = new EnumType(["oak"]);
 
-export async function act(editor: any, force: any, name: any, template: any, options: string[]) {
-    let choice: string | undefined = undefined;
-    if (!template) {
-        choice = await Select.prompt({
-            message: "Choose your template",
-            options: options
-            });
-    }
-
-    await fetchTemplate(template ?? choice);
-
-    if (name) {
-        await mkdirOrWarn(name, force);
-        Deno.chdir(name);
-    }      
-
-    await addEntryPoints(undefined, undefined, force);
-    
-    await addEditorConfig(editor, force);
-}
-
 await new Command()
     .name("deno-init")
     .version("0.9.0")
@@ -82,11 +61,11 @@ await new Command()
         "Force overwrite of existing files/directories. Helpful to re-initialize a project but use with caution!",
         { global: true })
     .option("-n, --name [name:string]", "Create the project in a new directory.", { global: true })
-    // .option<{ template: typeof template }>(
-    //     "-t, --template [method:template]",
-    //     "Initialize the project with a template."
-    // )
-    .option("-y, --yes [yes:boolean]", "Answer with 'y' to all prompts")
+    .option<{ template: typeof template }>(
+        "-t, --template [method:template]",
+        "Initialize the project with a basic template. For more specific application templates use one of the subcommands."
+    )
+    .option("-y, --yes [yes:boolean]", "Answer 'y' to all prompts")
     .action(async ({ editor, force, name, template, yes }) => { 
         if (yes === true) {
             await fetchTemplate(template);
@@ -153,13 +132,13 @@ await new Command()
     .command("tdd", tdd)
     .parse(Deno.args);
 
-async function addEntryPoints(entrypoint?: string, depsEntrypoint?: string, force = false) {  
+export async function addEntryPoints(entrypoint?: string, depsEntrypoint?: string, force = false) {  
     await writeFileOrWarn(entrypoint ?? defaults.entrypoint, defaults.module, force);
 
     await writeFileOrWarn(depsEntrypoint ?? defaults.depsEntrypoint, defaults.depsModule, force);
 }
 
-async function addEditorConfig(editor: string, force = false) {  
+export async function addEditorConfig(editor: string, force = false) {  
     await writeFileOrWarn(defaults.gitignore, editorConfigs[editor].gitignoreContent, force);
 
     await mkdirOrWarn(editorConfigs[editor].settingsDir, force);
@@ -172,7 +151,7 @@ async function addEditorConfig(editor: string, force = false) {
     }
 }
 
-async function fetchTemplate(template: string | undefined) { 
+export async function fetchTemplate(template: string | undefined) { 
     if (template) {
         const deps = await Deno.readFile(`./templates/${template}_deps.txt`);
         const entrypoint = await Deno.readFile(`./templates/${template}_entrypoint.txt`);
