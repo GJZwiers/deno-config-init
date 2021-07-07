@@ -4,6 +4,7 @@ import { vsCodeDebugConfig } from "./configs/debugconfig_vscode.ts";
 import { tdd } from "./commands/tdd.ts";
 import { api } from "./commands/api.ts";
 import { cli } from "./commands/cli.ts";
+import { act } from "./commands/act.ts";
 
 const encoder = new TextEncoder();
 const defaultModuleContent = encoder.encode("export {};\n");
@@ -46,6 +47,43 @@ const editor = new EnumType(["vscode"]);
 
 const template = new EnumType(["oak"]);
 
+function ask() {
+    const ts = prompt("TypeScript? (y/n)", "y");
+    const isTypeScript = (ts === "y" || ts === "Y");
+
+    if (!isTypeScript && template) {
+        throw new Error("Error: Cannot select JavaScript when initializing with a TypeScript template.");
+    }
+
+    const extension = isTypeScript ? defaults.extension : "js";
+
+    let entrypoint = prompt(`Entrypoint:`, `mod.${extension}`);
+
+    if (entrypoint === null) {
+        entrypoint = `mod.${extension}`;
+    }
+
+    if (!hasFileExtension(entrypoint, extension)) {
+        entrypoint = `${entrypoint}.${extension}`;
+    }
+
+    let depsEntrypoint = <string> prompt("Dependency entrypoint:", `deps.${extension}`);
+
+    if (depsEntrypoint === null) {
+        depsEntrypoint = `deps.${extension}`;
+    }
+
+    if (!hasFileExtension(depsEntrypoint, extension)) {
+        depsEntrypoint = `${depsEntrypoint}.${extension}`;
+    }
+
+    const addDebug = <string> prompt("Add debug configuration? (y/n)", defaults.debug);
+    
+    if (addDebug !== "y" && addDebug !== "Y") {
+        defaults.debug = addDebug;
+    }
+}
+
 await new Command()
     .name("deno-init")
     .version("0.9.0")
@@ -68,63 +106,12 @@ await new Command()
     .option("-y, --yes [yes:boolean]", "Answer 'y' to all prompts")
     .action(async ({ editor, force, name, template, yes }) => { 
         if (yes === true) {
-            await fetchTemplate(template);
-
-            if (name) {
-                await mkdirOrWarn(name, force);
-                Deno.chdir(name);
-            }
-
-            await addEntryPoints(undefined, undefined, force);
-
-            await addEditorConfig(editor, force);
-        } 
+            act(editor, force, name, template);
+        }
         else {
-            const ts = prompt("TypeScript? (y/n)", "y");
-            const isTypeScript = (ts === "y" || ts === "Y");
-        
-            if (!isTypeScript && template) {
-                console.warn("Warning: Selected JavaScript with a TypeScript template.");
-            }
-        
-            const extension = isTypeScript ? defaults.extension : "js";
-        
-            let entrypoint = prompt(`Entrypoint:`, `mod.${extension}`);
+            ask();
 
-            if (entrypoint === null) {
-                entrypoint = "mod.ts";
-            }
-        
-            if (!hasFileExtension(entrypoint, extension)) {
-                entrypoint = `${entrypoint}.${extension}`;
-            }
-        
-            let depsEntrypoint = <string> prompt("Dependency entrypoint:", `deps.${extension}`);
-
-            if (depsEntrypoint === null) {
-                depsEntrypoint = "deps.ts";
-            }
-        
-            if (!hasFileExtension(depsEntrypoint, extension)) {
-                depsEntrypoint = `${depsEntrypoint}.${extension}`;
-            }
-        
-            const addDebug = <string> prompt("Add debug configuration? (y/n)", defaults.debug);
-            
-            if (addDebug !== "y" && addDebug !== "Y") {
-                defaults.debug = addDebug;
-            }
-
-            await fetchTemplate(template);
-
-            if (name) {
-                await mkdirOrWarn(name, force);
-                Deno.chdir(name);
-            }
-
-            await addEntryPoints(entrypoint, depsEntrypoint, force);
-            
-            await addEditorConfig(editor, force);
+            act(editor, force, name, template);
         }
     })
     .command("api", api)
@@ -159,10 +146,15 @@ export async function fetchTemplate(template: string | undefined) {
         const decoder = new TextDecoder();
 
         const placeholderNotEscaped = /(?<!\\)\{\{extension\}\}/g;
+
+        const tsType = /\{\{type(:)([A-Za-z0-9_]*?)\}\}/g;
         
         defaults.module = encoder.encode(decoder
             .decode(entrypoint)
             .replace(placeholderNotEscaped, defaults.extension)
+            .replace(tsType, function(_match: string, group1: string, type: string): string {
+                return group1 + " " + type;
+            })
         );
         defaults.depsModule = encoder.encode(decoder.decode(deps));
     }

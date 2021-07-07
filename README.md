@@ -36,7 +36,7 @@ This will prompt you for the following:
 - TypeScript? (default `y`)
 - Entrypoint? (default `mod.ts`)
 - Dependency entrypoint? (default `deps.ts`)
-- Add debug configuration? (default `y`).
+- Debug configuration? (default `y`).
 
 Choosing all defaults will create the following structure in the current directory:
 
@@ -110,6 +110,14 @@ deno-init cli --template cliffy
 ```
 
 Available templates: `cliffy`
+
+### `tdd`
+
+Use to initialize a Deno Test-Driven Development project from a template.
+
+```bash
+deno-init tdd --template rhum
+```
 
 ## Roadmap
 
