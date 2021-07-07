@@ -19,7 +19,7 @@ Use the `deno install` command to install or upgrade the executable. If you down
 deno install --allow-read --allow-write -n deno-init https://deno.land/x/init@0.9.1/mod.ts
 ```
 
-If you would like to have the very latest (unreleased) changes you can also install `deno-init` from its raw GitHub URL:
+`deno-init` can also be installed directly from GitHub:
 
 ```bash
 deno install --allow-read --allow-write -n deno-init https://raw.githubusercontent.com/GJZwiers/deno-init/main/mod.ts
@@ -27,16 +27,16 @@ deno install --allow-read --allow-write -n deno-init https://raw.githubuserconte
 
 ## Basic Usage
 
-You can run the command without specifying any options. This will prompt you for a few values:
+```bash
+deno-init
+```
+
+This will prompt you for the following:
 
 - TypeScript? (default `y`)
 - Entrypoint? (default `mod.ts`)
 - Dependency entrypoint? (default `deps.ts`)
 - Add debug configuration? (default `y`).
-
-```bash
-deno-init
-```
 
 Choosing all defaults will create the following structure in the current directory:
 
@@ -51,7 +51,7 @@ Choosing all defaults will create the following structure in the current directo
 │   │   settings.json
 ```
 
-The generated `.gitignore` will include `.vscode` and `launch.json` as well as `settings.json` will contain the necessary setup.
+The created `.gitignore` will ignore `.vscode/` and `settings.json` will contain `"deno.enable": "true"`, while `launch.json` will contain a basic debug configuration.
 
 ## Available Options
 
@@ -83,7 +83,7 @@ Use `--name` or `-n` to make a new directory in the current directory where the 
 deno-init --name my_deno_project
 ```
 
-Use `--template` or `-t` to initialize project templates for various Deno frameworks. This is still a work in progress. Right now the available templates are `oak`,`restful_oak` and `opine`.
+`--template` or `-t` can be combined with `deno-init` subcommands to create a project from a template.
 
 ```bash
 deno-init --template oak
@@ -93,19 +93,23 @@ deno-init --template oak
 
 ### `api`
 
-Initialize a RESTful API from a template.
+Use to initialize a Deno RESTful API from a template.
 
 ```bash
 deno-init api --template opine
 ```
 
+Available template: `opine`, `restful_oak`.
+
 ### `cli`
 
-Initialize a Command Line Interface (CLI) from a template.
+Use to initialize a Deno Command Line Interface (CLI) from a template.
 
 ```bash
 deno-init cli --template cliffy
 ```
+
+Available templates: `cliffy`
 
 ## Roadmap
 
