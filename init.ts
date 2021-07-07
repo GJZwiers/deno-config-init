@@ -41,19 +41,50 @@ const editorConfigs: EditorConfigs = {
 
 const editor = new EnumType(["vscode"]);
 
-const template = new EnumType(["oak", "restful_oak", "opine"]);
+const template = new EnumType(["oak"]);
+
+const apiTemplate = new EnumType(["opine", "restful_oak", "drash"]);
+
+const cliTemplate = new EnumType(["cliffy"]);
+
+const api = new Command()
+     .name("api")
+     .description("Initialize a Deno RESTful Application Programming Interface (API).")
+     .type("template", apiTemplate)
+     .option<{ template: typeof apiTemplate }>(
+        "-t, --template [method:template]",
+        "Initialize the RESTful API from a template."
+    )
+     .action(({ template }) => {
+         console.log("Initializing RESTful API with template: " + template);
+     });
+
+const cli = new Command()
+     .name("cli")
+     .description("Initialize a Deno Command Line Interface (CLI).")
+     .type("template", cliTemplate)
+     .option<{ template: typeof cliTemplate }>(
+        "-t, --template [method:template]",
+        "Initialize the CLI from a template."
+    )
+     .action(({ template }) => {
+         console.log("Initializing CLI with template: " + template);
+     });
 
 await new Command()
     .name("deno-init")
-    .version("0.5.3")
+    .version("0.9.0")
     .description("Start a new Deno project with a single command")
     .type("editor", editor)
     .type("template", template)
     .option<{ editor: typeof editor }>("-e, --editor [method:editor]", "Choose the editor to configure for.", { 
         default: "vscode"
     })
-    .option("-f, --force [force:boolean]", "Force overwrite of existing files/directories. Helpful to re-initialize but use with caution!")
-    .option("-n, --name [name:string]", "Create the project in a new directory.")
+    .option(
+        "-f, --force [force:boolean]",
+        "Force overwrite of existing files/directories. Helpful to re-initialize a project but use with caution!",
+        { global: true })
+    .option("-n, --name [name:string]", "Create the project in a new directory.", { global: true })
     .option<{ template: typeof template }>(
         "-t, --template [method:template]",
         "Initialize the project with a template."
@@ -81,13 +112,21 @@ await new Command()
         
             const extension = isTypeScript ? defaults.extension : "js";
         
-            let entrypoint = <string> prompt(`Entrypoint:`, `mod.${extension}`);
+            let entrypoint = prompt(`Entrypoint:`, `mod.${extension}`);
+
+            if (entrypoint === null) {
+                entrypoint = "mod.ts";
+            }
         
             if (!hasFileExtension(entrypoint, extension)) {
                 entrypoint = `${entrypoint}.${extension}`;
             }
         
             let depsEntrypoint = <string> prompt("Dependency entrypoint", `deps.${extension}`);
+
+            if (depsEntrypoint === null) {
+                depsEntrypoint = "deps.ts";
+            }
         
             if (!hasFileExtension(depsEntrypoint, extension)) {
                 depsEntrypoint = `${depsEntrypoint}.${extension}`;
@@ -111,6 +150,8 @@ await new Command()
             await addEditorConfig(editor, force);
         }
     })
+    .command("api", api)
+    .command("cli", cli)
     .parse(Deno.args);
 
 async function addEntryPoints(entrypoint?: string, depsEntrypoint?: string, force = false) {  
@@ -139,10 +180,13 @@ async function fetchTemplate(template: string | undefined, name: string) {
         const entrypoint = await Deno.readFile(`${pathStart}/templates/${template}_entrypoint.txt`);
         
         const decoder = new TextDecoder();
+
+        const placeholderNotEscaped = /(?<!\\)\{\{extension\}\}/g;
         
         defaults.module = encoder.encode(decoder
             .decode(entrypoint)
-            .replace(/\{\{extension\}\}/g, defaults.extension));
+            .replace(placeholderNotEscaped, defaults.extension)
+        );
         defaults.depsModule = encoder.encode(decoder.decode(deps));
     }
 }

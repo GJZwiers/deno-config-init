@@ -1,10 +1,10 @@
 import {
   Application,
   Router
-} from "./deps.ts";
+} from "./deps.{{extension}}";
 import type {
   RouterContext
-} from "./deps.ts";
+} from "./deps.{{extension}}";
 
 const router = new Router();
 router.get("/", (context: RouterContext) => {
