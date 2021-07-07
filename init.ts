@@ -1,4 +1,4 @@
-import { Command, EnumType } from "./deps.ts";
+import { Command, EnumType, Select } from "./deps.ts";
 import { writeFileOrWarn, mkdirOrWarn, hasFileExtension } from "./utils.ts";
 import { vsCodeDebugConfig } from "./configs/debugconfig_vscode.ts";
 
@@ -47,29 +47,64 @@ const apiTemplate = new EnumType(["opine", "restful_oak", "drash"]);
 
 const cliTemplate = new EnumType(["cliffy"]);
 
-const api = new Command()
-     .name("api")
-     .description("Initialize a Deno RESTful Application Programming Interface (API).")
-     .type("template", apiTemplate)
-     .option<{ template: typeof apiTemplate }>(
+const tddTemplate = new EnumType(["deno", "rhum"]);
+
+async function act(editor: any, force: any, name: any, template: any, options: string[]) {
+    let choice: string | undefined = undefined;
+    if (!template) {
+        choice = await Select.prompt({
+            message: "Choose your template",
+            options: options
+            });
+    }
+
+    await fetchTemplate(template ?? choice);
+
+    if (name) {
+        await mkdirOrWarn(name, force);
+        Deno.chdir(name);
+    }      
+
+    await addEntryPoints(undefined, undefined, force);
+    
+    await addEditorConfig(editor, force);
+}
+
+const tdd = new Command()
+    .name("tdd")
+    .description("Initialize a test-driven project.")
+    .type("template", tddTemplate)
+    .option<{ template: typeof tddTemplate }>(
         "-t, --template [method:template]",
-        "Initialize the RESTful API from a template."
+        "Initialize the test-driven project from a template."
     )
-     .action(({ template }) => {
-         console.log("Initializing RESTful API with template: " + template);
-     });
+    .action(async ({ editor, force, name, template }) => {
+        await act(editor,force, name, template, tddTemplate.values());
+    });
+
+const api = new Command()
+    .name("api")
+    .description("Initialize a Deno RESTful Application Programming Interface (API).")
+    .type("template", apiTemplate)
+    .option<{ template: typeof apiTemplate }>(
+    "-t, --template [method:template]",
+    "Initialize the RESTful API from a template."
+    )
+    .action(async ({ editor, force, name, template }) => {
+        await act(editor,force, name, template, apiTemplate.values());
+    });
 
 const cli = new Command()
-     .name("cli")
-     .description("Initialize a Deno Command Line Interface (CLI).")
-     .type("template", cliTemplate)
-     .option<{ template: typeof cliTemplate }>(
-        "-t, --template [method:template]",
-        "Initialize the CLI from a template."
+    .name("cli")
+    .description("Initialize a Deno Command Line Interface (CLI).")
+    .type("template", cliTemplate)
+    .option<{ template: typeof cliTemplate }>(
+    "-t, --template [method:template]",
+    "Initialize the CLI from a template."
     )
-     .action(({ template }) => {
-         console.log("Initializing CLI with template: " + template);
-     });
+    .action(async ({ editor, force, name, template }) => {
+        await act(editor,force, name, template, cliTemplate.values());
+    });
 
 await new Command()
     .name("deno-init")
@@ -78,25 +113,27 @@ await new Command()
     .type("editor", editor)
     .type("template", template)
     .option<{ editor: typeof editor }>("-e, --editor [method:editor]", "Choose the editor to configure for.", { 
-        default: "vscode"
+        default: "vscode",
+        global: true
     })
     .option(
         "-f, --force [force:boolean]",
         "Force overwrite of existing files/directories. Helpful to re-initialize a project but use with caution!",
         { global: true })
     .option("-n, --name [name:string]", "Create the project in a new directory.", { global: true })
-    .option<{ template: typeof template }>(
-        "-t, --template [method:template]",
-        "Initialize the project with a template."
-    )
+    // .option<{ template: typeof template }>(
+    //     "-t, --template [method:template]",
+    //     "Initialize the project with a template."
+    // )
     .option("-y, --yes [yes:boolean]", "Answer with 'y' to all prompts")
     .action(async ({ editor, force, name, template, yes }) => { 
         if (yes === true) {
+            await fetchTemplate(template);
+
             if (name) {
                 await mkdirOrWarn(name, force);
                 Deno.chdir(name);
             }
-            await fetchTemplate(template, name);
 
             await addEntryPoints(undefined, undefined, force);
 
@@ -122,7 +159,7 @@ await new Command()
                 entrypoint = `${entrypoint}.${extension}`;
             }
         
-            let depsEntrypoint = <string> prompt("Dependency entrypoint", `deps.${extension}`);
+            let depsEntrypoint = <string> prompt("Dependency entrypoint:", `deps.${extension}`);
 
             if (depsEntrypoint === null) {
                 depsEntrypoint = "deps.ts";
@@ -138,12 +175,12 @@ await new Command()
                 defaults.debug = addDebug;
             }
 
+            await fetchTemplate(template);
+
             if (name) {
                 await mkdirOrWarn(name, force);
                 Deno.chdir(name);
             }
-        
-            await fetchTemplate(template, name);
 
             await addEntryPoints(entrypoint, depsEntrypoint, force);
             
@@ -152,6 +189,7 @@ await new Command()
     })
     .command("api", api)
     .command("cli", cli)
+    .command("tdd", tdd)
     .parse(Deno.args);
 
 async function addEntryPoints(entrypoint?: string, depsEntrypoint?: string, force = false) {  
@@ -173,11 +211,10 @@ async function addEditorConfig(editor: string, force = false) {
     }
 }
 
-async function fetchTemplate(template: string | undefined, name: string) { 
+async function fetchTemplate(template: string | undefined) { 
     if (template) {
-        const pathStart = name ? ".." : ".";
-        const deps = await Deno.readFile(`${pathStart}/templates/${template}_deps.txt`);
-        const entrypoint = await Deno.readFile(`${pathStart}/templates/${template}_entrypoint.txt`);
+        const deps = await Deno.readFile(`./templates/${template}_deps.txt`);
+        const entrypoint = await Deno.readFile(`./templates/${template}_entrypoint.txt`);
         
         const decoder = new TextDecoder();
 
