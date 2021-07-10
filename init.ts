@@ -58,6 +58,7 @@ await new Command()
   })
   .command("api", api)
   .command("cli", cli)
+  .command("server", server)
   .command("tdd", tdd)
   .parse(Deno.args);
 

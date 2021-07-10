@@ -1,7 +1,7 @@
 import { Command, EnumType } from "../deps.ts";
 import { act, chooseTemplate, settings } from "../act.ts";
 
-export const apiTemplate = new EnumType(["opine", "restful_oak", "drash"]);
+export const apiTemplate = new EnumType(["opine", "restful_oak"]);
 
 /**
  * `deno-init api` --> prompts template select mode.  
@@ -23,6 +23,6 @@ export const api = new Command()
     if (!template) {
       template = await chooseTemplate(template, apiTemplate.values());
     }
-    
+
     await act(editor, name, template);
   });

@@ -2,10 +2,13 @@
 
 [![Build](https://github.com/GJZwiers/deno-init/actions/workflows/build.yaml/badge.svg)](https://github.com/GJZwiers/deno-init/actions/workflows/build.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/GJZwiers/deno-init/badge.svg?branch=main)](https://coveralls.io/github/GJZwiers/deno-init?branch=main)
+[![nest badge](https://nest.land/badge.svg)](https://nest.land/package/your-module)
 
-Start Deno projects faster with `deno-init`, a simple executable that scaffolds the project structure for you.
+Start Deno projects faster with `deno-init`, a simple executable that scaffolds
+the project structure for you.
 
-> Please note this module's API is not stable yet and there may be breaking changes on `0.x` version increments.
+> Please note this module's API is not stable yet and there may be breaking
+> changes on `0.x` version increments.
 
 ## Requirements
 
@@ -13,13 +16,18 @@ Start Deno projects faster with `deno-init`, a simple executable that scaffolds 
 
 ## Installation
 
-Use the `deno install` command to install or upgrade the executable. If you download it without specifying a version the latest will be installed.
+Use the `deno install` command to install or upgrade the executable. If you
+download it without specifying a version the latest will be installed.
+
+`deno-init` can be installed from `deno.land`, `nest.land` and `github`:
 
 ```bash
-deno install --allow-read --allow-write --unstable -n deno-init https://deno.land/x/init@0.10.0/mod.ts
+deno install --allow-read --allow-write --unstable -n deno-init https://deno.land/x/init@0.10.1/mod.ts
 ```
 
-`deno-init` can also be installed directly from GitHub:
+```bash
+deno install --allow-read --allow-write --unstable -n deno-init https://x.nest.land/init@0.10.1/mod.ts
+```
 
 ```bash
 deno install --allow-read --allow-write --unstable -n deno-init https://raw.githubusercontent.com/GJZwiers/deno-init/main/mod.ts
@@ -38,7 +46,8 @@ This will prompt you for the following:
 - Dependency entrypoint? (default `deps.ts`)
 - Debug configuration? (default `y`).
 
-Choosing all defaults will create the following structure in the current directory:
+Choosing all defaults will create the following structure in the current
+directory:
 
 ```bash
 .
@@ -51,13 +60,16 @@ Choosing all defaults will create the following structure in the current directo
 │   │   settings.json
 ```
 
-The created `.gitignore` will ignore `.vscode/` and `settings.json` will contain `"deno.enable": "true"`, while `launch.json` will contain a basic debug configuration.
+The created `.gitignore` will ignore `.vscode/` and `settings.json` will contain
+`"deno.enable": "true"`, while `launch.json` will contain a basic debug
+configuration.
 
 ## Available Options
 
 Use `--help` to print all available options. In addition, they are listed below:
 
-Use `--yes` or `-y` if you simply want to use all the default values without being prompted:
+Use `--yes` or `-y` if you simply want to use all the default values without
+being prompted:
 
 ```bash
 deno-init -y
@@ -65,25 +77,30 @@ deno-init -y
 
 `deno-init` will not overwrite files or directories unless `--force` is passed.
 
-Use `--editor` or `-e` to generate editor-specific configuration for a project. At this moment only the option `vscode` is supported and it is also set as the default.
+Use `--editor` or `-e` to generate editor-specific configuration for a project.
+At this moment only the option `vscode` is supported and it is also set as the
+default.
 
 ```bash
 deno-init --editor vscode
 ```
 
-Use `--force` or `-f` in case you explicitly want to overwrite existing files. This can be helpful to re-initialize but use with caution.
+Use `--force` or `-f` in case you explicitly want to overwrite existing files.
+This can be helpful to re-initialize but use with caution.
 
 ```bash
 deno-init -f
 ```
 
-Use `--name` or `-n` to make a new directory in the current directory where the files will be placed.
+Use `--name` or `-n` to make a new directory in the current directory where the
+files will be placed.
 
 ```bash
 deno-init --name my_deno_project
 ```
 
-`--template` or `-t` can be combined with `deno-init` subcommands to create a project from a template.
+`--template` or `-t` can be combined with `deno-init` subcommands to create a
+project from a template.
 
 ```bash
 deno-init --template oak
@@ -111,7 +128,13 @@ Use to initialize a Deno Command Line Interface (CLI) from a template.
 deno-init cli --template cliffy
 ```
 
-Available templates: `cliffy`
+Available templates: `cliffy`.
+
+### `server`
+
+Use to initialize a Deno HTTP server from a template.
+
+Available templates: `deno_http`, `drash`, `oak`.
 
 ### `tdd`
 
@@ -120,6 +143,8 @@ Use to initialize a Deno Test-Driven Development project from a template.
 ```bash
 deno-init tdd --template rhum
 ```
+
+Available templates: `deno`, `rhum`.
 
 ## Roadmap
 
