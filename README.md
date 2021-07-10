@@ -49,7 +49,7 @@ This will prompt you for the following:
 Choosing all defaults will create the following structure in the current
 directory:
 
-```bash
+```
 .
 │   .gitignore
 │   deps.ts  
@@ -99,16 +99,9 @@ files will be placed.
 deno-init --name my_deno_project
 ```
 
-`--template` or `-t` can be combined with `deno-init` subcommands to create a
-project from a template.
-
-```bash
-deno-init --template oak
-```
-
 ## Subcommands
 
-Use `--help` to get more detailed information on any of the subcommands.
+Use `--help` to get more detailed information on any of the subcommands. The `--template` or `-t` option can be used with any subcommand in addition to the other options to select a project template. If no template is passed the program will prompt you with a list of choices.
 
 ### `api`
 
@@ -133,6 +126,10 @@ Available templates: `cliffy`.
 ### `server`
 
 Use to initialize a Deno HTTP server from a template.
+
+```bash
+dneo-init server --template oak
+```
 
 Available templates: `deno_http`, `drash`, `oak`.
 
