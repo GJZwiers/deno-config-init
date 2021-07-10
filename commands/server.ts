@@ -4,7 +4,8 @@ import { act, chooseTemplate, settings } from "../act.ts";
 export const httpServerTemplate = new EnumType(["deno_http", "drash", "oak"]);
 
 /**
- * `deno-init server` --> prompts template select mode.  
+ * `deno-init server` --> prompts template select mode.
+ * 
  * `deno-init server --template oak` --> creates project with the provided template.
  */
 export const server = new Command()
@@ -23,6 +24,6 @@ export const server = new Command()
     if (!template) {
       template = await chooseTemplate(template, httpServerTemplate.values());
     }
-    
+
     await act(editor, name, template);
   });

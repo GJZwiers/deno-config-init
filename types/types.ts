@@ -1,4 +1,3 @@
-
 type CLIOption = string | undefined;
 
 type EditorConfig = {
@@ -14,4 +13,4 @@ type EditorConfigs = {
   [key: string]: EditorConfig;
 };
 
-export type { CLIOption, EditorConfig, EditorConfigs }
+export type { CLIOption, EditorConfig, EditorConfigs };

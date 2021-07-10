@@ -101,7 +101,10 @@ deno-init --name my_deno_project
 
 ## Subcommands
 
-Use `--help` to get more detailed information on any of the subcommands. The `--template` or `-t` option can be used with any subcommand in addition to the other options to select a project template. If no template is passed the program will prompt you with a list of choices.
+Use `--help` to get more detailed information on any of the subcommands. The
+`--template` or `-t` option can be used with any subcommand in addition to the
+other options to select a project template. If no template is passed the program
+will prompt you with a list of choices.
 
 ### `api`
 

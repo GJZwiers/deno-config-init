@@ -12,11 +12,11 @@ const match = import.meta.url.match(semver);
 
 let version = "";
 if (match !== null) {
-    version = match[0].replace("@", "");
+  version = match[0].replace("@", "");
 }
 
 /**
- * 
+ *
  */
 await new Command()
   .name("deno-init")
@@ -34,15 +34,15 @@ await new Command()
   .option(
     "-f, --force [force:boolean]",
     "Force overwrite of existing files/directories. Helpful to re-initialize a project but use with caution!",
-    { 
-      global: true
+    {
+      global: true,
     },
   )
   .option(
     "-n, --name [name:string]",
     "Name a new directory to initialize the project in.",
     {
-      global: true
+      global: true,
     },
   )
   .option("-y, --yes [yes:boolean]", "Answer 'y' to all prompts")
@@ -61,7 +61,6 @@ await new Command()
   .command("server", server)
   .command("tdd", tdd)
   .parse(Deno.args);
-
 
 function ask() {
   const ts = prompt("TypeScript? (y/n)", "y");

@@ -4,7 +4,8 @@ import { act, chooseTemplate, settings } from "../act.ts";
 export const cliTemplate = new EnumType(["cliffy"]);
 
 /**
- * `deno-init cli` --> prompts template select mode.  
+ * `deno-init cli` --> prompts template select mode.
+ * 
  * `deno-init cli --template cliffy` --> creates project with the provided template.
  */
 export const cli = new Command()
@@ -17,10 +18,10 @@ export const cli = new Command()
   )
   .action(async ({ editor, force, name, template }) => {
     settings.force = force;
-    
+
     if (!template) {
       template = await chooseTemplate(template, cliTemplate.values());
     }
-    
+
     await act(editor, name, template);
   });

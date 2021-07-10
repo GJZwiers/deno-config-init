@@ -14,7 +14,7 @@ export const settings = {
   extension: "ts",
   gitignore: ".gitignore",
   module: defaultModuleContent,
-  force: false
+  force: false,
 };
 
 const editorConfigs: EditorConfigs = {
@@ -39,8 +39,11 @@ export async function chooseTemplate(template: CLIOption, options: string[]) {
   return choice;
 }
 
-export async function act(editor: string, name: CLIOption, template?: CLIOption) {
-
+export async function act(
+  editor: string,
+  name: CLIOption,
+  template?: CLIOption,
+) {
   if (template) {
     await fetchTemplate(template);
   }
@@ -57,7 +60,7 @@ export async function act(editor: string, name: CLIOption, template?: CLIOption)
   // create .gitignore
   await writeFileOrWarn(
     settings.gitignore,
-    editorConfigs[editor].gitignoreContent
+    editorConfigs[editor].gitignoreContent,
   );
 
   // create project settings
@@ -66,44 +69,48 @@ export async function act(editor: string, name: CLIOption, template?: CLIOption)
 
   await writeFileOrWarn(
     editorConfigs[editor].settingsFile,
-    editorConfigs[editor].settings
+    editorConfigs[editor].settings,
   );
 
   // create debug config
   if (settings.debug === "y" || settings.debug === "Y") {
     await writeFileOrWarn(
       editorConfigs[editor].debugFile,
-      editorConfigs[editor].debugFileContent
+      editorConfigs[editor].debugFileContent,
     );
   }
 }
 
 export async function fetchTemplate(template: string) {
-    const deps = await Deno.readFile(`./templates/${template}_deps.txt`);
-    const entrypoint = await Deno.readFile(`./templates/${template}_entrypoint.txt`);
+  const deps = await Deno.readFile(`./templates/${template}_deps.txt`);
+  const entrypoint = await Deno.readFile(
+    `./templates/${template}_entrypoint.txt`,
+  );
 
-    const decoder = new TextDecoder();
+  const decoder = new TextDecoder();
 
-    const placeholderNotEscaped = /(?<!\\)\{\{extension\}\}/g;
+  const placeholderNotEscaped = /(?<!\\)\{\{extension\}\}/g;
 
-    const classModifier = /(?<!\\)\{\{mod:(public|private|protected)\}\}/g;
+  const classModifier = /(?<!\\)\{\{mod:(public|private|protected)\}\}/g;
 
-    const typeAnnotation = /\{\{type(:)([A-Za-z0-9_]*?)\}\}/g;
+  const typeAnnotation = /\{\{type(:)([A-Za-z0-9_]*?)\}\}/g;
 
-    settings.module = encoder.encode(
-      decoder
-        .decode(entrypoint)
-        .replace(placeholderNotEscaped, settings.extension)
-        .replace(
-          typeAnnotation,
-          function (_match: string, group1: string, type: string): string {
-            return (settings.extension === "ts") ? group1 + " " + type : "";
-          },
-        )
-        .replace(classModifier,
-          function (_match: string, modifier: string): string {
-            return (settings.extension === "ts") ? modifier : "";
-        },)
-    );
-    settings.depsModule = encoder.encode(decoder.decode(deps));
+  settings.module = encoder.encode(
+    decoder
+      .decode(entrypoint)
+      .replace(placeholderNotEscaped, settings.extension)
+      .replace(
+        typeAnnotation,
+        function (_match: string, group1: string, type: string): string {
+          return (settings.extension === "ts") ? group1 + " " + type : "";
+        },
+      )
+      .replace(
+        classModifier,
+        function (_match: string, modifier: string): string {
+          return (settings.extension === "ts") ? modifier : "";
+        },
+      ),
+  );
+  settings.depsModule = encoder.encode(decoder.decode(deps));
 }
