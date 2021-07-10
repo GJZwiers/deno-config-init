@@ -10,7 +10,7 @@ import { editor } from "./types/editor.ts";
 const semver = /@[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/;
 const match = import.meta.url.match(semver);
 
-let version: string = "";
+let version = "";
 if (match !== null) {
     version = match[0].replace("@", "");
 }
