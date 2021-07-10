@@ -7,20 +7,12 @@ import { api } from "./commands/api.ts";
 import { cli } from "./commands/cli.ts";
 import { editor } from "./types/editor.ts";
 
-const semver = /@[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/;
-const match = import.meta.url.match(semver);
-
-let version = "";
-if (match !== null) {
-  version = match[0].replace("@", "");
-}
-
 /**
  *
  */
 await new Command()
   .name("deno-init")
-  .version(version)
+  .version("0.11.1")
   .description("Start a new Deno project with a single command")
   .type("editor", editor)
   .option<{ editor: typeof editor }>(
