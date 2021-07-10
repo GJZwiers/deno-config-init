@@ -5,7 +5,7 @@ export const apiTemplate = new EnumType(["opine", "restful_oak"]);
 
 /**
  * `deno-init api` --> prompts template select mode.
- * 
+ *
  * `deno-init api --template opine` --> creates project with the provided template.
  */
 export const api = new Command()

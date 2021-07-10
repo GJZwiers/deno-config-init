@@ -5,7 +5,7 @@ export const tddTemplate = new EnumType(["deno", "rhum"]);
 
 /**
  * `deno-init tdd` --> prompts template select mode.
- * 
+ *
  * `deno-init tdd --template rhum` --> creates project with the provided template.
  */
 export const tdd = new Command()

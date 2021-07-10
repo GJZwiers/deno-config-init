@@ -5,7 +5,7 @@ export const cliTemplate = new EnumType(["cliffy"]);
 
 /**
  * `deno-init cli` --> prompts template select mode.
- * 
+ *
  * `deno-init cli --template cliffy` --> creates project with the provided template.
  */
 export const cli = new Command()

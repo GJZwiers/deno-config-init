@@ -22,11 +22,11 @@ download it without specifying a version the latest will be installed.
 `deno-init` can be installed from `deno.land`, `nest.land` and `github`:
 
 ```bash
-deno install --allow-read --allow-write --unstable -n deno-init https://deno.land/x/init@0.11.0/mod.ts
+deno install --allow-read --allow-write --unstable -n deno-init https://deno.land/x/init@0.11.1/mod.ts
 ```
 
 ```bash
-deno install --allow-read --allow-write --unstable -n deno-init https://x.nest.land/init@0.11.0/mod.ts
+deno install --allow-read --allow-write --unstable -n deno-init https://x.nest.land/init@0.11.1/mod.ts
 ```
 
 ```bash

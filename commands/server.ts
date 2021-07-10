@@ -5,7 +5,7 @@ export const httpServerTemplate = new EnumType(["deno_http", "drash", "oak"]);
 
 /**
  * `deno-init server` --> prompts template select mode.
- * 
+ *
  * `deno-init server --template oak` --> creates project with the provided template.
  */
 export const server = new Command()
