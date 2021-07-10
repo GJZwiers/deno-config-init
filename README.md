@@ -2,7 +2,7 @@
 
 [![Build](https://github.com/GJZwiers/deno-init/actions/workflows/build.yaml/badge.svg)](https://github.com/GJZwiers/deno-init/actions/workflows/build.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/GJZwiers/deno-init/badge.svg?branch=main)](https://coveralls.io/github/GJZwiers/deno-init?branch=main)
-[![nest badge](https://nest.land/badge.svg)](https://nest.land/package/your-module)
+[![nest badge](https://nest.land/badge.svg)](https://nest.land/package/init)
 
 Start Deno projects faster with `deno-init`, a simple executable that scaffolds
 the project structure for you.
