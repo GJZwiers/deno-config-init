@@ -4,7 +4,7 @@ import { mkdirOrWarn, writeFileOrWarn } from "./utils.ts";
 import type { CLIOption, EditorConfigs } from "./types/types.ts";
 
 const encoder = new TextEncoder();
-const defaultModuleContent = encoder.encode("export {};\n");
+export const defaultModuleContent = encoder.encode("export {};\n");
 
 export const settings = {
   debug: "n",
@@ -78,7 +78,7 @@ export async function act(editor: string, name: CLIOption, template?: CLIOption)
   }
 }
 
-async function fetchTemplate(template: string) {
+export async function fetchTemplate(template: string) {
     const deps = await Deno.readFile(`./templates/${template}_deps.txt`);
     const entrypoint = await Deno.readFile(`./templates/${template}_entrypoint.txt`);
 
