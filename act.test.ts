@@ -30,9 +30,7 @@ Rhum.testPlan("act.test.ts", () => {
       settings.entrypoint = "mod.ts";
       settings.depsEntrypoint = "deps.ts";
       settings.gitignore = ".gitignore";
-    });
-
-    Rhum.afterAll(() => {
+      settings.git = false;
     });
 
     Rhum.testCase(
