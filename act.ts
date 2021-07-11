@@ -15,6 +15,7 @@ export const settings = {
   gitignore: ".gitignore",
   module: defaultModuleContent,
   force: false,
+  git: true,
 };
 
 const editorConfigs: EditorConfigs = {
@@ -51,6 +52,19 @@ export async function act(
   if (name) {
     await mkdirOrWarn(name);
     Deno.chdir(name);
+  }
+
+  if (settings.git) {
+    try {
+      const gitinit = Deno.run({
+        cmd: ["git", "init"]
+      });
+    
+      await gitinit.status();
+      gitinit.close();
+    } catch (error) {
+      console.warn("Warning: Could not initialize Git repository.");
+    }
   }
 
   // create the entry points

@@ -17,7 +17,7 @@ await new Command()
   .type("editor", editor)
   .option<{ editor: typeof editor }>(
     "-e, --editor [method:editor]",
-    "Choose the editor to configure for.",
+    "Choose the editor for which to configure Deno.",
     {
       default: "vscode",
       global: true,
@@ -31,6 +31,13 @@ await new Command()
     },
   )
   .option(
+    "--no-git [git:boolean]",
+    "Do not initialize a Git repository for the project",
+    {
+      global: true,
+    }
+  )
+  .option(
     "-n, --name [name:string]",
     "Name a new directory to initialize the project in.",
     {
@@ -38,8 +45,11 @@ await new Command()
     },
   )
   .option("-y, --yes [yes:boolean]", "Answer 'y' to all prompts")
-  .action(({ editor, force, name, yes }) => {
+  .action(({ editor, force, git, name, yes }) => {
     settings.force = force;
+    settings.git = git; 
+    console.log(git);
+    
 
     if (yes === true) {
       act(editor, name);

@@ -99,6 +99,12 @@ files will be placed.
 deno-init --name my_deno_project
 ```
 
+Use `--no-git` if you don't want to run `git init` as part of initializing the project.
+
+```bash
+deno-init --no-git
+```
+
 ## Subcommands
 
 Use `--help` to get more detailed information on any of the subcommands. The
