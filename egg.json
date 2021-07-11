@@ -1,0 +1,19 @@
+{
+  "name": "init",
+  "entry": "./mod.ts",
+  "description": "Start Deno Projects from templates",
+  "unstable": true,
+  "version": "0.11.1",
+  "files": [
+    "./**/*.ts",
+    "./templates/**/*",
+    "./README.md",
+    "./LICENSE"
+  ],
+  "checkFormat": "deno fmt",
+  "checkInstallation": true,
+  "check": true,
+  "homepage": "https://github.com/GJZwiers/deno-init",
+  "ignore": [],
+  "unlisted": false
+}
