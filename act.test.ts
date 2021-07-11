@@ -1,4 +1,4 @@
-import { Rhum } from "./deps.ts";
+import { Rhum } from "./dev_deps.ts";
 import { act, defaultModuleContent, fetchTemplate, settings } from "./act.ts";
 
 Rhum.testPlan("act.test.ts", () => {

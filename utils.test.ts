@@ -1,4 +1,4 @@
-import { Rhum } from "./deps.ts";
+import { Rhum } from "./dev_deps.ts";
 import { hasFileExtension, mkdirOrWarn, writeFileOrWarn } from "./utils.ts";
 import { settings } from "./act.ts";
 
