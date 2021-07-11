@@ -4,8 +4,10 @@ function greet(){{type:string}} {
     return "Hello World!";
 }
 
-Rhum.testCase("Returns true", () => {
-    Rhum.asserts.assertEquals(greet(), "Hello World!");
-});
+Rhum.testSuite("mod", () => {
+    Rhum.testCase("Returns true", () => {
+        Rhum.asserts.assertEquals(greet(), "Hello World!");
+    });
+})
 
 Rhum.run();

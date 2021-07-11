@@ -137,7 +137,7 @@ Available templates: `cliffy`.
 Use to initialize a Deno HTTP server from a template.
 
 ```bash
-dneo-init server --template oak
+deno-init server --template oak
 ```
 
 Available templates: `deno_http`, `drash`, `oak`.
