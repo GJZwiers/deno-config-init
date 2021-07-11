@@ -63,7 +63,7 @@ export async function act(
       await gitinit.status();
       gitinit.close();
     } catch (error) {
-      console.warn("Warning: Could not initialize Git repository.");
+      console.warn("Warning: Could not initialize Git repository. Error:" + error);
     }
   }
 
