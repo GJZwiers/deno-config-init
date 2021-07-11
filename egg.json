@@ -12,6 +12,7 @@
   ],
   "checkFormat": "deno fmt",
   "checkInstallation": true,
+  "checkTests": false,
   "check": false,
   "homepage": "https://github.com/GJZwiers/deno-init",
   "ignore": [],
