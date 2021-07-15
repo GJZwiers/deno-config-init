@@ -19,19 +19,46 @@ the project structure for you.
 Use the `deno install` command to install or upgrade the executable. If you
 download it without specifying a version the latest will be installed.
 
-`deno-init` can be installed from `deno.land`, `nest.land` and `github`:
+<details open>
+<summary>deno.land</summary>
+<p>
 
 ```bash
 deno install --allow-read --allow-write --unstable -n deno-init https://deno.land/x/init@0.12.2/mod.ts
 ```
 
+</p>
+</details>  
+
+<details>
+<summary>nest.land</summary>
+<p>
+
 ```bash
 deno install --allow-read --allow-write --unstable -n deno-init https://x.nest.land/init@0.12.2/mod.ts
 ```
 
+</p>
+</details>  
+
+<details>
+<summary>github</summary>
+<p>
+
 ```bash
 deno install --allow-read --allow-write --unstable -n deno-init https://raw.githubusercontent.com/GJZwiers/deno-init/main/mod.ts
 ```
+
+</p>
+</details>  
+
+## Permissions
+
+The program needs the following permissions to run:
+
+- `read`: to load files that are used to initialize projects from templates
+- `write`: to make files in order to initialize new projects
+- `unstable`: to allow the use of unstable APIs. These mostly originate in the module's dependencies.
 
 ## Basic Usage
 
