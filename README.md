@@ -53,8 +53,6 @@ deno install --allow-read --allow-write --unstable -n deno-init https://raw.gith
 </p>
 </details>  
 
-
-
 ## Permissions
 
 The program needs the following permissions to run:
@@ -150,7 +148,7 @@ Use to initialize a Deno RESTful API from a template.
 deno-init api --template opine
 ```
 
-Available template: `opine`, `restful_oak`.
+Available templates: `opine`, `restful_oak`.
 
 ### `cli`
 
