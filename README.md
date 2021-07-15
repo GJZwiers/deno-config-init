@@ -16,8 +16,9 @@ the project structure for you.
 
 ## Installation
 
-Use the `deno install` command to install or upgrade the executable. If you
-download it without specifying a version the latest will be installed.
+Use the `deno install` command to install the executable. It is recommended to specify the version in the URL, but if no version is passed the latest will be installed.
+
+To upgrade an existing installation include `-f`.
 
 <details open>
 <summary>deno.land</summary>
@@ -51,6 +52,8 @@ deno install --allow-read --allow-write --unstable -n deno-init https://raw.gith
 
 </p>
 </details>  
+
+
 
 ## Permissions
 
