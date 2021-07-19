@@ -2,7 +2,7 @@ import { Select } from "./deps.ts";
 import { vsCodeDebugConfig } from "./configs/debugconfig_vscode.ts";
 import { mkdirOrWarn, writeFileOrWarn } from "./utils.ts";
 import type { CLIOption, EditorConfigs } from "./types/types.ts";
-import { copy } from "https://deno.land/std@0.101.0/io/util.ts";
+import { Replacer, replacers } from "./replacers.ts";
 
 const encoder = new TextEncoder();
 export const defaultModuleContent = encoder.encode("export {};\n");
@@ -42,11 +42,7 @@ export async function chooseTemplate(template: CLIOption, options: string[]) {
   return choice;
 }
 
-export async function act(
-  editor: string,
-  name: CLIOption,
-  template?: CLIOption,
-) {
+export async function act(editor: string, name: CLIOption, template?: CLIOption) {
   if (settings.path) {
     Deno.mkdir(settings.path);
   }
@@ -55,70 +51,63 @@ export async function act(
     await fetchTemplate(template);
   }
 
-  // if (name) {
-  //   await mkdirOrWarn(name);
-  //   Deno.chdir(name);
-  // }
+  if (name) {
+    //await mkdirOrWarn(name);
+    Deno.chdir(name);
+  }
 
-  // if (settings.git) {
-  //   try {
-  //     const gitinit = Deno.run({
-  //       cmd: ["git", "init"]
-  //     });
+  if (settings.git) {
+    try {
+      const gitinit = Deno.run({
+        cmd: ["git", "init"]
+      });
 
-  //     await gitinit.status();
-  //     gitinit.close();
-  //   } catch (error) {
-  //     console.warn("Warning: Could not initialize Git repository. Error:" + error);
-  //   }
-  // }
+      await gitinit.status();
+      gitinit.close();
+    } catch (error) {
+      console.warn("Warning: Could not initialize Git repository. Error:" + error);
+    }
+  }
 
-  // create the entry points
-  // await writeFileOrWarn(settings.entrypoint, settings.module);
-  // await writeFileOrWarn(settings.depsEntrypoint, settings.depsModule);
+  // create .gitignore
+  await writeFileOrWarn(
+    settings.gitignore,
+    editorConfigs[editor].gitignoreContent,
+  );
 
-  // // create .gitignore
-  // await writeFileOrWarn(
-  //   settings.gitignore,
-  //   editorConfigs[editor].gitignoreContent,
-  // );
+  // create project settings
+  await mkdirOrWarn(editorConfigs[editor].settingsDir);
+  Deno.chdir(editorConfigs[editor].settingsDir);
 
-  // // create project settings
-  // await mkdirOrWarn(editorConfigs[editor].settingsDir);
-  // Deno.chdir(editorConfigs[editor].settingsDir);
+  await writeFileOrWarn(
+    editorConfigs[editor].settingsFile,
+    editorConfigs[editor].settings,
+  );
 
-  // await writeFileOrWarn(
-  //   editorConfigs[editor].settingsFile,
-  //   editorConfigs[editor].settings,
-  // );
-
-  // // create debug config
-  // if (settings.debug === "y" || settings.debug === "Y") {
-  //   await writeFileOrWarn(
-  //     editorConfigs[editor].debugFile,
-  //     editorConfigs[editor].debugFileContent,
-  //   );
-  // }
+  // create debug config
+  if (settings.debug === "y" || settings.debug === "Y") {
+    await writeFileOrWarn(
+      editorConfigs[editor].debugFile,
+      editorConfigs[editor].debugFileContent,
+    );
+  }
 }
-// ./templates/cliffy
-async function traverse(
-  currentPath: string,
-  decoder: TextDecoder,
-  base: string,
-) {
-  for await (const entry of Deno.readDir(currentPath)) {
-    const entryPath = `${currentPath}/${entry.name}`;
-    const target = currentPath.replace("./templates/", "./") + "/" + entry.name;
 
+async function traverse(currentPath: string, base: string) {
+  for await (const entry of Deno.readDir(currentPath)) {
+    const templatePath = `${currentPath}/${entry.name}`;
+    
+    const target = settings.path + currentPath.replace(base, "") + "/" + entry.name;
+    
     if (entry.isDirectory) {
       await Deno.mkdir(target, { recursive: true });
 
-      await traverse(entryPath, decoder, base);
+      await traverse(templatePath, base);
     }
     else if (entry.isFile) {
-      const file = decoder.decode(await Deno.readFile(entryPath));
+      const file = new TextDecoder().decode(await Deno.readFile(templatePath));
       const data = new TextEncoder().encode(
-        replacePlaceholders(file));
+        processTemplateFile(file, replacers));
 
       await Deno.writeFile(target + ".ts", data);
     }
@@ -126,52 +115,15 @@ async function traverse(
 }
 
 export async function fetchTemplate(template: string) {
-  // const deps = await Deno.readFile(`./templates/${template}_deps.txt`);
-  // const entrypoint = await Deno.readFile(
-  //   `./templates/${template}_entrypoint.txt`,
-  // );
-
-  const decoder = new TextDecoder();
-
   const base = `./templates/${template}`;
 
-  await traverse(base, decoder, base);
-
-  // settings.module = encoder.encode(
-  //   replacePlaceholders(decoder.decode(entrypoint))
-  // );
-  // settings.depsModule = encoder.encode(decoder.decode(deps));
+  await traverse(base, base);
 }
 
-function replacePlaceholders(file: string): string {
-  const placeholderNotEscaped = /(?<!\\)\{\{extension\}\}/g;
+function processTemplateFile(file: string, replacers: Replacer[]): string {
+  for (const replacer of replacers) {
+    file = file.replace(replacer.pattern, replacer.fn);
+  }
 
-  const multilinePlaceholderNotEscaped = /``ts\n(.*?)\n``ts/gs;
-
-  const classModifier = /(?<!\\)\{\{mod:(public|private|protected)\}\}/g;
-
-  const typeAnnotation = /\{\{type(:)([A-Za-z0-9_]*?)\}\}/g;
-
-  return file
-    .replace(placeholderNotEscaped, settings.extension)
-    .replace(
-      typeAnnotation,
-      function (_match: string, group1: string, type: string): string {
-        return (settings.extension === "ts") ? group1 + " " + type : "";
-      },
-    )
-    .replace(
-      multilinePlaceholderNotEscaped,
-      function (_match: string, content: string): string {
-        return (settings.extension === "ts") ? content : "";
-      },
-    )
-    .replace(
-      classModifier,
-      function (_match: string, modifier: string): string {
-        return (settings.extension === "ts") ? modifier : "";
-      },
-    );
+  return file;
 }
-
-// custom template
