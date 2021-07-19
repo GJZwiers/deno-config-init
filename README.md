@@ -17,7 +17,9 @@ the project structure for you.
 
 ## Installation
 
-Use the `deno install` command to install the executable. It is recommended to specify the version in the URL, if no version is passed the latest will be installed.
+Use the `deno install` command to install the executable. It is recommended to
+specify the version in the URL, if no version is passed the latest will be
+installed.
 
 To upgrade an existing installation include `-f`.
 
@@ -30,7 +32,7 @@ deno install --allow-read --allow-write --unstable -n deno-init https://deno.lan
 ```
 
 </p>
-</details>  
+</details>
 
 <details>
 <summary>nest.land</summary>
@@ -41,7 +43,7 @@ deno install --allow-read --allow-write --unstable -n deno-init https://x.nest.l
 ```
 
 </p>
-</details>  
+</details>
 
 <details>
 <summary>github</summary>
@@ -52,7 +54,7 @@ deno install --allow-read --allow-write --unstable -n deno-init https://raw.gith
 ```
 
 </p>
-</details>  
+</details>
 
 ## Permissions
 
@@ -60,7 +62,8 @@ The program needs the following permissions to run:
 
 - `read`: to load files that are used to initialize projects from templates
 - `write`: to make files in order to initialize new projects
-- `unstable`: to allow the use of unstable APIs. These mostly originate in the module's dependencies.
+- `unstable`: to allow the use of unstable APIs. These mostly originate in the
+  module's dependencies.
 
 ## Basic Usage
 
@@ -128,7 +131,8 @@ files will be placed.
 deno-init --name my_deno_project
 ```
 
-Use `--no-git` if you don't want to run `git init` as part of initializing the project.
+Use `--no-git` if you don't want to run `git init` as part of initializing the
+project.
 
 ```bash
 deno-init --no-git

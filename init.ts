@@ -35,7 +35,7 @@ await new Command()
     "Do not initialize a Git repository for the project",
     {
       global: true,
-    }
+    },
   )
   .option(
     "-n, --name [name:string]",
@@ -47,9 +47,8 @@ await new Command()
   .option("-y, --yes [yes:boolean]", "Answer 'y' to all prompts")
   .action(({ editor, force, git, name, yes }) => {
     settings.force = force;
-    settings.git = git; 
+    settings.git = git;
     console.log(git);
-    
 
     if (yes === true) {
       act(editor, name);
