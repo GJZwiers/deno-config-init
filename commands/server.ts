@@ -20,6 +20,7 @@ export const server = new Command()
   )
   .action(async ({ editor, force, name, template }) => {
     settings.force = force;
+    settings.path = name ?? ".";
 
     if (!template) {
       template = await chooseTemplate(template, httpServerTemplate.values());

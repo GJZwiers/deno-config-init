@@ -18,6 +18,7 @@ export const tdd = new Command()
   )
   .action(async ({ editor, force, name, template }) => {
     settings.force = force;
+    settings.path = name ?? ".";
 
     if (!template) {
       template = await chooseTemplate(template, tddTemplate.values());
