@@ -3,7 +3,7 @@ import { act } from "../act.ts";
 import { settings } from "../settings.ts";
 import { selectTemplate } from "../utils.ts";
 
-export const tddTemplate = new EnumType(["deno", "rhum", "rhum_integration"]);
+export const tddTemplate = new EnumType(["deno", "rhum"]);
 
 /**
  * `deno-init tdd` --> prompts template select mode.
