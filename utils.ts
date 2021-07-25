@@ -1,5 +1,5 @@
 import { Select, SelectValueOptions } from "./deps.ts";
-import { settings } from "./act.ts";
+import { settings } from "./settings.ts";
 
 export interface MkdirSecOptions extends Deno.MkdirOptions {
   force?: boolean;

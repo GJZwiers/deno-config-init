@@ -1,5 +1,6 @@
 import { Command, EnumType } from "../deps.ts";
-import { act, settings } from "../act.ts";
+import { act } from "../act.ts";
+import { settings } from "../settings.ts";
 import { selectTemplate } from "../utils.ts";
 
 export const cliTemplate = new EnumType(["cliffy"]);

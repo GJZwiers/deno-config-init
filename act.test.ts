@@ -1,12 +1,12 @@
 import { Rhum } from "./dev_deps.ts";
 import {
   act,
-  editorConfigs,
   initProjectSettings,
   runCommand,
-  settings,
   processTemplateDir,
 } from "./act.ts";
+import { settings } from "./settings.ts";
+import { editorConfigs } from "./configs.ts"; 
 
 Rhum.testPlan("act.test.ts", () => {
   Rhum.testSuite("processTemplateDir()", () => {

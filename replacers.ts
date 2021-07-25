@@ -1,4 +1,4 @@
-import { settings } from "./act.ts";
+import { settings } from "./settings.ts";
 
 export interface Replacer {
   pattern: RegExp;
@@ -13,7 +13,7 @@ export const replacers: Replacer[] = [
     },
   },
   {
-    pattern: /\{\{type(:)([A-Za-z0-9_]*?)\}\}/g,
+    pattern: /\s?\{\{type(:)\s?([A-Za-z0-9_]*?)\}\}/g,
     fn: (_match: string, group1: string, type: string): string => {
       return (settings.extension === "ts") ? group1 + " " + type : "";
     },

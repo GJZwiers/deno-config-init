@@ -1,6 +1,6 @@
 import { Rhum } from "./dev_deps.ts";
 import { hasFileExtension, mkdirSec, writeFileSec } from "./utils.ts";
-import { settings } from "./act.ts";
+import { settings } from "./settings.ts";
 
 const testFilePath = "./foo.ts";
 const testDirPath = "./dir";

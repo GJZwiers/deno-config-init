@@ -1,6 +1,7 @@
 import { Command } from "./deps.ts";
 import { hasFileExtension } from "./utils.ts";
-import { act, settings } from "./act.ts";
+import { act } from "./act.ts";
+import { settings } from "./settings.ts";
 import { server } from "./commands/server.ts";
 import { tdd } from "./commands/tdd.ts";
 import { api } from "./commands/api.ts";
@@ -15,6 +16,13 @@ await new Command()
   .version("0.13.1")
   .description("Start a new Deno project with a single command")
   .type("editor", editor)
+  .option(
+    "-c, --cache [cache:boolean]",
+    "Cache dependencies as part of the project initialization",
+    {
+      global: true,
+    },
+  )
   .option<{ editor: typeof editor }>(
     "-e, --editor [method:editor]",
     "Choose the editor for which to configure Deno.",
