@@ -40,29 +40,27 @@ export async function runCommand(cmd: any): Promise<boolean> {
   const status = await cmd.status();
 
   cmd.close();
-  
+
   return (status.code === 0) ? true : false;
 }
 
 /** Recursively replace all template syntax into valid JavaScript/TypeScript in all template files */
 export async function traverse(dir: string, target: string) {
-  
   for await (const entry of Deno.readDir(dir)) {
     const sourcePath = `${dir}/${entry.name}`;
     const targetPath = `${target}/${entry.name}`;
-    
-    if (entry.isDirectory) {     
+
+    if (entry.isDirectory) {
       await mkdirSec(targetPath, { recursive: true, force: settings.force });
-      
+
       await traverse(sourcePath, targetPath);
-    }
-    else if (entry.isFile) {
+    } else if (entry.isFile) {
       const file = new TextDecoder().decode(
-        await Deno.readFile(sourcePath)
+        await Deno.readFile(sourcePath),
       );
 
       const data = new TextEncoder().encode(
-        processTemplateFile(file, replacers)
+        processTemplateFile(file, replacers),
       );
 
       await writeFileSec(targetPath + ".ts", data);
@@ -79,24 +77,28 @@ function processTemplateFile(file: string, replacers: Replacer[]): string {
 }
 
 export async function act() {
-
-  if (settings.path !== ".") {   
+  if (settings.path !== ".") {
     await mkdirSec(settings.path, { force: settings.force });
   }
-  
+
   if (settings.template) {
     const base = `./${settings.templateDir}/${settings.template}`;
-    
+
     const source = await Deno.realPath(base);
 
     const target = await Deno.realPath(settings.path);
-    
-    await traverse(source, target);
 
+    await traverse(source, target);
   } else {
-    await writeFileSec(settings.path + "/" + settings.entrypoint, settings.module);
-    
-    await writeFileSec(settings.path + "/" + settings.depsEntrypoint, settings.depsModule);
+    await writeFileSec(
+      settings.path + "/" + settings.entrypoint,
+      settings.module,
+    );
+
+    await writeFileSec(
+      settings.path + "/" + settings.depsEntrypoint,
+      settings.depsModule,
+    );
   }
 
   if (settings.git) {
@@ -109,10 +111,12 @@ export async function act() {
 async function initGit(path: string) {
   try {
     await runCommand(Deno.run({
-      cmd: ["git", "init", path]
+      cmd: ["git", "init", path],
     }));
-  } catch(error) {
-    console.warn("Warning: Could not initialize Git repository. Error:" + error);
+  } catch (error) {
+    console.warn(
+      "Warning: Could not initialize Git repository. Error:" + error,
+    );
   }
 
   // create .gitignore
@@ -123,20 +127,21 @@ async function initGit(path: string) {
 }
 
 export async function initProjectSettings() {
-    const settingsDir = settings.path + "/" + editorConfigs[settings.editor].settingsDir;
-    
-    await mkdirSec(settingsDir, { recursive: true });
-  
+  const settingsDir = settings.path + "/" +
+    editorConfigs[settings.editor].settingsDir;
+
+  await mkdirSec(settingsDir, { recursive: true });
+
+  await writeFileSec(
+    settingsDir + "/" + editorConfigs[settings.editor].settingsFile,
+    editorConfigs[settings.editor].settings,
+  );
+
+  // create debug config
+  if (settings.debug === "y" || settings.debug === "Y") {
     await writeFileSec(
-      settingsDir + "/" + editorConfigs[settings.editor].settingsFile,
-      editorConfigs[settings.editor].settings,
+      settingsDir + "/" + editorConfigs[settings.editor].debugFile,
+      editorConfigs[settings.editor].debugFileContent,
     );
-  
-    // create debug config
-    if (settings.debug === "y" || settings.debug === "Y") {
-      await writeFileSec(
-        settingsDir + "/" + editorConfigs[settings.editor].debugFile,
-        editorConfigs[settings.editor].debugFileContent,
-      );
-    }
+  }
 }

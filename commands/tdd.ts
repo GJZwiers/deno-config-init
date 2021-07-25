@@ -20,8 +20,9 @@ export const tdd = new Command()
   .action(async ({ editor, force, name, template }) => {
     settings.force = force;
     settings.path = name ?? ".";
-    settings.template = (template) ?? await selectTemplate(tddTemplate.values());
+    settings.template = (template) ??
+      await selectTemplate(tddTemplate.values());
     settings.editor = editor;
 
     await act();
-  })
+  });

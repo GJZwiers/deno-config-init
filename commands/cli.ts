@@ -20,8 +20,9 @@ export const cli = new Command()
   .action(async ({ editor, force, name, template }) => {
     settings.force = force;
     settings.path = name ?? ".";
-    settings.template = (template) ?? await selectTemplate(cliTemplate.values());
+    settings.template = (template) ??
+      await selectTemplate(cliTemplate.values());
     settings.editor = editor;
-    
+
     await act();
   });

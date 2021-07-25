@@ -1,4 +1,4 @@
-import { Command, EnumType, } from "../deps.ts";
+import { Command, EnumType } from "../deps.ts";
 import { act, settings } from "../act.ts";
 import { selectTemplate } from "../utils.ts";
 
@@ -22,7 +22,8 @@ export const api = new Command()
   .action(async ({ editor, force, name, template }) => {
     settings.force = force;
     settings.path = name ?? ".";
-    settings.template = (template) ?? await selectTemplate(apiTemplate.values());
+    settings.template = (template) ??
+      await selectTemplate(apiTemplate.values());
     settings.editor = editor;
 
     await act();

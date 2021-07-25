@@ -17,9 +17,8 @@ the project structure for you.
 
 ## Installation
 
-Use `deno install` to install the executable. It is recommended to
-specify a version number in the URL, if no version is passed the latest will be
-installed.
+Use `deno install` to install the executable. It is recommended to specify a
+version number in the URL, if no version is passed the latest will be installed.
 
 To upgrade an existing installation include `-f`.
 
@@ -93,8 +92,9 @@ directory and run `git init`:
 │   │   settings.json
 ```
 
- `.gitignore` will ignore `.vscode/` and `settings.json` will contain
-`"deno.enable": "true"`. If debug is answered with `y/Y` a `launch.json` will be made with a basic debug configuration.
+`.gitignore` will ignore `.vscode/` and `settings.json` will contain
+`"deno.enable": "true"`. If debug is answered with `y/Y` a `launch.json` will be
+made with a basic debug configuration.
 
 ## Available Options
 

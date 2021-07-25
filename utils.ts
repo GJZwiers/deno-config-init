@@ -2,7 +2,7 @@ import { Select, SelectValueOptions } from "./deps.ts";
 import { settings } from "./act.ts";
 
 export interface MkdirSecOptions extends Deno.MkdirOptions {
-  force?: boolean
+  force?: boolean;
 }
 
 /**
@@ -33,21 +33,22 @@ async function writeFileSec(
 /** if `recursive: true` is passed, this function will warn the user if
  *  a directory already exists instead of silently succeeding.
  */
-async function mkdirSec(path: string | URL, options?: MkdirSecOptions): Promise<boolean> {
+async function mkdirSec(
+  path: string | URL,
+  options?: MkdirSecOptions,
+): Promise<boolean> {
   try {
     // throws if dir exists
     await Deno.mkdir(path, options);
 
     return true;
-
-  } catch (_error) { 
-
+  } catch (_error) {
     if (options?.force) return true;
 
     console.warn(
       `Warning: Directory ${path} already exists. Pass --force to ignore this warning`,
     );
-    
+
     return false;
   }
 }
