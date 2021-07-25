@@ -1,5 +1,5 @@
 export interface Settings {
-  cache: boolean,
+  cache: boolean;
   debug: string | "n";
   depsEntrypoint: string | "deps.ts";
   depsModule: Uint8Array;
@@ -14,7 +14,7 @@ export interface Settings {
   templateDir: string | "templates";
   editor: string | "vscode";
 }
-  
+
 export const defaultModuleContent = new TextEncoder().encode("export {};\n");
 
 export const settings: Settings = {

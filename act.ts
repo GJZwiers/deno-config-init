@@ -36,9 +36,14 @@ export async function act() {
 
   if (settings.cache === true) {
     console.log(settings.path + "/" + settings.depsEntrypoint);
-    
+
     await runCommand(Deno.run({
-      cmd: ["deno", "cache", "--quiet", settings.path + "/" + settings.depsEntrypoint]
+      cmd: [
+        "deno",
+        "cache",
+        "--quiet",
+        settings.path + "/" + settings.depsEntrypoint,
+      ],
     }));
   }
 }
