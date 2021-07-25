@@ -1,12 +1,14 @@
 import { vsCodeDebugConfig } from "./configs/debugconfig_vscode.ts";
-import { mkdirOrWarn, writeFileOrWarn } from "./utils.ts";
+import { mkdirSec, writeFileSec } from "./utils.ts";
 import type { EditorConfigs } from "./types/types.ts";
 import { Replacer, replacers } from "./replacers.ts";
+import { Settings } from "./types/settings.ts";
 
 const encoder = new TextEncoder();
+
 export const defaultModuleContent = encoder.encode("export {};\n");
 
-export const settings = {
+export const settings: Settings = {
   debug: "n",
   depsEntrypoint: "deps.ts",
   depsModule: defaultModuleContent,
@@ -48,7 +50,7 @@ export async function traverse(dir: string, target: string) {
     const targetPath = `${target}/${entry.name}`;
     
     if (entry.isDirectory) {     
-      await mkdirOrWarn(targetPath, { recursive: true });
+      await mkdirSec(targetPath, { recursive: true, force: settings.force });
       
       await traverse(sourcePath, targetPath);
     }
@@ -61,7 +63,7 @@ export async function traverse(dir: string, target: string) {
         processTemplateFile(file, replacers)
       );
 
-      await writeFileOrWarn(targetPath + ".ts", data);
+      await writeFileSec(targetPath + ".ts", data);
     }
   }
 }
@@ -69,7 +71,7 @@ export async function traverse(dir: string, target: string) {
 export async function act() {
 
   if (settings.path !== ".") {
-    await mkdirOrWarn(settings.path);
+    await mkdirSec(settings.path, { force: settings.force });
   }
   
   if (settings.template) {
@@ -97,7 +99,7 @@ export async function act() {
 
 async function writeProject() {
     // create .gitignore
-    await writeFileOrWarn(
+    await writeFileSec(
       settings.path + "/" + settings.gitignore,
       editorConfigs[settings.editor]["gitignoreContent"],
     );
@@ -105,16 +107,16 @@ async function writeProject() {
     // create project settings
     const settingsDir = settings.path + "/" + editorConfigs[settings.editor].settingsDir;
 
-    await mkdirOrWarn(settingsDir, { recursive: true });
+    await mkdirSec(settingsDir, { recursive: true });
   
-    await writeFileOrWarn(
+    await writeFileSec(
       settingsDir + "/" + editorConfigs[settings.editor].settingsFile,
       editorConfigs[settings.editor].settings,
     );
   
     // create debug config
     if (settings.debug === "y" || settings.debug === "Y") {
-      await writeFileOrWarn(
+      await writeFileSec(
         settingsDir + "/" + editorConfigs[settings.editor].debugFile,
         editorConfigs[settings.editor].debugFileContent,
       );

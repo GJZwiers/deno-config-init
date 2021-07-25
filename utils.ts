@@ -1,11 +1,15 @@
 import { Select, SelectValueOptions } from "./deps.ts";
 import { settings } from "./act.ts";
 
+export interface MkdirSecOptions extends Deno.MkdirOptions {
+  force?: boolean
+}
+
 /**
  * Writes data to a file in the local filesystem. If the file already exists and
  * --force is not true, it will not write but warn the user instead.
  */
-async function writeFileOrWarn(
+async function writeFileSec(
   path: string | URL,
   data: Uint8Array,
   options?: Deno.WriteFileOptions,
@@ -26,14 +30,22 @@ async function writeFileOrWarn(
   }
 }
 
-async function mkdirOrWarn(path: string | URL, options?: Deno.MkdirOptions): Promise<void> {
+async function mkdirSec(path: string | URL, options?: MkdirSecOptions): Promise<boolean> {
   try {
+    // throws if dir exists
     await Deno.mkdir(path, options);
-  } catch (_error) {
-    if (settings.force) return;
+
+    return true;
+
+  } catch (_error) { 
+
+    if (options?.force) return true;
+
     console.warn(
-      `Warning: Directory ${path} already exists. Pass --force to overwrite.`,
+      `Warning: Directory ${path} already exists. Pass --force to ignore this warning`,
     );
+    
+    return false;
   }
 }
 
@@ -48,4 +60,4 @@ export async function selectTemplate(selection: SelectValueOptions) {
   });
 }
 
-export { hasFileExtension, mkdirOrWarn, writeFileOrWarn };
+export { hasFileExtension, mkdirSec, writeFileSec };
