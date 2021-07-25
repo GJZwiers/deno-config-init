@@ -107,6 +107,12 @@ being prompted:
 deno-init -y
 ```
 
+Use `--cache` or `-c` to cache dependencies in e.g. `deps.ts` after all the files have been made.
+
+```bash
+deno-init --cache
+```
+
 `deno-init` will not overwrite files or directories unless `--force` is passed.
 
 Use `--editor` or `-e` to generate editor-specific configuration for a project.
