@@ -192,6 +192,25 @@ Rhum.testPlan("act.test.ts", () => {
         });
       },
     );
+
+    Rhum.testCase(
+      "should run deno cache if settings.cache === true",
+      async () => {
+        settings.cache = true;
+        settings.path = "test_directory_act";
+        settings.debug = "n";
+        settings.template = "";
+        settings.git = false;
+
+        await act();
+
+        // await Rhum.asserts.assertThrowsAsync(async () => {
+        //   await Deno.mkdir(
+        //     settings.path + "/" + editorConfigs[settings.editor].settingsDir,
+        //   );
+        // });
+      },
+    );
   });
 });
 

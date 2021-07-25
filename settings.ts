@@ -1,4 +1,5 @@
 export interface Settings {
+  cache: boolean,
   debug: string | "n";
   depsEntrypoint: string | "deps.ts";
   depsModule: Uint8Array;
@@ -20,6 +21,7 @@ export const settings: Settings = {
   debug: "n",
   depsEntrypoint: "deps.ts",
   depsModule: defaultModuleContent,
+  cache: false,
   entrypoint: "mod.ts",
   extension: "ts",
   gitignore: ".gitignore",

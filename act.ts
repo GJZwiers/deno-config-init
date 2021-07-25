@@ -3,38 +3,6 @@ import { editorConfigs } from "./configs.ts";
 import { Replacer, replacers } from "./replacers.ts";
 import { settings } from "./settings.ts";
 
-/** Recursively replace all template syntax into valid JavaScript/TypeScript in all template files. */
-export async function processTemplateDir(dir: string, target: string) {
-  for await (const entry of Deno.readDir(dir)) {
-    const sourcePath = `${dir}/${entry.name}`;
-    const targetPath = `${target}/${entry.name}`;
-
-    if (entry.isDirectory) {
-      await mkdirSec(targetPath, { recursive: true, force: settings.force });
-
-      await processTemplateDir(sourcePath, targetPath);
-    } else if (entry.isFile) {
-      const file = new TextDecoder().decode(
-        await Deno.readFile(sourcePath),
-      );
-
-      const data = new TextEncoder().encode(
-        processTemplateFile(file, replacers),
-      );
-
-      await writeFileSec(targetPath + ".ts", data);
-    }
-  }
-}
-
-function processTemplateFile(file: string, replacers: Replacer[]): string {
-  for (const replacer of replacers) {
-    file = file.replace(replacer.pattern, replacer.fn);
-  }
-
-  return file;
-}
-
 export async function act() {
   if (settings.path !== ".") {
     await mkdirSec(settings.path, { force: settings.force });
@@ -65,6 +33,46 @@ export async function act() {
   }
 
   await initProjectSettings();
+
+  if (settings.cache === true) {
+    console.log(settings.path + "/" + settings.depsEntrypoint);
+    
+    await runCommand(Deno.run({
+      cmd: ["deno", "cache", "--quiet", settings.path + "/" + settings.depsEntrypoint]
+    }));
+  }
+}
+
+/** Recursively replace all template syntax into valid JavaScript/TypeScript in all template files. */
+export async function processTemplateDir(dir: string, target: string) {
+  for await (const entry of Deno.readDir(dir)) {
+    const sourcePath = `${dir}/${entry.name}`;
+    const targetPath = `${target}/${entry.name}`;
+
+    if (entry.isDirectory) {
+      await mkdirSec(targetPath, { recursive: true, force: settings.force });
+
+      await processTemplateDir(sourcePath, targetPath);
+    } else if (entry.isFile) {
+      const file = new TextDecoder().decode(
+        await Deno.readFile(sourcePath),
+      );
+
+      const data = new TextEncoder().encode(
+        processTemplateFile(file, replacers),
+      );
+
+      await writeFileSec(targetPath + ".ts", data);
+    }
+  }
+}
+
+function processTemplateFile(file: string, replacers: Replacer[]): string {
+  for (const replacer of replacers) {
+    file = file.replace(replacer.pattern, replacer.fn);
+  }
+
+  return file;
 }
 
 export async function initProjectSettings() {

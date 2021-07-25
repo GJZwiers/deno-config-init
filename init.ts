@@ -20,6 +20,7 @@ await new Command()
     "-c, --cache [cache:boolean]",
     "Cache dependencies as part of the project initialization",
     {
+      default: false,
       global: true,
     },
   )
@@ -53,7 +54,8 @@ await new Command()
     },
   )
   .option("-y, --yes [yes:boolean]", "Answer 'y' to all prompts")
-  .action(({ editor, force, git, name, yes }) => {
+  .action(({ cache, editor, force, git, name, yes }) => {
+    settings.cache = cache;
     settings.force = force;
     settings.git = git;
     settings.editor = editor;
@@ -93,7 +95,7 @@ function ask() {
   if (entrypoint === null) {
     entrypoint = `mod.${settings.extension}`;
   } else if (!hasFileExtension(entrypoint, settings.extension)) {
-    // Add file extension if a user enters 'mod' or 'main' as input.
+    // Add file extension if a user enters e.g. 'mod' or 'main' as input.
     entrypoint = `${entrypoint}.${settings.extension}`;
   }
 
