@@ -9,7 +9,7 @@ Rhum.testPlan("replacers.ts", () => {
         settings.extension = "ts";
       });
   
-      Rhum.testCase("should replace {{extension}} syntax with 'ts'", async () => {
+      Rhum.testCase("should replace {{extension}} syntax with 'ts'", () => {
         const first = replacers[0];
   
         const str = "test {{extension}} test";
@@ -19,7 +19,7 @@ Rhum.testPlan("replacers.ts", () => {
         Rhum.asserts.assertEquals(sub, "test ts test");
       });
   
-      Rhum.testCase("should replace {{type:type}} syntax with the TypeScript type", async () => {
+      Rhum.testCase("should replace {{type:type}} syntax with the TypeScript type", () => {
         const second = replacers[1];
   
         const str1 = "function foo(){{type:string}}";
@@ -41,7 +41,7 @@ Rhum.testPlan("replacers.ts", () => {
         Rhum.asserts.assertEquals(sub3, "function foo(): string");
       });
 
-      Rhum.testCase("should remove {{type:type}} syntax if settings.extension = js", async () => {
+      Rhum.testCase("should remove {{type:type}} syntax if settings.extension = js", () => {
         settings.extension = "js";
 
         const second = replacers[1];
@@ -53,7 +53,7 @@ Rhum.testPlan("replacers.ts", () => {
         Rhum.asserts.assertEquals(sub, "function foo()");
       });
   
-      Rhum.testCase("should keep ``ts ... ``ts syntax if settings.extension = ts", async () => {
+      Rhum.testCase("should keep ``ts ... ``ts syntax if settings.extension = ts", () => {
         const third = replacers[2];
   
         const str = "test ``ts\nfoo\n``ts test";
@@ -63,7 +63,7 @@ Rhum.testPlan("replacers.ts", () => {
         Rhum.asserts.assertEquals(sub, "test foo test");
       });
 
-      Rhum.testCase("should remove ``ts ... ``ts syntax if settings.extension = js", async () => {
+      Rhum.testCase("should remove ``ts ... ``ts syntax if settings.extension = js", () => {
         settings.extension = "js";
 
         const third = replacers[2];
@@ -75,7 +75,7 @@ Rhum.testPlan("replacers.ts", () => {
         Rhum.asserts.assertEquals(sub, "test  test");
       });
   
-      Rhum.testCase("should not replace TS modifiers if settings.extension = ts", async () => {
+      Rhum.testCase("should not replace TS modifiers if settings.extension = ts", () => {
         const fourth = replacers[3];
   
         const str = "{{mod:public}} foo";
@@ -85,7 +85,7 @@ Rhum.testPlan("replacers.ts", () => {
         Rhum.asserts.assertEquals(sub, "public foo");
       });
 
-      Rhum.testCase("should remove TS modifiers if settings.extension = js", async () => {
+      Rhum.testCase("should remove TS modifiers if settings.extension = js", () => {
         settings.extension = "js";
 
         const fourth = replacers[3];
