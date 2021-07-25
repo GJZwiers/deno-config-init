@@ -1,0 +1,17 @@
+import { Rhum } from "../../dev_deps.{{extension}}";
+
+Rhum.testSuite("mod.{{extension}} integration tests", () => {
+    Rhum.beforeEach(() => {
+
+    });
+
+    Rhum.afterEach(() => {
+        
+    });
+
+    Rhum.testCase("Integration test goes here", () => {
+        Rhum.asserts.assert(true);
+    });
+})
+
+Rhum.run();

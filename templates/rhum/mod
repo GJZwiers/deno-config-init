@@ -1,13 +1,3 @@
-import { Rhum } from "./deps.{{extension}}";
-
-function greet(){{type:string}} {
+export function greet(){{type:string}} {
     return "Hello World!";
 }
-
-Rhum.testSuite("mod", () => {
-    Rhum.testCase("Returns true", () => {
-        Rhum.asserts.assertEquals(greet(), "Hello World!");
-    });
-})
-
-Rhum.run();
