@@ -49,7 +49,7 @@ await new Command()
     settings.force = force;
     settings.git = git;
     settings.editor = editor;
-    settings.path = name;
+    settings.path = name ?? ".";
 
     if (yes === true) {
       act();
@@ -74,7 +74,7 @@ function ask() {
     `deps.${settings.extension}`,
   );
 
-  const addDebug = prompt(
+  const debugConfig = prompt(
     "Add debug configuration? (y/n)",
     "n",
   );
@@ -84,22 +84,22 @@ function ask() {
   // Use 'mod' as entrypoint if none specified.
   if (entrypoint === null) {
     entrypoint = `mod.${settings.extension}`;
-  }
-
-  // Add file extension if a user enters 'mod' or 'main' as input.
-  if (!hasFileExtension(entrypoint, settings.extension)) {
+  } else if (!hasFileExtension(entrypoint, settings.extension)) {
+    // Add file extension if a user enters 'mod' or 'main' as input.
     entrypoint = `${entrypoint}.${settings.extension}`;
   }
 
+  settings.entrypoint = entrypoint;
+
   if (depsEntrypoint === null) {
     depsEntrypoint = `deps.${settings.extension}`;
-  }
-
-  if (!hasFileExtension(depsEntrypoint, settings.extension)) {
+  } else if (!hasFileExtension(depsEntrypoint, settings.extension)) {
     depsEntrypoint = `${depsEntrypoint}.${settings.extension}`;
   }
 
-  if (addDebug !== "y" && addDebug !== "Y") {
-    settings.debug = (addDebug === null) ? "n" : addDebug;
+  settings.depsEntrypoint = depsEntrypoint;
+
+  if (debugConfig === "y" || debugConfig === "Y") {
+    settings.debug = "y";
   }
 }

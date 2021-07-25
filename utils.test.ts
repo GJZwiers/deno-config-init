@@ -1,5 +1,5 @@
 import { Rhum } from "./dev_deps.ts";
-import { hasFileExtension, mkdirOrWarn, writeFileOrWarn } from "./utils.ts";
+import { hasFileExtension, mkdirSec, writeFileSec } from "./utils.ts";
 import { settings } from "./act.ts";
 
 const testFilePath = "./foo.ts";
@@ -21,7 +21,7 @@ Rhum.testPlan("utils.test.ts", () => {
     Rhum.testCase(
       "should write a new file if the path does not exist yet",
       async () => {
-        await writeFileOrWarn(testFilePath, testFileContent);
+        await writeFileSec(testFilePath, testFileContent);
         const file = await Deno.readFile(testFilePath);
 
         Rhum.asserts.assertEquals(decoder.decode(file), "foo");
@@ -30,9 +30,9 @@ Rhum.testPlan("utils.test.ts", () => {
 
     Rhum.testCase("should overwrite when the force flag is set", async () => {
       settings.force = false;
-      await writeFileOrWarn(testFilePath, testFileContent);
+      await writeFileSec(testFilePath, testFileContent);
       settings.force = true;
-      await writeFileOrWarn(testFilePath, encoder.encode("bar"));
+      await writeFileSec(testFilePath, encoder.encode("bar"));
 
       const file = await Deno.readFile(testFilePath);
 
@@ -42,7 +42,7 @@ Rhum.testPlan("utils.test.ts", () => {
 
     Rhum.testCase("should warn when file already exists", async () => {
       await Deno.writeFile(testFilePath, testFileContent);
-      await writeFileOrWarn(testFilePath, testFileContent);
+      await writeFileSec(testFilePath, testFileContent);
     });
   });
 
@@ -54,7 +54,7 @@ Rhum.testPlan("utils.test.ts", () => {
     Rhum.testCase(
       "should make a new directory if it does not exist yet",
       async () => {
-        await mkdirOrWarn(testDirPath);
+        await mkdirSec(testDirPath);
 
         await Rhum.asserts.assertThrowsAsync(() => {
           return Deno.mkdir(testDirPath);
@@ -64,7 +64,7 @@ Rhum.testPlan("utils.test.ts", () => {
 
     Rhum.testCase("should warn when directory already exists", async () => {
       await Deno.mkdir(testDirPath);
-      await mkdirOrWarn(testDirPath);
+      await mkdirSec(testDirPath);
     });
 
     Rhum.testCase(
@@ -72,7 +72,7 @@ Rhum.testPlan("utils.test.ts", () => {
       async () => {
         await Deno.mkdir(testDirPath);
         settings.force = true;
-        await mkdirOrWarn(testDirPath);
+        await mkdirSec(testDirPath);
         settings.force = false;
       },
     );

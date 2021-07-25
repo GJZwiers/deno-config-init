@@ -1,4 +1,4 @@
-import { Command, EnumType, Select } from "../deps.ts";
+import { Command, EnumType } from "../deps.ts";
 import { act, settings } from "../act.ts";
 import { selectTemplate } from "../utils.ts";
 

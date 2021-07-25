@@ -28,7 +28,7 @@ To upgrade an existing installation include `-f`.
 <p>
 
 ```bash
-deno install --allow-read --allow-write --unstable -n deno-init https://deno.land/x/init@0.12.2/mod.ts
+deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://deno.land/x/init@0.13.0/mod.ts
 ```
 
 </p>
@@ -39,7 +39,7 @@ deno install --allow-read --allow-write --unstable -n deno-init https://deno.lan
 <p>
 
 ```bash
-deno install --allow-read --allow-write --unstable -n deno-init https://x.nest.land/init@0.12.2/mod.ts
+deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://x.nest.land/init@0.13.0/mod.ts
 ```
 
 </p>
@@ -50,7 +50,7 @@ deno install --allow-read --allow-write --unstable -n deno-init https://x.nest.l
 <p>
 
 ```bash
-deno install --allow-read --allow-write --unstable -n deno-init https://raw.githubusercontent.com/GJZwiers/deno-init/main/mod.ts
+deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://raw.githubusercontent.com/GJZwiers/deno-init/main/mod.ts
 ```
 
 </p>

@@ -24,7 +24,7 @@ export const settings: Settings = {
   editor: "vscode",
 };
 
-const editorConfigs: EditorConfigs = {
+export const editorConfigs: EditorConfigs = {
   "vscode": {
     debugFileContent: encoder.encode(vsCodeDebugConfig),
     debugFile: "launch.json",
@@ -35,6 +35,7 @@ const editorConfigs: EditorConfigs = {
   },
 };
 
+// deno-lint-ignore no-explicit-any
 export async function runCommand(cmd: any): Promise<boolean> {
   const status = await cmd.status();
 
@@ -43,6 +44,7 @@ export async function runCommand(cmd: any): Promise<boolean> {
   return (status.code === 0) ? true : false;
 }
 
+/** Recursively replace all template syntax into valid JavaScript/TypeScript in all template files */
 export async function traverse(dir: string, target: string) {
   
   for await (const entry of Deno.readDir(dir)) {
@@ -68,9 +70,17 @@ export async function traverse(dir: string, target: string) {
   }
 }
 
+function processTemplateFile(file: string, replacers: Replacer[]): string {
+  for (const replacer of replacers) {
+    file = file.replace(replacer.pattern, replacer.fn);
+  }
+
+  return file;
+}
+
 export async function act() {
 
-  if (settings.path !== ".") {
+  if (settings.path !== ".") {   
     await mkdirSec(settings.path, { force: settings.force });
   }
   
@@ -82,31 +92,39 @@ export async function act() {
     const target = await Deno.realPath(settings.path);
     
     await traverse(source, target);
+
+  } else {
+    await writeFileSec(settings.path + "/" + settings.entrypoint, settings.module);
+    
+    await writeFileSec(settings.path + "/" + settings.depsEntrypoint, settings.depsModule);
   }
 
   if (settings.git) {
-    try {
-      await runCommand(Deno.run({
-        cmd: ["git", "init"]
-      }));
-    } catch(error) {
-      console.warn("Warning: Could not initialize Git repository. Error:" + error);
-    }
+    await initGit(settings.path);
   }
 
-  await writeProject();
+  await initProjectSettings();
 }
 
-async function writeProject() {
-    // create .gitignore
-    await writeFileSec(
-      settings.path + "/" + settings.gitignore,
-      editorConfigs[settings.editor]["gitignoreContent"],
-    );
-  
-    // create project settings
-    const settingsDir = settings.path + "/" + editorConfigs[settings.editor].settingsDir;
+async function initGit(path: string) {
+  try {
+    await runCommand(Deno.run({
+      cmd: ["git", "init", path]
+    }));
+  } catch(error) {
+    console.warn("Warning: Could not initialize Git repository. Error:" + error);
+  }
 
+  // create .gitignore
+  await writeFileSec(
+    settings.path + "/" + settings.gitignore,
+    editorConfigs[settings.editor]["gitignoreContent"],
+  );
+}
+
+export async function initProjectSettings() {
+    const settingsDir = settings.path + "/" + editorConfigs[settings.editor].settingsDir;
+    
     await mkdirSec(settingsDir, { recursive: true });
   
     await writeFileSec(
@@ -121,12 +139,4 @@ async function writeProject() {
         editorConfigs[settings.editor].debugFileContent,
       );
     }
-}
-
-function processTemplateFile(file: string, replacers: Replacer[]): string {
-  for (const replacer of replacers) {
-    file = file.replace(replacer.pattern, replacer.fn);
-  }
-
-  return file;
 }

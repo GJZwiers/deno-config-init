@@ -12,5 +12,4 @@ export interface Settings {
     template: string | "",
     templateDir: string | "templates",
     editor: string | "vscode",
-  };
-  
+  }

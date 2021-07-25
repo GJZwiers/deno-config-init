@@ -30,6 +30,9 @@ async function writeFileSec(
   }
 }
 
+/** if `recursive: true` is passed, this function will warn the user if
+ *  a directory already exists instead of silently succeeding.
+ */
 async function mkdirSec(path: string | URL, options?: MkdirSecOptions): Promise<boolean> {
   try {
     // throws if dir exists
