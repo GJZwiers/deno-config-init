@@ -13,7 +13,7 @@ import { editor } from "./types/editor.ts";
  */
 await new Command()
   .name("deno-init")
-  .version("0.13.1")
+  .version("0.14.0")
   .description("Start a new Deno project with a single command")
   .type("editor", editor)
   .option(
