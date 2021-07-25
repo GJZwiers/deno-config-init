@@ -1,3 +1,4 @@
+import { Select, SelectValueOptions } from "./deps.ts";
 import { settings } from "./act.ts";
 
 /**
@@ -7,9 +8,10 @@ import { settings } from "./act.ts";
 async function writeFileOrWarn(
   path: string | URL,
   data: Uint8Array,
+  options?: Deno.WriteFileOptions,
 ): Promise<void> {
   if (settings.force) {
-    return await Deno.writeFile(path, data);
+    return await Deno.writeFile(path, data, options);
   }
 
   try {
@@ -20,13 +22,13 @@ async function writeFileOrWarn(
       );
     }
   } catch (_error) {
-    await Deno.writeFile(path, data);
+    await Deno.writeFile(path, data, options);
   }
 }
 
-async function mkdirOrWarn(path: string | URL): Promise<void> {
+async function mkdirOrWarn(path: string | URL, options?: Deno.MkdirOptions): Promise<void> {
   try {
-    await Deno.mkdir(path);
+    await Deno.mkdir(path, options);
   } catch (_error) {
     if (settings.force) return;
     console.warn(
@@ -37,6 +39,13 @@ async function mkdirOrWarn(path: string | URL): Promise<void> {
 
 function hasFileExtension(filename: string, extension: string): boolean {
   return new RegExp(`^[_A-Za-z-]+\.${extension}$`).test(filename);
+}
+
+export async function selectTemplate(selection: SelectValueOptions) {
+  return await Select.prompt({
+    message: "Choose your template",
+    options: selection,
+  });
 }
 
 export { hasFileExtension, mkdirOrWarn, writeFileOrWarn };

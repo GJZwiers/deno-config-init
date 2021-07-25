@@ -1,5 +1,6 @@
-import { Command, EnumType } from "../deps.ts";
-import { act, chooseTemplate, settings } from "../act.ts";
+import { Command, EnumType, Select } from "../deps.ts";
+import { act, settings } from "../act.ts";
+import { selectTemplate } from "../utils.ts";
 
 export const cliTemplate = new EnumType(["cliffy"]);
 
@@ -19,10 +20,8 @@ export const cli = new Command()
   .action(async ({ editor, force, name, template }) => {
     settings.force = force;
     settings.path = name ?? ".";
-
-    if (!template) {
-      template = await chooseTemplate(template, cliTemplate.values());
-    }
-
-    await act(editor, name, template);
+    settings.template = (template) ?? await selectTemplate(cliTemplate.values());
+    settings.editor = editor;
+    
+    await act();
   });

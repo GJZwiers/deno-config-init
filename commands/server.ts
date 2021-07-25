@@ -1,5 +1,6 @@
 import { Command, EnumType } from "../deps.ts";
-import { act, chooseTemplate, settings } from "../act.ts";
+import { act, settings } from "../act.ts";
+import { selectTemplate } from "../utils.ts";
 
 export const httpServerTemplate = new EnumType(["deno_http", "drash", "oak"]);
 
@@ -21,10 +22,8 @@ export const server = new Command()
   .action(async ({ editor, force, name, template }) => {
     settings.force = force;
     settings.path = name ?? ".";
+    settings.template = (template) ?? await selectTemplate(httpServerTemplate.values());
+    settings.editor = editor;
 
-    if (!template) {
-      template = await chooseTemplate(template, httpServerTemplate.values());
-    }
-
-    await act(editor, name, template);
+    await act();
   });

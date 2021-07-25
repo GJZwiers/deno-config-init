@@ -48,13 +48,14 @@ await new Command()
   .action(({ editor, force, git, name, yes }) => {
     settings.force = force;
     settings.git = git;
-    console.log(git);
+    settings.editor = editor;
+    settings.path = name;
 
     if (yes === true) {
-      act(editor, name);
+      act();
     } else {
       ask();
-      act(editor, name);
+      act();
     }
   })
   .command("api", api)

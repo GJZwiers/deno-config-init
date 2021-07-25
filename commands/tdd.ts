@@ -1,5 +1,6 @@
 import { Command, EnumType } from "../deps.ts";
-import { act, chooseTemplate, settings } from "../act.ts";
+import { act, settings } from "../act.ts";
+import { selectTemplate } from "../utils.ts";
 
 export const tddTemplate = new EnumType(["deno", "rhum", "rhum_integration"]);
 
@@ -19,10 +20,8 @@ export const tdd = new Command()
   .action(async ({ editor, force, name, template }) => {
     settings.force = force;
     settings.path = name ?? ".";
+    settings.template = (template) ?? await selectTemplate(tddTemplate.values());
+    settings.editor = editor;
 
-    if (!template) {
-      template = await chooseTemplate(template, tddTemplate.values());
-    }
-
-    await act(editor, name, template);
-  });
+    await act();
+  })

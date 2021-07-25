@@ -1,7 +1,6 @@
-import { Select } from "./deps.ts";
 import { vsCodeDebugConfig } from "./configs/debugconfig_vscode.ts";
 import { mkdirOrWarn, writeFileOrWarn } from "./utils.ts";
-import type { CLIOption, EditorConfigs } from "./types/types.ts";
+import type { EditorConfigs } from "./types/types.ts";
 import { Replacer, replacers } from "./replacers.ts";
 
 const encoder = new TextEncoder();
@@ -18,6 +17,9 @@ export const settings = {
   force: false,
   git: true,
   path: ".",
+  template: "",
+  templateDir: "templates",
+  editor: "vscode",
 };
 
 const editorConfigs: EditorConfigs = {
@@ -31,93 +33,92 @@ const editorConfigs: EditorConfigs = {
   },
 };
 
-export async function chooseTemplate(template: CLIOption, options: string[]) {
-  let choice: string | undefined = undefined;
-  if (!template) {
-    choice = await Select.prompt({
-      message: "Choose your template",
-      options: options,
-    });
-  }
-  return choice;
+export async function runCommand(cmd: any): Promise<boolean> {
+  const status = await cmd.status();
+
+  cmd.close();
+  
+  return (status.code === 0) ? true : false;
 }
 
-export async function act(editor: string, name: CLIOption, template?: CLIOption) {
-  if (settings.path) {
-    Deno.mkdir(settings.path);
-  }
+export async function traverse(dir: string, target: string) {
+  
+  for await (const entry of Deno.readDir(dir)) {
+    const sourcePath = `${dir}/${entry.name}`;
+    const targetPath = `${target}/${entry.name}`;
+    
+    if (entry.isDirectory) {     
+      await mkdirOrWarn(targetPath, { recursive: true });
+      
+      await traverse(sourcePath, targetPath);
+    }
+    else if (entry.isFile) {
+      const file = new TextDecoder().decode(
+        await Deno.readFile(sourcePath)
+      );
 
-  if (template) {
-    await fetchTemplate(template);
-  }
+      const data = new TextEncoder().encode(
+        processTemplateFile(file, replacers)
+      );
 
-  if (name) {
-    //await mkdirOrWarn(name);
-    Deno.chdir(name);
+      await writeFileOrWarn(targetPath + ".ts", data);
+    }
+  }
+}
+
+export async function act() {
+
+  if (settings.path !== ".") {
+    await mkdirOrWarn(settings.path);
+  }
+  
+  if (settings.template) {
+    const base = `./${settings.templateDir}/${settings.template}`;
+    
+    const source = await Deno.realPath(base);
+
+    const target = await Deno.realPath(settings.path);
+    
+    await traverse(source, target);
   }
 
   if (settings.git) {
     try {
-      const gitinit = Deno.run({
+      await runCommand(Deno.run({
         cmd: ["git", "init"]
-      });
-
-      await gitinit.status();
-      gitinit.close();
-    } catch (error) {
+      }));
+    } catch(error) {
       console.warn("Warning: Could not initialize Git repository. Error:" + error);
     }
   }
 
-  // create .gitignore
-  await writeFileOrWarn(
-    settings.gitignore,
-    editorConfigs[editor].gitignoreContent,
-  );
+  await writeProject();
+}
 
-  // create project settings
-  await mkdirOrWarn(editorConfigs[editor].settingsDir);
-  Deno.chdir(editorConfigs[editor].settingsDir);
-
-  await writeFileOrWarn(
-    editorConfigs[editor].settingsFile,
-    editorConfigs[editor].settings,
-  );
-
-  // create debug config
-  if (settings.debug === "y" || settings.debug === "Y") {
+async function writeProject() {
+    // create .gitignore
     await writeFileOrWarn(
-      editorConfigs[editor].debugFile,
-      editorConfigs[editor].debugFileContent,
+      settings.path + "/" + settings.gitignore,
+      editorConfigs[settings.editor]["gitignoreContent"],
     );
-  }
-}
+  
+    // create project settings
+    const settingsDir = settings.path + "/" + editorConfigs[settings.editor].settingsDir;
 
-async function traverse(currentPath: string, base: string) {
-  for await (const entry of Deno.readDir(currentPath)) {
-    const templatePath = `${currentPath}/${entry.name}`;
-    
-    const target = settings.path + currentPath.replace(base, "") + "/" + entry.name;
-    
-    if (entry.isDirectory) {
-      await Deno.mkdir(target, { recursive: true });
-
-      await traverse(templatePath, base);
+    await mkdirOrWarn(settingsDir, { recursive: true });
+  
+    await writeFileOrWarn(
+      settingsDir + "/" + editorConfigs[settings.editor].settingsFile,
+      editorConfigs[settings.editor].settings,
+    );
+  
+    // create debug config
+    if (settings.debug === "y" || settings.debug === "Y") {
+      await writeFileOrWarn(
+        settingsDir + "/" + editorConfigs[settings.editor].debugFile,
+        editorConfigs[settings.editor].debugFileContent,
+      );
     }
-    else if (entry.isFile) {
-      const file = new TextDecoder().decode(await Deno.readFile(templatePath));
-      const data = new TextEncoder().encode(
-        processTemplateFile(file, replacers));
-
-      await Deno.writeFile(target + ".ts", data);
-    }
-  }
-}
-
-export async function fetchTemplate(template: string) {
-  const base = `./templates/${template}`;
-
-  await traverse(base, base);
 }
 
 function processTemplateFile(file: string, replacers: Replacer[]): string {
