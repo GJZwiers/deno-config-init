@@ -5,11 +5,11 @@ import {
   initProjectSettings,
   runCommand,
   settings,
-  traverse,
+  processTemplateDir,
 } from "./act.ts";
 
 Rhum.testPlan("act.test.ts", () => {
-  Rhum.testSuite("traverse()", () => {
+  Rhum.testSuite("processTemplateDir()", () => {
     const entrypoint = "mod";
     const dirName = "test_templates_directory";
 
@@ -41,7 +41,7 @@ Rhum.testPlan("act.test.ts", () => {
     Rhum.testCase(
       "should add processed template files to a given directory",
       async () => {
-        await traverse(dirName, settings.path);
+        await processTemplateDir(dirName, settings.path);
 
         const file = await Deno.open(settings.path + "/" + entrypoint + ".ts");
         Rhum.asserts.assert(file);

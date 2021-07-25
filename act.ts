@@ -45,7 +45,7 @@ export async function runCommand(cmd: any): Promise<boolean> {
 }
 
 /** Recursively replace all template syntax into valid JavaScript/TypeScript in all template files */
-export async function traverse(dir: string, target: string) {
+export async function processTemplateDir(dir: string, target: string) {
   for await (const entry of Deno.readDir(dir)) {
     const sourcePath = `${dir}/${entry.name}`;
     const targetPath = `${target}/${entry.name}`;
@@ -53,7 +53,7 @@ export async function traverse(dir: string, target: string) {
     if (entry.isDirectory) {
       await mkdirSec(targetPath, { recursive: true, force: settings.force });
 
-      await traverse(sourcePath, targetPath);
+      await processTemplateDir(sourcePath, targetPath);
     } else if (entry.isFile) {
       const file = new TextDecoder().decode(
         await Deno.readFile(sourcePath),
@@ -88,7 +88,7 @@ export async function act() {
 
     const target = await Deno.realPath(settings.path);
 
-    await traverse(source, target);
+    await processTemplateDir(source, target);
   } else {
     await writeFileSec(
       settings.path + "/" + settings.entrypoint,
