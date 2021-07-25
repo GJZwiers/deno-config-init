@@ -17,8 +17,8 @@ the project structure for you.
 
 ## Installation
 
-Use the `deno install` command to install the executable. It is recommended to
-specify the version in the URL, if no version is passed the latest will be
+Use `deno install` to install the executable. It is recommended to
+specify a version number in the URL, if no version is passed the latest will be
 installed.
 
 To upgrade an existing installation include `-f`.
@@ -61,6 +61,7 @@ deno install --allow-read --allow-run --allow-write --unstable -n deno-init http
 The program needs the following permissions to run:
 
 - `read`: to load files that are used to initialize projects from templates
+- `run`: to run `git init` if the git option is true
 - `write`: to make files in order to initialize new projects
 - `unstable`: to allow the use of unstable APIs. These mostly originate in the
   module's dependencies.
@@ -76,10 +77,10 @@ This will prompt you for the following:
 - TypeScript? (default `y`)
 - Entrypoint? (default `mod.ts`)
 - Dependency entrypoint? (default `deps.ts`)
-- Debug configuration? (default `y`).
+- Debug configuration? (default `n`).
 
 Choosing all defaults will create the following structure in the current
-directory:
+directory and run `git init`:
 
 ```
 .
@@ -92,9 +93,8 @@ directory:
 │   │   settings.json
 ```
 
-The created `.gitignore` will ignore `.vscode/` and `settings.json` will contain
-`"deno.enable": "true"`, while `launch.json` will contain a basic debug
-configuration.
+ `.gitignore` will ignore `.vscode/` and `settings.json` will contain
+`"deno.enable": "true"`. If debug is answered with `y/Y` a `launch.json` will be made with a basic debug configuration.
 
 ## Available Options
 
