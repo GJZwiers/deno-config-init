@@ -8,10 +8,8 @@ import { cli } from "./commands/cli.ts";
 import { editor } from "./types/editor.ts";
 
 /* TODO
-  - adding editor config should only be an option in the future,
+  - add editor config should only be an option in the future,
   so that the CLI is decoupled from specific editors/IDEs
-
-  - Add the option to create an import map (import_map.json) through the prompts
 */
 
 /**
@@ -46,6 +44,13 @@ await new Command()
     },
   )
   .option(
+    "-m, --import-map [map:boolean]",
+    "Add an import map as part of the project initialization",
+    {
+      default: false,
+    },
+  )
+  .option(
     "--no-git [git:boolean]",
     "Do not initialize a Git repository for the project",
     {
@@ -60,10 +65,11 @@ await new Command()
     },
   )
   .option("-y, --yes [yes:boolean]", "Answer 'y' to all prompts")
-  .action(({ cache, editor, force, git, name, yes }) => {
+  .action(({ cache, editor, force, git, map, name, yes }) => {
     settings.cache = cache;
     settings.force = force;
     settings.git = git;
+    settings.map = map;
     settings.editor = editor;
     settings.path = name ?? ".";
 
@@ -81,22 +87,29 @@ await new Command()
   .parse(Deno.args);
 
 function ask() {
-  const ts = prompt("TypeScript? (y/n)", "y");
+  const ts = prompt("Use TypeScript? (y/n)", "y");
 
   settings.extension = (ts === "y" || ts === "Y") ? "ts" : "js";
 
   settings.entrypoint = prompt(
-    `Entrypoint:`,
+    `Set entrypoint:`,
     `mod.${settings.extension}`,
   ) ?? "mod";
 
   settings.depsEntrypoint = prompt(
-    "Dependency entrypoint:",
+    "Set dependency entrypoint:",
     `deps.${settings.extension}`,
   ) ?? "deps";
 
   settings.devDepsEntrypoint = prompt(
-    "Development dependency entrypoint: (y/n)",
+    "Set dev dependency entrypoint:",
     `dev_deps.${settings.extension}`,
   ) ?? "dev_deps";
+
+  const importMap = prompt(
+    "Add import map? (y/n)",
+    "n",
+  );
+
+  settings.map = (importMap === "y" || importMap === "Y") ? true : false;
 }

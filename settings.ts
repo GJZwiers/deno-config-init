@@ -14,6 +14,7 @@ export interface Settings {
   template: string | "";
   templateDir: string | "templates";
   editor: string | "vscode";
+  map: boolean;
 }
 
 export const defaultModuleContent = new TextEncoder().encode("export {};\n");
@@ -34,4 +35,5 @@ export const settings: Settings = {
   template: "deno_basic",
   templateDir: "templates",
   editor: "vscode",
+  map: false,
 };

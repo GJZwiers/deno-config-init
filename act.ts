@@ -16,7 +16,14 @@ export async function act() {
 
   await processTemplateDir(source, target);
 
-  if (settings.git) {
+  if (settings.map === true) {
+    await writeFileSec(
+      settings.path + "/import_map.json",
+      new TextEncoder().encode("{}"),
+    );
+  }
+
+  if (settings.git === true) {
     await initGit(settings.path);
   }
 
