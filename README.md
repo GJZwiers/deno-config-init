@@ -22,7 +22,8 @@ templates or through prompts.
 
 ## Installation
 
-First install `deno` and make sure it is available on a terminal. `git` is also recommended though not required.
+First install `deno` and make sure it is available on a terminal. `git` is also
+recommended though not required.
 
 Next, run the `deno install` command below to install the executable:
 
@@ -31,7 +32,7 @@ Next, run the `deno install` command below to install the executable:
 <p>
 
 ```bash
-deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://deno.land/x/init@0.15.0/mod.ts
+deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://deno.land/x/init@0.15.1/mod.ts
 ```
 
 </p>
@@ -42,7 +43,7 @@ deno install --allow-read --allow-run --allow-write --unstable -n deno-init http
 <p>
 
 ```bash
-deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://x.nest.land/init@0.15.0/mod.ts
+deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://x.nest.land/init@0.15.1/mod.ts
 ```
 
 </p>
@@ -59,7 +60,8 @@ deno install --allow-read --allow-run --allow-write --unstable -n deno-init http
 </p>
 </details>
 
-If you already have a previous installation and would like to upgrade, run the command with the new version number and include the `-f` flag.
+If you already have a previous installation and would like to upgrade, run the
+command with the new version number and include the `-f` flag.
 
 ## Permissions
 
@@ -96,9 +98,12 @@ directory:
 │   mod.ts
 ```
 
-If you choose to init with an import map an `import_map.json` file is added to the above. If `git` is installed on the machine then `git init` is run as well.
+If you choose to init with an import map an `import_map.json` file is added to
+the above. If `git` is installed on the machine then `git init` is run as well.
 
-Note that `deno-init` will not overwrite files or directories unless the `--force` option is used explicitly. This means the program can 'fill in the blanks' in a project where not all of the files above are present yet.
+Note that `deno-init` will not overwrite files or directories unless the
+`--force` option is used explicitly. This means the program can 'fill in the
+blanks' in a project where not all of the files above are present yet.
 
 ## Options
 
@@ -111,26 +116,29 @@ prompts:
 deno-init --yes
 ```
 
-`--name` or `-n` will initialize the project in a new directory in the current working directory:
+`--name` or `-n` will initialize the project in a new directory in the current
+working directory:
 
 ```bash
 deno-init --name awesome_deno_project
 ```
 
-`--import-map` or `-m` will add an (empty) `import_map.json` file to the project:
+`--map` or `-m` will add an (empty) `import_map.json` file to the
+project:
 
 ```bash
-deno-init --import-map
+deno-init --map
 ```
 
-`--cache` or `-c` will run `deno cache` on any dependencies in for example `deps.ts` after all of the project's files have been made:
+`--cache` or `-c` will run `deno cache` on any dependencies in for example
+`deps.ts` after all of the project's files have been made:
 
 ```bash
 deno-init --cache
 ```
 
-`--force` or `-f` will allow the progam to overwrite existing files. This can be helpful
-to re-initialize but use with caution.
+`--force` or `-f` will allow the progam to overwrite existing files. This can be
+helpful to re-initialize but use with caution.
 
 ```bash
 deno-init --force
@@ -147,8 +155,8 @@ deno-init --no-git
 Use `--help` with any of the subcommands to get more detailed information.
 
 The `deno-init` subcommands will create a new project from a chosen template,
-which can be specified with `--template` or `-t`. If `--template` is omitted
-you will be prompted to choose one from a list of available choices.
+which can be specified with `--template` or `-t`. If `--template` is omitted you
+will be prompted to choose one from a list of available choices.
 
 ### `api`
 

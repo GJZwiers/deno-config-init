@@ -11,7 +11,7 @@ import { cli } from "./commands/cli.ts";
  */
 await new Command()
   .name("deno-init")
-  .version("0.15.0")
+  .version("0.15.1")
   .description("Start a new Deno project with a single command")
   .option(
     "-c, --cache [cache:boolean]",
@@ -29,7 +29,7 @@ await new Command()
     },
   )
   .option(
-    "-m, --import-map [map:boolean]",
+    "-m, --map [map:boolean]",
     "Add an import map as part of the project initialization",
     {
       default: false,
@@ -49,8 +49,16 @@ await new Command()
       global: true,
     },
   )
-  .option("-y, --yes [yes:boolean]", "Answer 'y' to all prompts")
-  .action(({ cache, force, git, map, name, yes }) => {
+  .option(
+    "-y, --yes [yes:boolean]",
+    "Answer 'y' to all prompts",
+    {
+      default: false
+    }
+  )
+  .action(({ cache, force, map, git, name, yes }) => {
+    console.log(cache, force, map, git, name, yes);
+    
     settings.cache = cache;
     settings.force = force;
     settings.git = git;
