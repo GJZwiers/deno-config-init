@@ -80,7 +80,7 @@ deno-init
 This will prompt you for the following:
 
 - Use TypeScript? (default `y`)
-- Set entrypoint? (default `mod.ts`)
+- Set entrypoint: (default `mod.ts`)
 - Set dependency entrypoint: (default `deps.ts`)
 - Set dev dependency entrypoint: (default `dev_deps.ts`)
 - Add import map? (default `n`)
