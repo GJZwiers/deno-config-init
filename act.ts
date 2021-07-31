@@ -8,25 +8,13 @@ export async function act() {
     await mkdirSec(settings.path, { force: settings.force });
   }
 
-  if (settings.template) {
-    const base = `./${settings.templateDir}/${settings.template}`;
+  const base = `./${settings.templateDir}/${settings.template}`;
 
-    const source = await Deno.realPath(base);
+  const source = await Deno.realPath(base);
 
-    const target = await Deno.realPath(settings.path);
+  const target = await Deno.realPath(settings.path);
 
-    await processTemplateDir(source, target);
-  } else {
-    await writeFileSec(
-      settings.path + "/" + settings.entrypoint,
-      settings.module,
-    );
-
-    await writeFileSec(
-      settings.path + "/" + settings.depsEntrypoint,
-      settings.depsModule,
-    );
-  }
+  await processTemplateDir(source, target);
 
   if (settings.git) {
     await initGit(settings.path);
@@ -67,9 +55,30 @@ export async function processTemplateDir(dir: string, target: string) {
         processTemplateFile(file, replacers),
       );
 
-      await writeFileSec(targetPath + ".ts", data);
+      await writeFileSec(validateFile(entry, targetPath), data);
     }
   }
+}
+
+function validateFile(entry: Deno.DirEntry, targetPath: string): string {
+  const mod = /mod$/;
+  const deps = /(?<!dev_)deps$/;
+  const devDeps = /dev_deps$/;
+  const fileExtension = /\.(?:js|ts)$/;
+
+  if (mod.test(entry.name)) {
+    targetPath = targetPath.replace(mod, settings.entrypoint);
+  } else if (deps.test(entry.name)) {
+    targetPath = targetPath.replace(deps, settings.depsEntrypoint);
+  } else if (devDeps.test(entry.name)) {
+    targetPath = targetPath.replace(devDeps, settings.devDepsEntrypoint);
+  }
+
+  if (!fileExtension.test(targetPath)) {
+    targetPath = targetPath + "." + settings.extension;
+  }
+
+  return targetPath;
 }
 
 function processTemplateFile(file: string, replacers: Replacer[]): string {

@@ -2,6 +2,7 @@ export interface Settings {
   cache: boolean;
   debug: string | "n";
   depsEntrypoint: string | "deps.ts";
+  devDepsEntrypoint: string | "dev_deps.ts";
   depsModule: Uint8Array;
   entrypoint: string | "mod.ts";
   extension: string | "ts";
@@ -18,18 +19,19 @@ export interface Settings {
 export const defaultModuleContent = new TextEncoder().encode("export {};\n");
 
 export const settings: Settings = {
-  debug: "n",
-  depsEntrypoint: "deps.ts",
-  depsModule: defaultModuleContent,
-  cache: false,
-  entrypoint: "mod.ts",
   extension: "ts",
-  gitignore: ".gitignore",
-  module: defaultModuleContent,
+  entrypoint: "mod.ts",
+  depsEntrypoint: "deps.ts",
+  devDepsEntrypoint: "dev_deps.ts",
+  depsModule: defaultModuleContent,
   force: false,
   git: true,
+  cache: false,
+  debug: "n",
+  gitignore: ".gitignore",
+  module: defaultModuleContent,
   path: ".",
-  template: "",
+  template: "deno_basic",
   templateDir: "templates",
   editor: "vscode",
 };

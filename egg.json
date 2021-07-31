@@ -1,7 +1,7 @@
 {
   "name": "init",
   "entry": "./mod.ts",
-  "description": "Start Deno Projects from templates",
+  "description": "Simple command line tool to initialize new Deno projects from templates or through prompts.",
   "unstable": true,
   "version": "0.14.0",
   "files": [

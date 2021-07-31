@@ -1,5 +1,4 @@
 import { Command } from "./deps.ts";
-import { hasFileExtension } from "./utils.ts";
 import { act } from "./act.ts";
 import { settings } from "./settings.ts";
 import { server } from "./commands/server.ts";
@@ -7,6 +6,13 @@ import { tdd } from "./commands/tdd.ts";
 import { api } from "./commands/api.ts";
 import { cli } from "./commands/cli.ts";
 import { editor } from "./types/editor.ts";
+
+/* TODO
+  - adding editor config should only be an option in the future,
+  so that the CLI is decoupled from specific editors/IDEs
+
+  - Add the option to create an import map (import_map.json) through the prompts
+*/
 
 /**
  *
@@ -77,39 +83,20 @@ await new Command()
 function ask() {
   const ts = prompt("TypeScript? (y/n)", "y");
 
-  let entrypoint = prompt(`Entrypoint:`, `mod.${settings.extension}`);
-
-  let depsEntrypoint = prompt(
-    "Dependency entrypoint:",
-    `deps.${settings.extension}`,
-  );
-
-  const debugConfig = prompt(
-    "Add debug configuration? (y/n)",
-    "n",
-  );
-
   settings.extension = (ts === "y" || ts === "Y") ? "ts" : "js";
 
-  // Use 'mod' as entrypoint if none specified.
-  if (entrypoint === null) {
-    entrypoint = `mod.${settings.extension}`;
-  } else if (!hasFileExtension(entrypoint, settings.extension)) {
-    // Add file extension if a user enters e.g. 'mod' or 'main' as input.
-    entrypoint = `${entrypoint}.${settings.extension}`;
-  }
+  settings.entrypoint = prompt(
+    `Entrypoint:`,
+    `mod.${settings.extension}`,
+  ) ?? "mod";
 
-  settings.entrypoint = entrypoint;
+  settings.depsEntrypoint = prompt(
+    "Dependency entrypoint:",
+    `deps.${settings.extension}`,
+  ) ?? "deps";
 
-  if (depsEntrypoint === null) {
-    depsEntrypoint = `deps.${settings.extension}`;
-  } else if (!hasFileExtension(depsEntrypoint, settings.extension)) {
-    depsEntrypoint = `${depsEntrypoint}.${settings.extension}`;
-  }
-
-  settings.depsEntrypoint = depsEntrypoint;
-
-  if (debugConfig === "y" || debugConfig === "Y") {
-    settings.debug = "y";
-  }
+  settings.devDepsEntrypoint = prompt(
+    "Development dependency entrypoint: (y/n)",
+    `dev_deps.${settings.extension}`,
+  ) ?? "dev_deps";
 }
