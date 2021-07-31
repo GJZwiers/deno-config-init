@@ -1,5 +1,4 @@
 import { mkdirSec, writeFileSec } from "./utils.ts";
-import { editorConfigs } from "./configs.ts";
 import { Replacer, replacers } from "./replacers.ts";
 import { settings } from "./settings.ts";
 
@@ -27,7 +26,7 @@ export async function act() {
     await initGit(settings.path);
   }
 
-  await initProjectSettings();
+  // await initProjectSettings();
 
   if (settings.cache === true) {
     console.log(settings.path + "/" + settings.depsEntrypoint);
@@ -96,25 +95,6 @@ function processTemplateFile(file: string, replacers: Replacer[]): string {
   return file;
 }
 
-export async function initProjectSettings() {
-  const settingsDir = settings.path + "/" +
-    editorConfigs[settings.editor].settingsDir;
-
-  await mkdirSec(settingsDir, { recursive: true });
-
-  await writeFileSec(
-    settingsDir + "/" + editorConfigs[settings.editor].settingsFile,
-    editorConfigs[settings.editor].settings,
-  );
-
-  if (settings.debug === "y" || settings.debug === "Y") {
-    await writeFileSec(
-      settingsDir + "/" + editorConfigs[settings.editor].debugFile,
-      editorConfigs[settings.editor].debugFileContent,
-    );
-  }
-}
-
 async function initGit(path: string) {
   try {
     await runCommand(Deno.run({
@@ -128,7 +108,7 @@ async function initGit(path: string) {
 
   await writeFileSec(
     settings.path + "/" + settings.gitignore,
-    editorConfigs[settings.editor]["gitignoreContent"],
+    new TextEncoder().encode(".vscode/"),
   );
 }
 

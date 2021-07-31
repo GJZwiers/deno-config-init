@@ -1,12 +1,6 @@
 import { Rhum } from "./dev_deps.ts";
-import {
-  act,
-  initProjectSettings,
-  processTemplateDir,
-  runCommand,
-} from "./act.ts";
+import { act, processTemplateDir, runCommand } from "./act.ts";
 import { settings } from "./settings.ts";
-import { editorConfigs } from "./configs.ts";
 
 Rhum.testPlan("act.test.ts", () => {
   Rhum.testSuite("processTemplateDir()", () => {
@@ -80,52 +74,6 @@ Rhum.testPlan("act.test.ts", () => {
     );
   });
 
-  Rhum.testSuite("initProjectSettings()", () => {
-    Rhum.beforeAll(() => {
-      settings.editor = "vscode";
-      settings.path = "test";
-    });
-
-    Rhum.beforeEach(async () => {
-      await Deno.mkdir(settings.path);
-    });
-
-    Rhum.afterEach(async () => {
-      await Deno.remove(settings.path, { recursive: true });
-    });
-
-    Rhum.testCase(
-      "should make a settings directory based on the specified editor",
-      async () => {
-        settings.debug = "n";
-
-        await initProjectSettings();
-
-        const dir = settings.path + "/" + editorConfigs["vscode"].settingsDir;
-
-        await Rhum.asserts.assertThrowsAsync(async () => {
-          await Deno.mkdir(dir);
-        });
-      },
-    );
-
-    Rhum.testCase(
-      "should make a debug configfile when settings.debug is yes",
-      async () => {
-        settings.debug = "y";
-
-        const debugFile = settings.path + "/" +
-          editorConfigs[settings.editor].debugFile;
-
-        await initProjectSettings();
-
-        await Rhum.asserts.assertThrowsAsync(async () => {
-          await Deno.readFile(debugFile);
-        });
-      },
-    );
-  });
-
   Rhum.testSuite("act()", () => {
     Rhum.beforeAll(async () => {
       await Deno.mkdir("test_directory_act");
@@ -136,28 +84,9 @@ Rhum.testPlan("act.test.ts", () => {
     });
 
     Rhum.testCase(
-      "should make project settings if no other options are passed",
-      async () => {
-        settings.path = "test_directory_act";
-        settings.debug = "n";
-        settings.template = "";
-        settings.git = false;
-
-        await act();
-
-        await Rhum.asserts.assertThrowsAsync(async () => {
-          await Deno.mkdir(
-            settings.path + "/" + editorConfigs[settings.editor].settingsDir,
-          );
-        });
-      },
-    );
-
-    Rhum.testCase(
       "should make a project from a template when template is passed",
       async () => {
         settings.path = "test_directory_act";
-        settings.debug = "n";
         settings.template = "deno";
         settings.git = false;
 
@@ -177,7 +106,6 @@ Rhum.testPlan("act.test.ts", () => {
       "should make a project from a template when template is passed",
       async () => {
         settings.path = "test_directory_act";
-        settings.debug = "n";
         settings.template = "";
         settings.git = true;
 
@@ -194,11 +122,10 @@ Rhum.testPlan("act.test.ts", () => {
     );
 
     Rhum.testCase(
-      "should run deno cache if settings.cache === true",
+      "should run deno cache if settings.cache is true",
       async () => {
         settings.cache = true;
         settings.path = "test_directory_act";
-        settings.debug = "n";
         settings.template = "";
         settings.git = false;
 
@@ -209,6 +136,25 @@ Rhum.testPlan("act.test.ts", () => {
         //     settings.path + "/" + editorConfigs[settings.editor].settingsDir,
         //   );
         // });
+      },
+    );
+
+    Rhum.testCase(
+      "should create import_map.json if setting.map is true",
+      async () => {
+        settings.map = true;
+        settings.cache = false;
+        settings.path = "test_directory_act";
+        settings.template = "";
+        settings.git = false;
+
+        await act();
+
+        await Rhum.asserts.assertThrowsAsync(async () => {
+          await Deno.mkdir(
+            settings.path + "/import_map.json",
+          );
+        });
       },
     );
   });

@@ -1,6 +1,5 @@
 export interface Settings {
   cache: boolean;
-  debug: string | "n";
   depsEntrypoint: string | "deps.ts";
   devDepsEntrypoint: string | "dev_deps.ts";
   depsModule: Uint8Array;
@@ -13,7 +12,6 @@ export interface Settings {
   path: string | ".";
   template: string | "";
   templateDir: string | "templates";
-  editor: string | "vscode";
   map: boolean;
 }
 
@@ -28,12 +26,10 @@ export const settings: Settings = {
   force: false,
   git: true,
   cache: false,
-  debug: "n",
   gitignore: ".gitignore",
   module: defaultModuleContent,
   path: ".",
   template: "deno_basic",
   templateDir: "templates",
-  editor: "vscode",
   map: false,
 };

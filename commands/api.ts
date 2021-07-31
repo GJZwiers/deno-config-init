@@ -20,13 +20,12 @@ export const api = new Command()
     "-t, --template [method:template]",
     "Initialize the RESTful API from a template.",
   )
-  .action(async ({ cache, editor, force, name, template }) => {
+  .action(async ({ cache, force, name, template }) => {
     settings.cache = cache;
     settings.force = force;
     settings.path = name ?? ".";
     settings.template = (template) ??
       await selectTemplate(apiTemplate.values());
-    settings.editor = editor;
 
     await act();
   });

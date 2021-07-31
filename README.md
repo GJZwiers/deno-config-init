@@ -11,16 +11,11 @@ templates or through prompts.
 > Please note this module's API is not stable yet and there may be breaking
 > changes on `0.x` version increments.
 
-## Requirements
-
-- `deno` installed and available on a terminal.
-
 ## Installation
 
-Use `deno install` to install the executable. It is recommended to specify a
-version number in the URL: if no version is passed the latest will be installed.
+First install `deno` and make sure it is available on a terminal. `git` is also recommended though not required.
 
-To upgrade an existing installation include `-f`.
+Next, run the `deno install` command below to install the executable:
 
 <details open>
 <summary>deno.land</summary>
@@ -55,6 +50,8 @@ deno install --allow-read --allow-run --allow-write --unstable -n deno-init http
 </p>
 </details>
 
+If you already have a previous installation and would like to upgrade, run the command with the new version number and include the `-f` flag.
+
 ## Permissions
 
 The program needs the following permissions to run:
@@ -62,8 +59,8 @@ The program needs the following permissions to run:
 - `read`: to load files that are used to initialize projects from templates
 - `run`: to run `git init` if the git option is true
 - `write`: to make files in order to initialize new projects
-- `unstable`: to allow the use of unstable APIs. These mostly originate in the
-  module's dependencies.
+- `unstable`: to allow the use of unstable APIs. These mostly come from the
+  module's external dependencies.
 
 ## Basic Usage
 
@@ -73,72 +70,67 @@ deno-init
 
 This will prompt you for the following:
 
-- TypeScript? (default `y`)
-- Entrypoint? (default `mod.ts`)
-- Dependency entrypoint? (default `deps.ts`)
-- Debug configuration? (default `n`).
+- Use TypeScript? (default `y`)
+- Set entrypoint? (default `mod.ts`)
+- Set dependency entrypoint: (default `deps.ts`)
+- Set dev dependency entrypoint: (default `dev_deps.ts`)
+- Add import map? (default `n`)
 
 Choosing all defaults will create the following structure in the current
-directory and run `git init`:
+directory:
 
 ```
 .
 │   .gitignore
-│   deps.ts  
+│   deps.ts
+|   dev_deps.ts
 │   mod.ts
-│
-└───.vscode
-│   │   launch.json
-│   │   settings.json
 ```
 
-`.gitignore` will ignore `.vscode/` and `settings.json` will contain
-`"deno.enable": "true"`. If debug is answered with `y/Y` a `launch.json` will be
-made with a basic debug configuration.
+If you choose to init with an import map an `import_map.json` file is added to the above. If `git` is installed on the machine then `git init` is run as well.
+
+Note that `deno-init` will not overwrite files or directories unless the `--force` option is used explicitly. This means the program can 'fill in the blanks' in a project where not all of the files above are present yet.
 
 ## Available Options
 
 Use `--help` to print all available options. In addition, they are listed below:
 
-Using `--yes` or `-y` initializes a project with all the default values without
+`--yes` or `-y` initializes a project with all the default values without
 prompting:
 
 ```bash
-deno-init -y
+deno-init --yes
 ```
 
-Using `--cache` or `-c` caches dependencies in e.g. `deps.ts` after all the
+`--name` or `-n` initializes the project in a new directory in the current working directory.
+
+```bash
+deno-init --name awesome_deno_project
+```
+
+`--import-map` or `-m` adds an `import_map.json` file to the project:
+
+```bash
+deno-init --import-map
+```
+
+`--cache` or `-c` caches dependencies in e.g. `deps.ts` after all the
 project files are made.
 
 ```bash
 deno-init --cache
 ```
 
-`deno-init` will not overwrite files or directories unless `--force` is used.
 
-Using `--editor` or `-e` generates editor-specific configuration for a project.
-At this moment only `vscode` is supported and is set as the default. More setups
-may be supported in future releases.
-
-```bash
-deno-init --editor vscode
-```
-
-Using `--force` or `-f` enables overwriting existing files. This can be helpful
+`--force` or `-f` enables overwriting existing files. This can be helpful
 to re-initialize but use with caution.
 
 ```bash
-deno-init -f
+deno-init --force
 ```
 
-Using `--name` or `-n` initializes the project in a new directory in the current
-working directory with the name provided.
 
-```bash
-deno-init --name my_deno_project
-```
-
-Using `--no-git` disables running `git init` as part of project initialization.
+`--no-git` disables running `git init` as part of project initialization.
 
 ```bash
 deno-init --no-git

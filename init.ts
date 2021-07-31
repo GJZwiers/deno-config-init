@@ -5,12 +5,6 @@ import { server } from "./commands/server.ts";
 import { tdd } from "./commands/tdd.ts";
 import { api } from "./commands/api.ts";
 import { cli } from "./commands/cli.ts";
-import { editor } from "./types/editor.ts";
-
-/* TODO
-  - add editor config should only be an option in the future,
-  so that the CLI is decoupled from specific editors/IDEs
-*/
 
 /**
  *
@@ -19,20 +13,11 @@ await new Command()
   .name("deno-init")
   .version("0.14.0")
   .description("Start a new Deno project with a single command")
-  .type("editor", editor)
   .option(
     "-c, --cache [cache:boolean]",
     "Cache dependencies as part of the project initialization",
     {
       default: false,
-      global: true,
-    },
-  )
-  .option<{ editor: typeof editor }>(
-    "-e, --editor [method:editor]",
-    "Choose the editor for which to configure Deno.",
-    {
-      default: "vscode",
       global: true,
     },
   )
@@ -65,12 +50,11 @@ await new Command()
     },
   )
   .option("-y, --yes [yes:boolean]", "Answer 'y' to all prompts")
-  .action(({ cache, editor, force, git, map, name, yes }) => {
+  .action(({ cache, force, git, map, name, yes }) => {
     settings.cache = cache;
     settings.force = force;
     settings.git = git;
     settings.map = map;
-    settings.editor = editor;
     settings.path = name ?? ".";
 
     if (yes === true) {

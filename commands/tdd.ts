@@ -18,13 +18,12 @@ export const tdd = new Command()
     "-t, --template [method:template]",
     "Initialize the test-driven project from a template.",
   )
-  .action(async ({ cache, editor, force, name, template }) => {
+  .action(async ({ cache, force, name, template }) => {
     settings.cache = cache;
     settings.force = force;
     settings.path = name ?? ".";
     settings.template = (template) ??
       await selectTemplate(tddTemplate.values());
-    settings.editor = editor;
 
     await act();
   });
