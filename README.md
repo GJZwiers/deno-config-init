@@ -11,6 +11,15 @@ templates or through prompts.
 > Please note this module's API is not stable yet and there may be breaking
 > changes on `0.x` version increments.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Permissions](#permissions)
+- [Basic Usage](#basic-usage)
+- [Options](#options)
+- [Subcommands](#subcommands)
+- [Contributing](#contributing)
+
 ## Installation
 
 First install `deno` and make sure it is available on a terminal. `git` is also recommended though not required.
@@ -91,46 +100,43 @@ If you choose to init with an import map an `import_map.json` file is added to t
 
 Note that `deno-init` will not overwrite files or directories unless the `--force` option is used explicitly. This means the program can 'fill in the blanks' in a project where not all of the files above are present yet.
 
-## Available Options
+## Options
 
-Use `--help` to print all available options. In addition, they are listed below:
+`--help` will print all available options to the terminal.
 
-`--yes` or `-y` initializes a project with all the default values without
-prompting:
+`--yes` or `-y` will initialize the project with all the defaults, skipping the
+prompts:
 
 ```bash
 deno-init --yes
 ```
 
-`--name` or `-n` initializes the project in a new directory in the current working directory.
+`--name` or `-n` will initialize the project in a new directory in the current working directory:
 
 ```bash
 deno-init --name awesome_deno_project
 ```
 
-`--import-map` or `-m` adds an `import_map.json` file to the project:
+`--import-map` or `-m` will add an (empty) `import_map.json` file to the project:
 
 ```bash
 deno-init --import-map
 ```
 
-`--cache` or `-c` caches dependencies in e.g. `deps.ts` after all the
-project files are made.
+`--cache` or `-c` will run `deno cache` on any dependencies in for example `deps.ts` after all of the project's files have been made:
 
 ```bash
 deno-init --cache
 ```
 
-
-`--force` or `-f` enables overwriting existing files. This can be helpful
+`--force` or `-f` will allow the progam to overwrite existing files. This can be helpful
 to re-initialize but use with caution.
 
 ```bash
 deno-init --force
 ```
 
-
-`--no-git` disables running `git init` as part of project initialization.
+`--no-git` disables running `git init` as part of the project initialization.
 
 ```bash
 deno-init --no-git
@@ -138,10 +144,10 @@ deno-init --no-git
 
 ## Subcommands
 
-Use `--help` to get more detailed information on any of the subcommands.
+Use `--help` with any of the subcommands to get more detailed information.
 
-The `deno-init` subcommands can be used to create a new project from a template,
-which can be specified with `--template` or `-t`. If `--template` is not used
+The `deno-init` subcommands will create a new project from a chosen template,
+which can be specified with `--template` or `-t`. If `--template` is omitted
 you will be prompted to choose one from a list of available choices.
 
 ### `api`
@@ -184,7 +190,6 @@ deno-init tdd --template rhum
 
 Available templates: `deno`, `rhum`.
 
-## Roadmap
+## Contributing
 
-- Support a
-- Add more project templates
+TBD
