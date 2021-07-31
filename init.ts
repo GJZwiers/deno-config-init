@@ -53,12 +53,10 @@ await new Command()
     "-y, --yes [yes:boolean]",
     "Answer 'y' to all prompts",
     {
-      default: false
-    }
+      default: false,
+    },
   )
   .action(({ cache, force, map, git, name, yes }) => {
-    console.log(cache, force, map, git, name, yes);
-    
     settings.cache = cache;
     settings.force = force;
     settings.git = git;

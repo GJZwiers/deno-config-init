@@ -3,7 +3,7 @@
   "entry": "./mod.ts",
   "description": "Simple command line tool to initialize new Deno projects from templates or through prompts.",
   "unstable": true,
-  "version": "0.15.1",
+  "version": "0.15.2",
   "files": [
     "./**/*.ts",
     "./templates/**/*",
