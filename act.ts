@@ -18,7 +18,7 @@ export async function act() {
   if (settings.map === true) {
     await writeFileSec(
       settings.path + "/import_map.json",
-      new TextEncoder().encode("{}"),
+      settings.mapContent,
     );
   }
 

@@ -14,6 +14,7 @@ export interface Settings {
   template: string;
   templateDir: string;
   map: boolean;
+  mapContent: Uint8Array
 }
 
 const encoder = new TextEncoder();
@@ -42,4 +43,5 @@ export const settings: Settings = {
   template: "deno_basic",
   templateDir: "templates",
   map: false,
+  mapContent: encoder.encode("{}")
 };
