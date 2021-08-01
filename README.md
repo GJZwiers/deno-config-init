@@ -13,7 +13,7 @@
 ## Quickstart
 
 ```bash
-deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://deno.land/x/init@0.15.5/mod.ts
+deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://deno.land/x/init@0.15.4/mod.ts
 
 deno-init -y -m -n awesome_deno_project
 ```
@@ -39,7 +39,7 @@ Next, run the `deno install` command below to install the executable:
 <p>
 
 ```bash
-deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://deno.land/x/init@0.15.5/mod.ts
+deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://deno.land/x/init@0.15.4/mod.ts
 ```
 
 </p>
@@ -50,7 +50,7 @@ deno install --allow-read --allow-run --allow-write --unstable -n deno-init http
 <p>
 
 ```bash
-deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://x.nest.land/init@0.15.5/mod.ts
+deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://x.nest.land/init@0.15.4/mod.ts
 ```
 
 </p>
