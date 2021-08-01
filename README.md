@@ -5,7 +5,7 @@
 ![Deno](https://img.shields.io/static/v1?label=&message=init&color=lightblue&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAB41BMVEUAAAAAAAABAQECAgIDAwMEBAQFBQUGBgYHBwcICAgJCQkKCgoLCwsMDAwNDQ0ODg4PDw8QEBARERESEhITExMUFBQVFRUWFhYXFxcYGBgZGRkaGhobGxscHBwdHR0eHh4fHx8gICAhISEiIiIjIyMkJCQlJSUmJiYnJycpKSkqKiorKyssLCwuLi4wMDAxMTEyMjIzMzM0NDQ1NTU2NjY3Nzc4ODg5OTk6Ojo7Ozs8PDw9PT0%2BPj4%2FPz9AQEBBQUFCQkJDQ0NERERFRUVGRkZHR0dISEhJSUlKSkpLS0tMTExNTU1OTk5QUFBRUVFSUlJTU1NUVFRVVVVWVlZXV1dYWFhZWVlaWlpbW1tcXFxdXV1eXl5fX19gYGBhYWFiYmJkZGRlZWVmZmZnZ2doaGhqampra2tsbGxtbW1wcHBxcXF0dHR1dXV2dnZ3d3d4eHh5eXl6enp7e3t8fHx%2Bfn5%2Ff3%2BAgICBgYGCgoKDg4OEhISFhYWGhoaHh4eIiIiJiYmKioqLi4uMjIyNjY2Ojo6Pj4%2BQkJCRkZGSkpKTk5OUlJSVlZWWlpaXl5eYmJiZmZmampqbm5ucnJydnZ2enp6fn5%2BgoKChoaGioqKjo6OkpKSlpaWmpqaoqKipqamqqqqrq6u6nz8EAAAAAXRSTlMAQObYZgAAAu1JREFUeNqt0wOXJMkewNH%2FHbttjW3btm3btm175pu%2Bt7uVp7I7u9b7O0rdVETEf9OFCe2BTtOvxV9ok0y7%2FgSMAoxeD9eSnT8AqwCM2QMBsPL3BIqmAIMOQXQAUBBcBldgsqazEF2NB7jTWiwBHkCovQtRLKBjP2zLitWAe%2FBN9WuTxvtcIaDshp6sbSlOAtyH9zqG9Ye8rBZQdN2prpl3%2B0kb4KFRy7wgzDnuYb0B3NTlpn3laE7odxH4ZORhnwkTL3g4FG5od9Kuai3MWLp91Bc%2B6n3ZBMKQmzq3t4qbsK0WZuYJvYSA59qchlCyBb4nZGsdiKR6fggf4HgFEIA3CdlSD4YlBCGcbsS6yS3JZ27B5gYgJzbgq9fWTkVV5inl3IaNjcC65CH7fcCo7Qp2m33WJ0RCrnuNHpcAC%2B58j3i6AeAmn6xtMi1P9nLU0VK8hT6R1h485Z3VPQU4ExENTOk%2FbTI%2BMDRatAM68M7Knr6C4RGBTvO778EK9flnJB0C3lv2G%2BmIHLHGVe35EJURzzQ3M8AXi3v6TKRkvRM%2BSVbEhWgeWGJRLz%2F4mJKe9qgXhfoILOptKu9SwlIWRsGAUTXwJiU1FrOtMDkg7VVKlltJrygcAO2ep6SpYTWu%2Fxnp8CRHSmFWzyENPU2IfMfaa026PaBfRKyH6QbainYbLz5%2BdGQ8SvJ6DIDSmxxM7mIKFqAzQKRtBVBxjUiI8YDtQ7EBx1JyFUDNhYTMxCjTwfBpWIwZKfkB2KHnJslx9DQDgHmojzTAbZ2IXB1gCgBzIdLoCFdQEbm%2BwmSAdoZ3y5J5cI70aBmaqgG7tWufJQvhPE2RD2YBlrcjSxZBHZF2Br2xChP6ZUmJBcCDaNZsYDtqBmbJQAvBumhRf7ANZMl486FfZGqE3QXJPHMxOFo1A0vsrGlNdihSeM2egjHjWpNxuBaFK0NboEv%2B4FKUxe%2F2GkBtbn8p%2BBZ%2F2GCZRsSf92ZhB4COiz%2FFf9H%2FAb6oexxnpBFzAAAAAElFTkSuQmCC)
 [![nest badge](https://nest.land/badge.svg)](https://nest.land/package/init)
 
-`deno-init` is a simple command line tool to initialize Deno projects from prompts or templates.
+`deno-init` is a simple command line tool to initialize Deno projects from prompts.
 
 > Please note this module's API is not stable yet and there may be breaking
 > changes on `0.x` version increments.
@@ -24,7 +24,6 @@ deno-init -y -m -n awesome_deno_project
 - [Permissions](#permissions)
 - [Basic Usage](#basic-usage)
 - [Options](#options)
-- [Subcommands](#subcommands)
 - [Contributing](#contributing)
 
 ## Installation
@@ -76,7 +75,7 @@ command with the new version number and include the `-f` flag.
 
 The program needs the following permissions to run:
 
-- `read`: to load files that are used to initialize projects from templates
+- `read`: to load files that are used to initialize projects
 - `run`: to run `git init` if the git option is true
 - `write`: to make files in order to initialize new projects
 - `unstable`: to allow the use of unstable APIs. These mostly come from the
@@ -138,13 +137,6 @@ deno-init --name awesome_deno_project
 deno-init --map
 ```
 
-`--cache` or `-c` will run `deno cache` on dependencies in `deps.ts` and
-`dev_deps.ts` after all of the project's files have been made:
-
-```bash
-deno-init --cache
-```
-
 `--force` or `-f` will allow the program to overwrite existing files. This can
 be helpful to re-initialize but use with caution.
 
@@ -157,55 +149,3 @@ deno-init --force
 ```bash
 deno-init --no-git
 ```
-
-## Subcommands
-
-Use `--help` with any of the subcommands to get more detailed information.
-
-The `deno-init` subcommands will create a new project from a chosen template,
-which can be specified with `--template` or `-t`. If `--template` is omitted you
-will be prompted to choose one from a list of available choices.
-
-### `api`
-
-Use to initialize a Deno RESTful API from a template.
-
-```bash
-deno-init api --template opine
-```
-
-Available templates: `opine`, `restful_oak`.
-
-### `cli`
-
-Use to initialize a Deno Command Line Interface (CLI) from a template.
-
-```bash
-deno-init cli --template cliffy
-```
-
-Available templates: `cliffy`.
-
-### `server`
-
-Use to initialize a Deno HTTP server from a template.
-
-```bash
-deno-init server --template oak
-```
-
-Available templates: `deno_http`, `drash`, `oak`.
-
-### `tdd`
-
-Use to initialize a Deno Test-Driven Development project from a template.
-
-```bash
-deno-init tdd --template rhum
-```
-
-Available templates: `deno_testing`, `rhum`.
-
-## Contributing
-
-TBD

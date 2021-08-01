@@ -33,10 +33,10 @@ export const settings: Settings = {
   gitignore: ".gitignore",
   gitignoreContent: encoder.encode( 
     `.env
-    .vscode/
-    coverage/
-    cov/
-    lcov/`
+.vscode/
+coverage/
+cov/
+lcov/`
   ),
   module: defaultModuleContent,
   path: ".",

@@ -1,56 +1,56 @@
 import { Rhum } from "./dev_deps.ts";
-import { act, processTemplateDir, runCommand } from "./act.ts";
+import { act, runCommand } from "./act.ts";
 import { settings } from "./settings.ts";
 
 Rhum.testPlan("act.test.ts", () => {
   const encoder = new TextEncoder();
 
-  Rhum.testSuite("processTemplateDir()", () => {
-    const entrypoint = "mod";
-    const dirName = "test_templates_directory";
+  // Rhum.testSuite("processTemplateDir()", () => {
+  //   const entrypoint = "mod";
+  //   const dirName = "test_templates_directory";
 
-    Rhum.beforeAll(async () => {
-      settings.path = "test_directory";
-      await Deno.mkdir(dirName);
-      Deno.chdir(dirName);
-      await Deno.writeFile(entrypoint, encoder.encode("Test"));
-      await Deno.mkdir("nested");
-      Deno.chdir("nested");
-      await Deno.writeFile(entrypoint, encoder.encode("Nest"));
+  //   Rhum.beforeAll(async () => {
+  //     settings.path = "test_directory";
+  //     await Deno.mkdir(dirName);
+  //     Deno.chdir(dirName);
+  //     await Deno.writeFile(entrypoint, encoder.encode("Test"));
+  //     await Deno.mkdir("nested");
+  //     Deno.chdir("nested");
+  //     await Deno.writeFile(entrypoint, encoder.encode("Nest"));
 
-      Deno.chdir("../..");
-    });
+  //     Deno.chdir("../..");
+  //   });
 
-    Rhum.afterAll(async () => {
-      await Deno.remove(dirName, { recursive: true });
-      settings.path = ".";
-    });
+  //   Rhum.afterAll(async () => {
+  //     await Deno.remove(dirName, { recursive: true });
+  //     settings.path = ".";
+  //   });
 
-    Rhum.beforeEach(async () => {
-      await Deno.mkdir(settings.path);
-    });
+  //   Rhum.beforeEach(async () => {
+  //     await Deno.mkdir(settings.path);
+  //   });
 
-    Rhum.afterEach(async () => {
-      await Deno.remove(settings.path, { recursive: true });
-    });
+  //   Rhum.afterEach(async () => {
+  //     await Deno.remove(settings.path, { recursive: true });
+  //   });
 
-    Rhum.testCase(
-      "should add processed template files to a given directory",
-      async () => {
-        await processTemplateDir(dirName, settings.path);
+  //   Rhum.testCase(
+  //     "should add processed template files to a given directory",
+  //     async () => {
+  //       await processTemplateDir(dirName, settings.path);
 
-        const file = await Deno.open(settings.path + "/" + entrypoint + ".ts");
-        Rhum.asserts.assert(file);
-        Deno.close(file.rid);
+  //       const file = await Deno.open(settings.path + "/" + entrypoint + ".ts");
+  //       Rhum.asserts.assert(file);
+  //       Deno.close(file.rid);
 
-        const nestedFile = await Deno.open(
-          settings.path + "/nested/" + entrypoint + ".ts",
-        );
-        Rhum.asserts.assert(nestedFile);
-        Deno.close(nestedFile.rid);
-      },
-    );
-  });
+  //       const nestedFile = await Deno.open(
+  //         settings.path + "/nested/" + entrypoint + ".ts",
+  //       );
+  //       Rhum.asserts.assert(nestedFile);
+  //       Deno.close(nestedFile.rid);
+  //     },
+  //   );
+  // });
 
   Rhum.testSuite("runCommand()", () => {
     Rhum.testCase(
