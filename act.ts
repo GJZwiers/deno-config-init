@@ -8,11 +8,10 @@ export async function act() {
     await mkdirSec(settings.path, { force: settings.force });
   }
 
-  // const b = await Deno.realPath(".");
-
   const p = fromFileUrl(Deno.mainModule);
 
   const o = resolve(p, "../", "templates/", settings.path);
+  
   // const base = `./${settings.templateDir}/${settings.template}`;
 
   const source = await Deno.realPath(o);
