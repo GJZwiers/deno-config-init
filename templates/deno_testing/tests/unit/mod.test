@@ -1,0 +1,9 @@
+import { assertEquals } from "../../dev_deps.{{extension}}";
+import { greet } from "../../mod.{{extension}}";
+
+Deno.test({
+    name: "my test",
+    fn(){{type:void}} {
+        assertEquals(greet(), "Hello World!");
+    }
+});

@@ -26,17 +26,15 @@ export async function act() {
     await initGit(settings.path);
   }
 
-  // await initProjectSettings();
-
   if (settings.cache === true) {
-    console.log(settings.path + "/" + settings.depsEntrypoint);
-
     await runCommand(Deno.run({
       cmd: [
         "deno",
         "cache",
         "--quiet",
+        "--reload",
         settings.path + "/" + settings.depsEntrypoint,
+        settings.path + "/" + settings.devDepsEntrypoint,
       ],
     }));
   }

@@ -73,6 +73,12 @@ The program needs the following permissions to run:
 - `unstable`: to allow the use of unstable APIs. These mostly come from the
   module's external dependencies.
 
+## Quickstart
+
+```bash
+deno-init -n awesome_deno_project -y -m
+```
+
 ## Basic Usage
 
 ```bash
@@ -107,7 +113,7 @@ blanks' in a project where not all of the files above are present yet.
 
 ## Options
 
-`--help` will print all available options to the terminal.
+`--help` will print helpful information to the terminal.
 
 `--yes` or `-y` will initialize the project with all the defaults, skipping the
 prompts:
@@ -195,7 +201,7 @@ Use to initialize a Deno Test-Driven Development project from a template.
 deno-init tdd --template rhum
 ```
 
-Available templates: `deno`, `rhum`.
+Available templates: `deno_testing`, `rhum`.
 
 ## Contributing
 
