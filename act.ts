@@ -1,15 +1,21 @@
 import { mkdirSec, writeFileSec } from "./utils.ts";
 import { Replacer, replacers } from "./replacers.ts";
 import { settings } from "./settings.ts";
+import { resolve, fromFileUrl } from "https://deno.land/std@0.103.0/path/mod.ts";
 
 export async function act() {
   if (settings.path !== ".") {
     await mkdirSec(settings.path, { force: settings.force });
   }
 
-  const base = `./${settings.templateDir}/${settings.template}`;
+  // const b = await Deno.realPath(".");
 
-  const source = await Deno.realPath(base);
+  const p = fromFileUrl(Deno.mainModule);
+
+  const o = resolve(p, "../", "templates/", settings.path);
+  // const base = `./${settings.templateDir}/${settings.template}`;
+
+  const source = await Deno.realPath(o);
 
   const target = await Deno.realPath(settings.path);
 
