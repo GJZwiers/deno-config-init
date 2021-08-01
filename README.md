@@ -16,7 +16,7 @@ templates or through prompts.
 ```bash
 deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://deno.land/x/init@0.15.4/mod.ts
 
-deno-init -y -m -n awesome_deno_project 
+deno-init -y -m -n awesome_deno_project
 ```
 
 ## Table of Contents
@@ -139,15 +139,15 @@ deno-init --name awesome_deno_project
 deno-init --map
 ```
 
-`--cache` or `-c` will run `deno cache` on dependencies in
-`deps.ts` and `dev_deps.ts` after all of the project's files have been made:
+`--cache` or `-c` will run `deno cache` on dependencies in `deps.ts` and
+`dev_deps.ts` after all of the project's files have been made:
 
 ```bash
 deno-init --cache
 ```
 
-`--force` or `-f` will allow the progam to overwrite existing files. This can be
-helpful to re-initialize but use with caution.
+`--force` or `-f` will allow the program to overwrite existing files. This can
+be helpful to re-initialize but use with caution.
 
 ```bash
 deno-init --force

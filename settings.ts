@@ -6,6 +6,7 @@ export interface Settings {
   entrypoint: string | "mod.ts";
   extension: string | "ts";
   gitignore: string | ".gitignore";
+  gitignoreContent: Uint8Array,
   module: Uint8Array;
   force: boolean | false;
   git: boolean | true;
@@ -27,6 +28,13 @@ export const settings: Settings = {
   git: true,
   cache: false,
   gitignore: ".gitignore",
+  gitignoreContent: new TextEncoder().encode( 
+    `.env
+    .vscode/
+    coverage/
+    cov/
+    lcov/`
+  ),
   module: defaultModuleContent,
   path: ".",
   template: "deno_basic",

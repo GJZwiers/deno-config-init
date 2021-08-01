@@ -106,7 +106,7 @@ async function initGit(path: string) {
 
   await writeFileSec(
     settings.path + "/" + settings.gitignore,
-    new TextEncoder().encode(".vscode/"),
+    settings.gitignoreContent,
   );
 }
 
