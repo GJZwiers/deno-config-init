@@ -11,6 +11,14 @@ templates or through prompts.
 > Please note this module's API is not stable yet and there may be breaking
 > changes on `0.x` version increments.
 
+## Quickstart
+
+```bash
+deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://deno.land/x/init@0.15.3/mod.ts
+
+deno-init -y -m -n awesome_deno_project 
+```
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -60,6 +68,8 @@ deno install --allow-read --allow-run --allow-write --unstable -n deno-init http
 </p>
 </details>
 
+Note you can name the program anything you like by changing the `-n` value.
+
 If you already have a previous installation and would like to upgrade, run the
 command with the new version number and include the `-f` flag.
 
@@ -72,12 +82,6 @@ The program needs the following permissions to run:
 - `write`: to make files in order to initialize new projects
 - `unstable`: to allow the use of unstable APIs. These mostly come from the
   module's external dependencies.
-
-## Quickstart
-
-```bash
-deno-init -n awesome_deno_project -y -m
-```
 
 ## Basic Usage
 
@@ -135,8 +139,8 @@ deno-init --name awesome_deno_project
 deno-init --map
 ```
 
-`--cache` or `-c` will run `deno cache` on any dependencies in for example
-`deps.ts` after all of the project's files have been made:
+`--cache` or `-c` will run `deno cache` on dependencies in
+`deps.ts` and `dev_deps.ts` after all of the project's files have been made:
 
 ```bash
 deno-init --cache
