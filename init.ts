@@ -1,10 +1,6 @@
 import { Command } from "./deps.ts";
 import { act } from "./act.ts";
 import { settings } from "./settings.ts";
-import { server } from "./commands/server.ts";
-import { tdd } from "./commands/tdd.ts";
-import { api } from "./commands/api.ts";
-import { cli } from "./commands/cli.ts";
 
 /**
  *
@@ -56,7 +52,7 @@ await new Command()
       default: false,
     },
   )
-  .action(({ cache, force, map, git, name, yes }) => {
+  .action(({ force, map, git, name, yes }) => {
     // settings.cache = cache;
     settings.force = force;
     settings.git = git;
