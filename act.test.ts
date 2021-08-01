@@ -87,7 +87,7 @@ Rhum.testPlan("act.test.ts", () => {
       "should make a project from a template when template is passed",
       async () => {
         settings.path = "test_directory_act";
-        settings.template = "deno";
+        settings.template = "deno_basic";
         settings.git = false;
 
         await act();
@@ -126,7 +126,7 @@ Rhum.testPlan("act.test.ts", () => {
       async () => {
         settings.cache = true;
         settings.path = "test_directory_act";
-        settings.template = "";
+        settings.template = "deno_basic";
         settings.git = false;
 
         await act();
