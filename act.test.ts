@@ -3,6 +3,8 @@ import { act, processTemplateDir, runCommand } from "./act.ts";
 import { settings } from "./settings.ts";
 
 Rhum.testPlan("act.test.ts", () => {
+  const encoder = new TextEncoder();
+
   Rhum.testSuite("processTemplateDir()", () => {
     const entrypoint = "mod";
     const dirName = "test_templates_directory";
@@ -11,10 +13,10 @@ Rhum.testPlan("act.test.ts", () => {
       settings.path = "test_directory";
       await Deno.mkdir(dirName);
       Deno.chdir(dirName);
-      await Deno.writeFile(entrypoint, new TextEncoder().encode("Test"));
+      await Deno.writeFile(entrypoint, encoder.encode("Test"));
       await Deno.mkdir("nested");
       Deno.chdir("nested");
-      await Deno.writeFile(entrypoint, new TextEncoder().encode("Nest"));
+      await Deno.writeFile(entrypoint, encoder.encode("Nest"));
 
       Deno.chdir("../..");
     });
@@ -95,7 +97,7 @@ Rhum.testPlan("act.test.ts", () => {
         Rhum.asserts.assert(async () => {
           await Deno.writeFile(
             "test_directory_act/mod.ts",
-            new TextEncoder().encode("export {};"),
+            encoder.encode("export {};"),
             { create: false },
           );
         });
@@ -114,7 +116,7 @@ Rhum.testPlan("act.test.ts", () => {
         Rhum.asserts.assert(async () => {
           await Deno.writeFile(
             "test_directory_act/mod.ts",
-            new TextEncoder().encode("export {};"),
+            encoder.encode("export {};"),
             { create: false },
           );
         });
