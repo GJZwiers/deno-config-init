@@ -15,12 +15,7 @@ export async function act() {
     p = import.meta.url
   }
 
-  console.log(p);
-
   const o = resolve(p, "../", "templates/", settings.path);
-
-  console.log(o);
-  
   
   // const base = `./${settings.templateDir}/${settings.template}`;
 
