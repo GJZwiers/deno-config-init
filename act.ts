@@ -65,9 +65,9 @@ export async function processTemplateDir(dir: string, target: string) {
 }
 
 function validateFile(entry: Deno.DirEntry, targetPath: string): string {
-  const mod = /mod$/;
-  const deps = /(?<!dev_)deps$/;
-  const devDeps = /dev_deps$/;
+  const mod = /\bmod$/;
+  const deps = /(?<!dev_|\w)deps$/;
+  const devDeps = /\bdev_deps$/;
   const fileExtension = /\.(?:js|ts)$/;
 
   if (mod.test(entry.name)) {
