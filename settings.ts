@@ -1,22 +1,24 @@
 export interface Settings {
   cache: boolean;
-  depsEntrypoint: string | "deps.ts";
-  devDepsEntrypoint: string | "dev_deps.ts";
+  depsEntrypoint: string;
+  devDepsEntrypoint: string;
   depsModule: Uint8Array;
-  entrypoint: string | "mod.ts";
-  extension: string | "ts";
-  gitignore: string | ".gitignore";
+  entrypoint: string;
+  extension: string;
+  gitignore: string;
   gitignoreContent: Uint8Array,
   module: Uint8Array;
-  force: boolean | false;
-  git: boolean | true;
-  path: string | ".";
-  template: string | "";
-  templateDir: string | "templates";
+  force: boolean;
+  git: boolean;
+  path: string;
+  template: string;
+  templateDir: string;
   map: boolean;
 }
 
-export const defaultModuleContent = new TextEncoder().encode("export {};\n");
+const encoder = new TextEncoder();
+
+export const defaultModuleContent = encoder.encode("export {};\n");
 
 export const settings: Settings = {
   extension: "ts",
@@ -28,7 +30,7 @@ export const settings: Settings = {
   git: true,
   cache: false,
   gitignore: ".gitignore",
-  gitignoreContent: new TextEncoder().encode( 
+  gitignoreContent: encoder.encode( 
     `.env
     .vscode/
     coverage/
