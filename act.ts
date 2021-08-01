@@ -1,25 +1,15 @@
 import { mkdirSec, writeFileSec } from "./utils.ts";
 import { Replacer, replacers } from "./replacers.ts";
 import { settings } from "./settings.ts";
-import { resolve, fromFileUrl } from "https://deno.land/std@0.103.0/path/mod.ts";
 
 export async function act() {
   if (settings.path !== ".") {
     await mkdirSec(settings.path, { force: settings.force });
   }
 
-  let p: string;
-  try {
-    p = fromFileUrl(import.meta.url);
-  } catch(_err) {
-    p = import.meta.url
-  }
+  const __dirname = new URL('.', import.meta.url).pathname;
 
-  const o = resolve(p, "../", "templates/", settings.path);
-  
-  // const base = `./${settings.templateDir}/${settings.template}`;
-
-  const source = await Deno.realPath(o);
+  const source = `${__dirname.replace(/^\//, "")}${settings.templateDir}/${settings.template}`;
 
   const target = await Deno.realPath(settings.path);
 
@@ -61,6 +51,8 @@ export async function processTemplateDir(dir: string, target: string) {
 
       await processTemplateDir(sourcePath, targetPath);
     } else if (entry.isFile) {
+      //const content = await import(sourcePath);
+
       const file = new TextDecoder().decode(
         await Deno.readFile(sourcePath),
       );
@@ -69,22 +61,22 @@ export async function processTemplateDir(dir: string, target: string) {
         processTemplateFile(file, replacers),
       );
 
-      await writeFileSec(validateFile(entry, targetPath), data);
+      await writeFileSec(validateFile(entry.name, targetPath), data);
     }
   }
 }
 
-function validateFile(entry: Deno.DirEntry, targetPath: string): string {
+function validateFile(entry: string, targetPath: string): string {
   const mod = /\bmod$/;
   const deps = /(?<!dev_|\w)deps$/;
   const devDeps = /\bdev_deps$/;
   const fileExtension = /\.(?:js|ts)$/;
 
-  if (mod.test(entry.name)) {
+  if (mod.test(entry)) {
     targetPath = targetPath.replace(mod, settings.entrypoint);
-  } else if (deps.test(entry.name)) {
+  } else if (deps.test(entry)) {
     targetPath = targetPath.replace(deps, settings.depsEntrypoint);
-  } else if (devDeps.test(entry.name)) {
+  } else if (devDeps.test(entry)) {
     targetPath = targetPath.replace(devDeps, settings.devDepsEntrypoint);
   }
 
