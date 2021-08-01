@@ -11,7 +11,7 @@ import { cli } from "./commands/cli.ts";
  */
 await new Command()
   .name("deno-init")
-  .version("0.15.1")
+  .version("0.15.3")
   .description("Start a new Deno project with a single command")
   .option(
     "-c, --cache [cache:boolean]",
