@@ -7,7 +7,7 @@ import { settings } from "./settings.ts";
  */
 await new Command()
   .name("deno-init")
-  .version("0.15.6")
+  .version("0.16.0")
   .description("Start a new Deno project with a single command")
   // .option(
   //   "-c, --cache [cache:boolean]",
