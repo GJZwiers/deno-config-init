@@ -8,9 +8,19 @@ export async function act() {
     await mkdirSec(settings.path, { force: settings.force });
   }
 
-  const p = fromFileUrl(Deno.mainModule);
+  let p: string;
+  try {
+    p = fromFileUrl(import.meta.url);
+  } catch(_err) {
+    p = import.meta.url
+  }
+
+  console.log(p);
 
   const o = resolve(p, "../", "templates/", settings.path);
+
+  console.log(o);
+  
   
   // const base = `./${settings.templateDir}/${settings.template}`;
 
