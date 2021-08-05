@@ -10,7 +10,7 @@ export async function act() {
     await mkdirSec(settings.path, { force: settings.force });
   }
 
-  let templateDir = mainModuleDir + "/templates/" + settings.template;
+  const templateDir = mainModuleDir + "/templates/" + settings.template;
 
   await processTemplateDir(templateDir, settings.path);
 
