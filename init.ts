@@ -1,6 +1,10 @@
 import { Command } from "./deps.ts";
 import { act } from "./act.ts";
 import { settings } from "./settings.ts";
+import { api } from "./commands/api.ts";
+import { cli } from "./commands/cli.ts";
+import { server } from "./commands/server.ts";
+import { tdd } from "./commands/tdd.ts";
 
 /**
  *
@@ -9,14 +13,14 @@ await new Command()
   .name("deno-init")
   .version("0.16.0")
   .description("Start a new Deno project with a single command")
-  // .option(
-  //   "-c, --cache [cache:boolean]",
-  //   "Cache dependencies as part of the project initialization",
-  //   {
-  //     default: false,
-  //     global: true,
-  //   },
-  // )
+  .option(
+    "-c, --cache [cache:boolean]",
+    "Cache dependencies as part of the project initialization",
+    {
+      default: false,
+      global: true,
+    },
+  )
   .option(
     "-f, --force [force:boolean]",
     "Force overwrite of existing files/directories. Helpful to re-initialize a project but use with caution!",
@@ -52,8 +56,8 @@ await new Command()
       default: false,
     },
   )
-  .action(({ force, map, git, name, yes }) => {
-    // settings.cache = cache;
+  .action(({ cache, force, map, git, name, yes }) => {
+    settings.cache = cache;
     settings.force = force;
     settings.git = git;
     settings.map = map;
@@ -66,11 +70,11 @@ await new Command()
       act();
     }
   })
+  .command("api", api)
+  .command("cli", cli)
+  .command("server", server)
+  .command("tdd", tdd)
   .parse(Deno.args);
-  // .command("api", api)
-  // .command("cli", cli)
-  // .command("server", server)
-  // .command("tdd", tdd)
 
 function ask() {
   const ts = prompt("Use TypeScript? (y/n)", "y");

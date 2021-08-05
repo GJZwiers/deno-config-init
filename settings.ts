@@ -6,7 +6,7 @@ export interface Settings {
   entrypoint: string;
   extension: string;
   gitignore: string;
-  gitignoreContent: Uint8Array,
+  gitignoreContent: Uint8Array;
   module: Uint8Array;
   force: boolean;
   git: boolean;
@@ -14,7 +14,7 @@ export interface Settings {
   template: string;
   templateDir: string;
   map: boolean;
-  mapContent: Uint8Array
+  mapContent: Uint8Array;
 }
 
 const encoder = new TextEncoder();
@@ -31,17 +31,17 @@ export const settings: Settings = {
   git: true,
   cache: false,
   gitignore: ".gitignore",
-  gitignoreContent: encoder.encode( 
+  gitignoreContent: encoder.encode(
     `.env
 .vscode/
 coverage/
 cov/
-lcov/`
+lcov/`,
   ),
   module: defaultModuleContent,
   path: ".",
   template: "deno_basic",
   templateDir: "templates",
   map: false,
-  mapContent: encoder.encode("{}")
+  mapContent: encoder.encode("{}"),
 };

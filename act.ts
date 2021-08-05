@@ -1,25 +1,18 @@
 import { mkdirSec, writeFileSec } from "./utils.ts";
-import { settings, defaultModuleContent } from "./settings.ts";
+import { settings } from "./settings.ts";
+import { Replacer, replacers } from "./replacers.ts";
+import * as path from 'https://deno.land/std@0.102.0/path/mod.ts';
+
+export const mainModuleDir = path.dirname(path.fromFileUrl(Deno.mainModule));
 
 export async function act() {
   if (settings.path !== ".") {
     await mkdirSec(settings.path, { force: settings.force });
   }
 
-  await writeFileSec(
-    settings.path + "/" + settings.entrypoint,
-    defaultModuleContent,
-  );
+  let templateDir = mainModuleDir + "/templates/" + settings.template;
 
-  await writeFileSec(
-    settings.path + "/" + settings.depsEntrypoint,
-    defaultModuleContent,
-  );
-
-  await writeFileSec(
-    settings.path + "/" + settings.devDepsEntrypoint,
-    defaultModuleContent,
-  );
+  await processTemplateDir(templateDir, settings.path);
 
   if (settings.map === true) {
     await writeFileSec(
@@ -72,58 +65,56 @@ export async function runCommand(cmd: any): Promise<boolean> {
   return (status.code === 0) ? true : false;
 }
 
-
 /** Recursively replace all template syntax into valid JavaScript/TypeScript in all template files. */
-// export async function processTemplateDir(dir: string, target: string) {
-//   for await (const entry of Deno.readDir(dir)) {
-//     const sourcePath = `${dir}/${entry.name}`;
-//     const targetPath = `${target}/${entry.name}`;
+export async function processTemplateDir(dir: string, target: string) {
+  for await (const entry of Deno.readDir(dir)) {
+    const sourcePath = `${dir}/${entry.name}`;
+    const targetPath = `${target}/${entry.name}`;
 
-//     if (entry.isDirectory) {
-//       await mkdirSec(targetPath, { recursive: true, force: settings.force });
+    if (entry.isDirectory) {
+      await mkdirSec(targetPath, { recursive: true, force: settings.force });
 
-//       await processTemplateDir(sourcePath, targetPath);
-//     } else if (entry.isFile) {
+      await processTemplateDir(sourcePath, targetPath);
+    } else if (entry.isFile) {
 
-//       const file = new TextDecoder().decode(
-//         await Deno.readFile(sourcePath),
-//       );
+      const file = new TextDecoder().decode(
+        await Deno.readFile(sourcePath),
+      );
 
-//       const data = new TextEncoder().encode(
-//         processTemplateFile(file, replacers),
-//       );
+      const data = new TextEncoder().encode(
+        processTemplateFile(file, replacers),
+      );
 
-//       await writeFileSec(validateFile(entry.name, targetPath), data);
-//     }
-//   }
-// }
+      await writeFileSec(validateFile(entry.name, targetPath), data);
+    }
+  }
+}
 
-// function validateFile(entry: string, targetPath: string): string {
-//   const mod = /\bmod$/;
-//   const deps = /(?<!dev_|\w)deps$/;
-//   const devDeps = /\bdev_deps$/;
-//   const fileExtension = /\.(?:js|ts)$/;
+function validateFile(entry: string, targetPath: string): string {
+  const mod = /\bmod$/;
+  const deps = /(?<!dev_|\w)deps$/;
+  const devDeps = /\bdev_deps$/;
+  const fileExtension = /\.(?:js|ts)$/;
 
-//   if (mod.test(entry)) {
-//     targetPath = targetPath.replace(mod, settings.entrypoint);
-//   } else if (deps.test(entry)) {
-//     targetPath = targetPath.replace(deps, settings.depsEntrypoint);
-//   } else if (devDeps.test(entry)) {
-//     targetPath = targetPath.replace(devDeps, settings.devDepsEntrypoint);
-//   }
+  if (mod.test(entry)) {
+    targetPath = targetPath.replace(mod, settings.entrypoint);
+  } else if (deps.test(entry)) {
+    targetPath = targetPath.replace(deps, settings.depsEntrypoint);
+  } else if (devDeps.test(entry)) {
+    targetPath = targetPath.replace(devDeps, settings.devDepsEntrypoint);
+  }
 
-//   if (!fileExtension.test(targetPath)) {
-//     targetPath = targetPath + "." + settings.extension;
-//   }
+  if (!fileExtension.test(targetPath)) {
+    targetPath = targetPath + "." + settings.extension;
+  }
 
-//   return targetPath;
-// }
+  return targetPath;
+}
 
-// function processTemplateFile(file: string, replacers: Replacer[]): string {
-//   for (const replacer of replacers) {
-//     file = file.replace(replacer.pattern, replacer.fn);
-//   }
+function processTemplateFile(file: string, replacers: Replacer[]): string {
+  for (const replacer of replacers) {
+    file = file.replace(replacer.pattern, replacer.fn);
+  }
 
-//   return file;
-// }
-
+  return file;
+}
