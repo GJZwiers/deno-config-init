@@ -3,7 +3,9 @@ import { settings } from "./settings.ts";
 import { Replacer, replacers } from "./replacers.ts";
 import * as path from 'https://deno.land/std@0.102.0/path/mod.ts';
 
-export const mainModuleDir = path.dirname(path.fromFileUrl(Deno.mainModule));
+const mainModuleURL = new URL(Deno.mainModule);
+
+export const mainModuleDir = path.dirname(mainModuleURL.pathname);
 
 export async function act() {
   if (settings.path !== ".") {
@@ -11,6 +13,8 @@ export async function act() {
   }
 
   const templateDir = mainModuleDir + "/templates/" + settings.template;
+
+  console.log(templateDir);
 
   await processTemplateDir(templateDir, settings.path);
 
