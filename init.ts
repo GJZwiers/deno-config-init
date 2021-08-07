@@ -1,22 +1,15 @@
 import { Command } from "./deps.ts";
 import { act } from "./act.ts";
 import { settings } from "./settings.ts";
+import { hasFileExtension } from "./utils.ts";
 
 /**
  *
  */
 await new Command()
   .name("deno-init")
-  .version("0.16.0")
+  .version("1.0.0")
   .description("Start a new Deno project with a single command")
-  // .option(
-  //   "-c, --cache [cache:boolean]",
-  //   "Cache dependencies as part of the project initialization",
-  //   {
-  //     default: false,
-  //     global: true,
-  //   },
-  // )
   .option(
     "-f, --force [force:boolean]",
     "Force overwrite of existing files/directories. Helpful to re-initialize a project but use with caution!",
@@ -53,7 +46,6 @@ await new Command()
     },
   )
   .action(({ force, map, git, name, yes }) => {
-    // settings.cache = cache;
     settings.force = force;
     settings.git = git;
     settings.map = map;
@@ -67,10 +59,6 @@ await new Command()
     }
   })
   .parse(Deno.args);
-  // .command("api", api)
-  // .command("cli", cli)
-  // .command("server", server)
-  // .command("tdd", tdd)
 
 function ask() {
   const ts = prompt("Use TypeScript? (y/n)", "y");
@@ -92,10 +80,25 @@ function ask() {
     `dev_deps.${settings.extension}`,
   ) ?? "dev_deps";
 
-  const importMap = prompt(
-    "Add import map? (y/n)",
-    "n",
-  );
+  if (!settings.map) {
+    const importMap = prompt(
+      "Add import map? (y/n)",
+      "n",
+    );
+    settings.map = (importMap === "y" || importMap === "Y") ? true : false;
+  }
 
-  settings.map = (importMap === "y" || importMap === "Y") ? true : false;
+  if (!hasFileExtension(settings.entrypoint, settings.extension)) {
+    settings.entrypoint = settings.entrypoint + "." + settings.extension;
+  }
+
+  if (!hasFileExtension(settings.depsEntrypoint, settings.extension)) {
+    settings.depsEntrypoint = settings.depsEntrypoint + "." +
+      settings.extension;
+  }
+
+  if (!hasFileExtension(settings.devDepsEntrypoint, settings.extension)) {
+    settings.devDepsEntrypoint = settings.devDepsEntrypoint + "." +
+      settings.extension;
+  }
 }

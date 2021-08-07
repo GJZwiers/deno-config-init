@@ -1,4 +1,3 @@
-import { Select, SelectValueOptions } from "./deps.ts";
 import { settings } from "./settings.ts";
 
 export interface MkdirSecOptions extends Deno.MkdirOptions {
@@ -46,7 +45,7 @@ async function mkdirSec(
     if (options?.force) return true;
 
     console.warn(
-      `Warning: Directory ${path} already exists. Pass --force to ignore this warning`,
+      `Warning: Directory ${path} already exists.`,
     );
 
     return false;
@@ -54,14 +53,7 @@ async function mkdirSec(
 }
 
 function hasFileExtension(filename: string, extension: string): boolean {
-  return new RegExp(`^[_A-Za-z-]+\.${extension}$`).test(filename);
-}
-
-export async function selectTemplate(selection: SelectValueOptions) {
-  return await Select.prompt({
-    message: "Choose your template",
-    options: selection,
-  });
+  return new RegExp(`\.${extension}$`).test(filename);
 }
 
 export { hasFileExtension, mkdirSec, writeFileSec };
