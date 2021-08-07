@@ -78,12 +78,12 @@ Rhum.testPlan("act.test.ts", () => {
 
   Rhum.testSuite("act()", () => {
     Rhum.beforeEach(async () => {
-      await Deno.mkdir("./templates/test_directory_act", { recursive: true });
+      await Deno.mkdir("./templates/test_directory_act", { recursive: true});
     });
 
     Rhum.afterEach(async () => {
       await Deno.remove("./templates/test_directory_act", { recursive: true });
-      await Deno.remove("./test_directory_act", { recursive: true });
+      await Deno.remove("./test_directory_act", {recursive: true });
     });
 
     Rhum.testCase(

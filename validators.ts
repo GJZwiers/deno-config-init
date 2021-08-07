@@ -4,15 +4,15 @@ export interface Validator {
 
 export const validators: Validator[] = [
   {
-    pattern: /\bmod$/,
+    pattern: /\bmod$/
   },
   {
-    pattern: /(?<!dev_|\w)deps$/,
+    pattern:  /(?<!dev_|\w)deps$/
   },
   {
-    pattern: /\bdev_deps$/,
+    pattern: /\bdev_deps$/
   },
   {
-    pattern: /\.(?:js|ts)$/,
+    pattern: /\.(?:js|ts)$/
   },
 ];
