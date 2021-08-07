@@ -147,3 +147,7 @@ deno-init --force
 ```bash
 deno-init --no-git
 ```
+
+## Contributing
+
+Feel free to submit a bug report, issue or feature request.
