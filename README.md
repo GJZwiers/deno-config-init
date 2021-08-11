@@ -66,8 +66,8 @@ deno install --allow-read --allow-run --allow-write --unstable -n deno-init http
 
 Note you can name the program anything you like by changing the `-n` value.
 
-If you have an older version and would like to upgrade, run the
-command with the new version number and include the `-f` flag.
+If you have an older version and would like to upgrade, run the command with the
+new version number and include the `-f` flag.
 
 ## Permissions
 
@@ -104,8 +104,9 @@ directory:
 │   mod.ts
 ```
 
-If you choose to init with an import map an `import_map.json` file will be added to
-the above. If `git` is installed on the machine then `git init` will be run as well.
+If you choose to init with an import map an `import_map.json` file will be added
+to the above. If `git` is installed on the machine then `git init` will be run
+as well.
 
 Note that `deno-init` will not overwrite files or directories unless the
 `--force` option is used explicitly. This means the program can 'fill in the
@@ -142,7 +143,8 @@ be helpful to re-initialize but use with caution.
 deno-init --force
 ```
 
-`--no-git` will disable running `git init` as part of the project initialization.
+`--no-git` will disable running `git init` as part of the project
+initialization.
 
 ```bash
 deno-init --no-git
