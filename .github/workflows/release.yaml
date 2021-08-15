@@ -8,12 +8,14 @@ jobs:
   publish:
     runs-on: ubuntu-20.04
     steps:
-      - name: setup deno
+      - name: Setup Actions
         uses: actions/checkout@v2
+
+      - name: Setup Deno
         uses: denolib/setup-deno@v2
         with:
           deno-version: v1.x
-          
+
       - name: release
         run: |
           deno install -Af --unstable https://x.nest.land/eggs@0.3.8/eggs.ts
