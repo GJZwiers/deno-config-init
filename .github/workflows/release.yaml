@@ -1,8 +1,9 @@
 name: Publish Egg
 
 on:
-  create:
-    ref_type: "tag"
+  release:
+    types:
+      - published
 
 jobs:
   publish:
