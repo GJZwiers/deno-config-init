@@ -5,14 +5,15 @@ on:
     types: [published]
 
 jobs:
-  publish-egg:
+  publish:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v2
-      - uses: denolib/setup-deno@master
+      - name: Publish
+        uses: actions/checkout@v2
+        uses: denolib/setup-deno@v2
         with:
-          deno-version: 1.4.6
-      - run: deno install -Af --unstable https://x.nest.land/eggs@0.3.8/eggs.ts
-      - run: |
+          deno-version: v1.x
+        run: |
+          deno install -Af --unstable https://x.nest.land/eggs@0.3.8/eggs.ts
           eggs link ${{ secrets.NESTAPIKEY }}
           eggs publish
