@@ -89,16 +89,14 @@ function ask() {
   }
 
   if (!hasFileExtension(settings.entrypoint, settings.extension)) {
-    settings.entrypoint = settings.entrypoint + "." + settings.extension;
+    settings.entrypoint = `${settings.entrypoint}.${settings.extension}`;
   }
 
   if (!hasFileExtension(settings.depsEntrypoint, settings.extension)) {
-    settings.depsEntrypoint = settings.depsEntrypoint + "." +
-      settings.extension;
+    settings.depsEntrypoint = `${settings.depsEntrypoint}.${settings.extension}`;
   }
 
   if (!hasFileExtension(settings.devDepsEntrypoint, settings.extension)) {
-    settings.devDepsEntrypoint = settings.devDepsEntrypoint + "." +
-      settings.extension;
+    settings.devDepsEntrypoint = `${settings.devDepsEntrypoint}.${settings.extension}`;
   }
 }
