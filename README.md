@@ -13,7 +13,7 @@ prompts.
 ```bash
 deno install --allow-read --allow-run --allow-write --unstable -n deno-init https://deno.land/x/init@1.1.0/mod.ts
 
-deno-init -y -m -n awesome_deno_project
+deno-init -y -n awesome_deno_project
 ```
 
 ## Table of Contents
