@@ -11,7 +11,7 @@ prompts.
 ## Quickstart
 
 ```bash
-deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://deno.land/x/init@1.1.0/mod.ts
+deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://deno.land/x/init@v1.2.0/mod.ts
 
 deno-init -y -n awesome_deno_project
 ```
@@ -36,7 +36,7 @@ Next, run the `deno install` command below to install the executable:
 <p>
 
 ```bash
-deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://deno.land/x/init@1.1.0/mod.ts
+deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://deno.land/x/init@v1.2.0/mod.ts
 ```
 
 </p>
@@ -47,7 +47,7 @@ deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init 
 <p>
 
 ```bash
-deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://x.nest.land/init@1.1.0/mod.ts
+deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://x.nest.land/init@v1.2.0/mod.ts
 ```
 
 </p>
@@ -74,7 +74,8 @@ new version number and include the `-f` flag.
 The program needs the following permissions to run:
 
 - `read`: to load files that are used to initialize projects
-- `run=git`: is used to allow the program to run `git` commands, of which only `git init` is actually called by `deno-init`
+- `run=git`: is used to allow the program to run `git` commands, of which only
+  `git init` is actually called by `deno-init`
 - `write`: to make files in order to initialize new projects
 - `unstable`: to allow the use of unstable APIs. Right now these come from the
   module's external dependencies.

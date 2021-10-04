@@ -3,7 +3,7 @@
   "entry": "./mod.ts",
   "description": "Simple command line tool to initialize Deno projects from prompts.",
   "unstable": false,
-  "version": "1.1.0",
+  "version": "v1.2.0",
   "files": [
     "./**/*.ts",
     "./README.md",

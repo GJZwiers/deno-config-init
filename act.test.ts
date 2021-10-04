@@ -46,6 +46,22 @@ Rhum.testPlan("act.test.ts", () => {
         await act();
       },
     );
+
+    Rhum.testCase(
+      "should create deno.json if setting.config is true",
+      async () => {
+        settings.config = true;
+        settings.map = false;
+        settings.path = "test_directory_act";
+        settings.git = false;
+
+        await act();
+
+        const configFile = await Deno.readFile("./test_directory_act/deno.json");
+
+        Rhum.asserts.assert(configFile);
+      },
+    );
   });
 });
 
