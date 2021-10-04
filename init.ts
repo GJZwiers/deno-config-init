@@ -3,13 +3,18 @@ import { act } from "./act.ts";
 import { settings } from "./settings.ts";
 import { hasFileExtension } from "./utils.ts";
 
-/**
- *
- */
+/**/
 await new Command()
   .name("deno-init")
-  .version("1.1.0")
+  .version("v1.2.0")
   .description("Start a new Deno project with a single command")
+  .option(
+    "-c, --config [config:boolean]",
+    "Add a Deno configuration file (JSON) as part of the project.",
+    {
+      default: false,
+    },
+  )
   .option(
     "-f, --force [force:boolean]",
     "Force overwrite of existing files/directories. Helpful to re-initialize a project but use with caution!",
@@ -19,7 +24,7 @@ await new Command()
   )
   .option(
     "-m, --map [map:boolean]",
-    "Add an import map as part of the project initialization",
+    "Add an import map as part of the project",
     {
       default: false,
     },
@@ -33,7 +38,7 @@ await new Command()
   )
   .option(
     "-n, --name [name:string]",
-    "Name a new directory to initialize the project in.",
+    "Create the project in a new directory with the entered name",
     {
       global: true,
     },
@@ -45,7 +50,8 @@ await new Command()
       default: false,
     },
   )
-  .action(({ force, map, git, name, yes }) => {
+  .action(({ config, force, map, git, name, yes }) => {
+    settings.config = config;
     settings.force = force;
     settings.git = git;
     settings.map = map;
@@ -61,7 +67,7 @@ await new Command()
   .parse(Deno.args);
 
 function ask() {
-  const ts = prompt("Use TypeScript? (y/n)", "y");
+  const ts = prompt("Use TypeScript?", "y");
 
   settings.extension = (ts === "y" || ts === "Y") ? "ts" : "js";
 
@@ -82,21 +88,33 @@ function ask() {
 
   if (!settings.map) {
     const importMap = prompt(
-      "Add import map? (y/n)",
+      "Add import map?",
       "n",
     );
     settings.map = (importMap === "y" || importMap === "Y") ? true : false;
   }
 
-  if (!hasFileExtension(settings.entrypoint, settings.extension)) {
+  if (!settings.config) {
+    const config = prompt(
+      "Add Deno configuration file?",
+      "n",
+    );
+    settings.config = (config === "y" || config === "Y") ? true : false;
+  }
+
+  if (hasFileExtension(settings.entrypoint, settings.extension) === false) {
     settings.entrypoint = `${settings.entrypoint}.${settings.extension}`;
   }
 
-  if (!hasFileExtension(settings.depsEntrypoint, settings.extension)) {
-    settings.depsEntrypoint = `${settings.depsEntrypoint}.${settings.extension}`;
+  if (hasFileExtension(settings.depsEntrypoint, settings.extension) === false) {
+    settings.depsEntrypoint =
+      `${settings.depsEntrypoint}.${settings.extension}`;
   }
 
-  if (!hasFileExtension(settings.devDepsEntrypoint, settings.extension)) {
-    settings.devDepsEntrypoint = `${settings.devDepsEntrypoint}.${settings.extension}`;
+  if (
+    hasFileExtension(settings.devDepsEntrypoint, settings.extension) === false
+  ) {
+    settings.devDepsEntrypoint =
+      `${settings.devDepsEntrypoint}.${settings.extension}`;
   }
 }

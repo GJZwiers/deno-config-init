@@ -1,4 +1,5 @@
 export interface Settings {
+  config: boolean;
   depsEntrypoint: string;
   devDepsEntrypoint: string;
   depsModule: Uint8Array;
@@ -19,6 +20,7 @@ const encoder = new TextEncoder();
 export const defaultModuleContent = encoder.encode("export {};\n");
 
 export const settings: Settings = {
+  config: false,
   extension: "ts",
   entrypoint: "mod.ts",
   depsEntrypoint: "deps.ts",

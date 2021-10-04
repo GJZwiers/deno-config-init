@@ -28,6 +28,13 @@ export async function act() {
     );
   }
 
+  if (settings.config === true) {
+    await writeFileSec(
+      settings.path + "/deno.json",
+      settings.mapContent,
+    );
+  }
+
   if (settings.git === true) {
     await initGit(settings.path);
   }
