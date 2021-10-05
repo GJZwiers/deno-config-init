@@ -29,7 +29,7 @@ jobs:
 
       - name: Run unit tests
         run: |
-          deno test -A --coverage=cov
+          deno test -A --coverage=cov --doc
 
       - name: Generate coverage report
         if: ${{ matrix.os == 'ubuntu-latest' }}
