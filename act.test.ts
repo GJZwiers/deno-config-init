@@ -57,7 +57,9 @@ Rhum.testPlan("act.test.ts", () => {
 
         await act();
 
-        const configFile = await Deno.readFile("./test_directory_act/deno.json");
+        const configFile = await Deno.readFile(
+          "./test_directory_act/deno.json",
+        );
 
         Rhum.asserts.assert(configFile);
       },
