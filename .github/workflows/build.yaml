@@ -28,8 +28,7 @@ jobs:
         run: deno lint
 
       - name: Run unit tests
-        run: |
-          deno test -A --coverage=cov --doc
+        run: deno test -A --coverage=cov --doc
 
       - name: Generate coverage report
         if: ${{ matrix.os == 'ubuntu-latest' }}
