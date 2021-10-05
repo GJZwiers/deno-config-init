@@ -34,6 +34,7 @@ jobs:
         run: deno coverage --lcov cov > cov.lcov
 
       - name: Upload coverage report
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
