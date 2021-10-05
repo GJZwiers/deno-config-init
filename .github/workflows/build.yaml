@@ -21,6 +21,7 @@ jobs:
           deno-version: v1.x
 
       - name: Check formatting
+        if: ${{ matrix.os != 'windows.latest' }}
         run: deno fmt --check
 
       - name: Analyze code with Deno linter
