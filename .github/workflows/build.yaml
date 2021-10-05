@@ -20,14 +20,12 @@ jobs:
         with:
           deno-version: v1.x
 
-      - name: Check if the code is formatted
+      - name: Check formatting
         run: deno fmt --check
 
       - name: Analyze code with Deno linter
         run: deno lint
-  test:
-    runs-on: ubuntu-latest
-    steps:
+
       - name: Run unit tests
         run: |
           deno test -A --coverage=cov
