@@ -137,6 +137,12 @@ deno-init --name awesome_deno_project
 deno-init --map
 ```
 
+`--config` or `-c` will add an (empty) `deno.json` file to the project:
+
+```bash
+deno-init --config
+```
+
 `--force` or `-f` will allow the program to overwrite existing files. This can
 be helpful to re-initialize but use with caution.
 
