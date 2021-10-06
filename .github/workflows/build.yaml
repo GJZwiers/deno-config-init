@@ -12,7 +12,7 @@ jobs:
       matrix:
         os: [ ubuntu-latest, macos-latest, windows-latest ]
     steps:
-      - name: Configure line-endings
+      - name: Configure line-endings for Windows builds
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           git config --system core.autocrlf false
@@ -27,7 +27,6 @@ jobs:
           deno-version: v1.x
 
       - name: Check formatting
-        #if: ${{ matrix.os != 'windows-latest' }}
         run: deno fmt --check
 
       - name: Analyze code with Deno linter
