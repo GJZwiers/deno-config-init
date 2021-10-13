@@ -5,8 +5,7 @@ export interface MkdirSecOptions extends Deno.MkdirOptions {
 }
 
 /**
- * Writes data to a file in the local filesystem. If the file already exists and
- * --force is not true, it will not write but warn the user instead.
+ * Attempts to write to a file, but warns instead of overwriting if it exists already.
  */
 async function writeFileSec(
   path: string | URL,
@@ -29,8 +28,8 @@ async function writeFileSec(
   }
 }
 
-/** if `recursive: true` is passed, this function will warn the user if
- *  a directory already exists instead of silently succeeding.
+/**
+ * Attempts to make a directory, but warns instead of throwing if it exists already.
  */
 async function mkdirSec(
   path: string | URL,
