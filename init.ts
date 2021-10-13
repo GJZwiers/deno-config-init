@@ -3,7 +3,9 @@ import { act } from "./act.ts";
 import { settings } from "./settings.ts";
 import { hasFileExtension } from "./utils.ts";
 
-/**/
+/**
+ * Main CLI command, as of right now the CLI does not have sub-commands.
+ */
 await new Command()
   .name("deno-init")
   .version("v1.2.0")
@@ -17,10 +19,7 @@ await new Command()
   )
   .option(
     "-f, --force [force:boolean]",
-    "Force overwrite of existing files/directories. Helpful to re-initialize a project but use with caution!",
-    {
-      global: true,
-    },
+    "Force overwrite of existing files/directories. Helpful to re-initialize, but use with caution!",
   )
   .option(
     "-m, --map [map:boolean]",
@@ -31,21 +30,15 @@ await new Command()
   )
   .option(
     "--no-git [git:boolean]",
-    "Do not initialize a Git repository for the project",
-    {
-      global: true,
-    },
+    "Do not initialize a local Git repository for the project",
   )
   .option(
     "-n, --name [name:string]",
     "Create the project in a new directory with the entered name",
-    {
-      global: true,
-    },
   )
   .option(
     "-y, --yes [yes:boolean]",
-    "Answer 'y' to all prompts",
+    "Use all default answers, skipping the prompts",
     {
       default: false,
     },
