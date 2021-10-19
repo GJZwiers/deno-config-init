@@ -1,7 +1,6 @@
-import { assertThrows, Rhum } from "./dev_deps.ts";
+import { Rhum, assertThrowsAsync } from "./dev_deps.ts";
 import { act, runCommand } from "./act.ts";
 import { settings } from "./settings.ts";
-import { assertThrowsAsync } from "https://deno.land/std@0.103.0/testing/asserts.ts";
 
 Rhum.testPlan("act.test.ts", () => {
   Rhum.testSuite("runCommand()", () => {
