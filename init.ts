@@ -57,16 +57,16 @@ await new Command()
       default: false,
     },
   )
-  .action(({ config, configOnly, force, map, git, name, tdd, yes }) => {
-    settings.config = config;
-    settings.configOnly = configOnly;
-    settings.force = force;
-    settings.git = git;
-    settings.map = map;
-    settings.path = name ?? ".";
-    settings.testdriven = tdd;
+  .action((options) => {
+    settings.config = options.config;
+    settings.configOnly = options.configOnly;
+    settings.force = options.force;
+    settings.git = options.git;
+    settings.map = options.map;
+    settings.path = options.name ?? ".";
+    settings.testdriven = options.tdd;
 
-    if (yes === true) {
+    if (options.yes === true) {
       act();
     } else {
       ask();
