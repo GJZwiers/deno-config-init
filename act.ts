@@ -4,7 +4,6 @@ import {
   defaultTestModuleContent,
   settings,
 } from "./settings.ts";
-import * as path from "https://deno.land/std@0.112.0/path/mod.ts";
 
 async function addProjectFile(path: string, content: Uint8Array) {
   await writeFileSec(
@@ -15,8 +14,6 @@ async function addProjectFile(path: string, content: Uint8Array) {
 
 export async function act() {
   if (settings.path !== ".") {
-    console.log(settings.path);
-
     await mkdirSec(settings.path, { force: settings.force, recursive: true });
   }
 
