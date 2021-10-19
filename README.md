@@ -141,7 +141,8 @@ deno-init --map
 deno-init --config
 ```
 
-`--config-only` or `-o` will add _only_ a `deno.json` file to the project. Note that this also disables running `git init`:
+`--config-only` or `-o` will add _only_ a `deno.json` file to the project. Note
+that this also disables running `git init`:
 
 ```bash
 deno-init --config-only
