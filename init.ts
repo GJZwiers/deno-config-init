@@ -37,18 +37,26 @@ await new Command()
     "Create the project in a new directory with the entered name",
   )
   .option(
+    "-t, --tdd [tdd:boolean]",
+    "Create the project with a file for tests",
+    {
+      default: false,
+    },
+  )
+  .option(
     "-y, --yes [yes:boolean]",
     "Use all default answers, skipping the prompts",
     {
       default: false,
     },
   )
-  .action(({ config, force, map, git, name, yes }) => {
+  .action(({ config, force, map, git, name, tdd, yes }) => {
     settings.config = config;
     settings.force = force;
     settings.git = git;
     settings.map = map;
     settings.path = name ?? ".";
+    settings.testdriven = tdd;
 
     if (yes === true) {
       act();

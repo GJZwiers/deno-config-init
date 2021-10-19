@@ -13,11 +13,23 @@ export interface Settings {
   path: string;
   map: boolean;
   mapContent: Uint8Array;
+  testdriven: boolean;
 }
 
 const encoder = new TextEncoder();
 
 export const defaultModuleContent = encoder.encode("export {};\n");
+
+export const defaultTestModuleContent = encoder.encode(
+  `import { assert } from "https://deno.land/std@0.112.0/testing/asserts.ts"; 
+
+Deno.test({
+  name: "name",
+  fn() {
+    assert(true);
+  }
+});\n`,
+);
 
 export const settings: Settings = {
   config: false,
@@ -40,4 +52,5 @@ lcov/`,
   path: ".",
   map: false,
   mapContent: encoder.encode("{}"),
+  testdriven: false,
 };
