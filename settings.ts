@@ -13,6 +13,7 @@ export interface Settings {
   path: string;
   map: boolean;
   mapContent: Uint8Array;
+  configContent: Uint8Array;
   testdriven: boolean;
 }
 
@@ -33,6 +34,7 @@ Deno.test({
 
 export const settings: Settings = {
   config: false,
+  configContent: encoder.encode("{\n\t\n}"),
   extension: "ts",
   entrypoint: "mod.ts",
   depsEntrypoint: "deps.ts",
@@ -51,6 +53,9 @@ lcov/`,
   module: defaultModuleContent,
   path: ".",
   map: false,
-  mapContent: encoder.encode("{}"),
+  mapContent: encoder.encode(`{
+  "imports": {}
+}
+`),
   testdriven: false,
 };

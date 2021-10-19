@@ -48,7 +48,7 @@ export async function act() {
   if (settings.config === true) {
     await writeFileSec(
       settings.path + "/deno.json",
-      settings.mapContent,
+      settings.configContent,
     );
   }
 
