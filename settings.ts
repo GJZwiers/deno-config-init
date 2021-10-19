@@ -1,5 +1,6 @@
 export interface Settings {
   config: boolean;
+  configOnly: boolean;
   depsEntrypoint: string;
   devDepsEntrypoint: string;
   depsModule: Uint8Array;
@@ -35,6 +36,7 @@ Deno.test({
 export const settings: Settings = {
   config: false,
   configContent: encoder.encode("{\n\t\n}"),
+  configOnly: false,
   extension: "ts",
   entrypoint: "mod.ts",
   depsEntrypoint: "deps.ts",

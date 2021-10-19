@@ -11,9 +11,9 @@ prompts.
 ## Quickstart
 
 ```bash
-deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://deno.land/x/init@v1.3.0/mod.ts
+deno install --allow-read --allow-run=git --allow-write --unstable --name deno-init https://deno.land/x/init@v1.3.0/mod.ts
 
-deno-init -y -n awesome_deno_project
+deno-init -y --name awesome_deno_project
 ```
 
 ## Table of Contents
@@ -63,8 +63,6 @@ deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init 
 
 </p>
 </details>
-
-Note you can name the program anything you like by changing the `-n` value.
 
 If you have an older version and would like to upgrade, run the command with the
 new version number and include the `-f` flag.
@@ -141,6 +139,13 @@ deno-init --map
 
 ```bash
 deno-init --config
+```
+
+`--config-only` or `-o` will add _only_ a `deno.json` file to the project. Note
+that this also disables running `git init`:
+
+```bash
+deno-init --config-only
 ```
 
 `--tdd` or `-t` will include a `.test` file to get started with a test-driven

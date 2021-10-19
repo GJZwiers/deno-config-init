@@ -12,7 +12,14 @@ await new Command()
   .description("Start a new Deno project with a single command")
   .option(
     "-c, --config [config:boolean]",
-    "Add a Deno configuration file (JSON) as part of the project.",
+    "Add a Deno.json configuration file as part of the project.",
+    {
+      default: false,
+    },
+  )
+  .option(
+    "-o, --config-only [configOnly:boolean]",
+    "Make only a Deno.json configuration file.",
     {
       default: false,
     },
@@ -50,8 +57,9 @@ await new Command()
       default: false,
     },
   )
-  .action(({ config, force, map, git, name, tdd, yes }) => {
+  .action(({ config, configOnly, force, map, git, name, tdd, yes }) => {
     settings.config = config;
+    settings.configOnly = configOnly;
     settings.force = force;
     settings.git = git;
     settings.map = map;
