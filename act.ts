@@ -5,40 +5,32 @@ import {
   settings,
 } from "./settings.ts";
 
+async function addProjectFile(path: string, content: Uint8Array) {
+  await writeFileSec(
+    settings.path + "/" + path,
+    content,
+  );
+}
+
 export async function act() {
   if (settings.path !== ".") {
     await mkdirSec(settings.path, { force: settings.force });
   }
 
   if (settings.map === true) {
-    await writeFileSec(
-      settings.path + "/import_map.json",
-      settings.mapContent,
-    );
+    await addProjectFile("import_map.json", settings.mapContent);
   }
 
   if (settings.config === true || settings.configOnly === true) {
-    await writeFileSec(
-      settings.path + "/deno.json",
-      settings.configContent,
-    );
+    await addProjectFile("deno.json", settings.configContent);
   }
 
-  if (settings.configOnly !== true) {
-    await writeFileSec(
-      settings.path + "/" + settings.entrypoint,
-      defaultModuleContent,
-    );
+  if (!settings.configOnly) {
+    await addProjectFile(settings.entrypoint, defaultModuleContent);
 
-    await writeFileSec(
-      settings.path + "/" + settings.depsEntrypoint,
-      defaultModuleContent,
-    );
+    await addProjectFile(settings.depsEntrypoint, defaultModuleContent);
 
-    await writeFileSec(
-      settings.path + "/" + settings.devDepsEntrypoint,
-      defaultModuleContent,
-    );
+    await addProjectFile(settings.devDepsEntrypoint, defaultModuleContent);
 
     if (settings.testdriven === true) {
       const testFileName = settings.entrypoint.replace(
@@ -47,15 +39,14 @@ export async function act() {
           return p1 + ".test." + settings.extension;
         },
       );
-      await writeFileSec(
-        settings.path + "/" + testFileName,
-        defaultTestModuleContent,
-      );
+      await addProjectFile(testFileName, defaultTestModuleContent);
     }
 
     if (settings.git === true) {
       await initGit(settings.path);
     }
+
+    await addProjectFile(settings.gitignore, settings.gitignoreContent);
   }
 }
 
@@ -69,11 +60,6 @@ async function initGit(path: string) {
       "Warning: Could not initialize Git repository. Error:" + error,
     );
   }
-
-  await writeFileSec(
-    settings.path + "/" + settings.gitignore,
-    settings.gitignoreContent,
-  );
 }
 
 // deno-lint-ignore no-explicit-any
