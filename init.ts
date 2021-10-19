@@ -8,7 +8,7 @@ import { hasFileExtension } from "./utils.ts";
  */
 await new Command()
   .name("deno-init")
-  .version("v1.3.0")
+  .version("v1.4.0")
   .description("Start a new Deno project with a single command")
   .option(
     "-c, --config [config:boolean]",
