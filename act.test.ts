@@ -1,6 +1,7 @@
-import { Rhum } from "./dev_deps.ts";
+import { assertThrows, Rhum } from "./dev_deps.ts";
 import { act, runCommand } from "./act.ts";
 import { settings } from "./settings.ts";
+import { assertThrowsAsync } from "https://deno.land/std@0.103.0/testing/asserts.ts";
 
 Rhum.testPlan("act.test.ts", () => {
   Rhum.testSuite("runCommand()", () => {
@@ -49,7 +50,7 @@ Rhum.testPlan("act.test.ts", () => {
         await act();
 
         Rhum.asserts.assertExists(
-          "./test_directory_act/.git",
+          `${settings.path}/.git`,
         );
 
         settings.git = false;
@@ -64,7 +65,7 @@ Rhum.testPlan("act.test.ts", () => {
         await act();
 
         const mapFile = await Deno.readFile(
-          "./test_directory_act/import_map.json",
+          `${settings.path}/import_map.json`,
         );
 
         Rhum.asserts.assert(mapFile);
@@ -76,13 +77,12 @@ Rhum.testPlan("act.test.ts", () => {
       async () => {
         settings.config = true;
         settings.map = false;
-        settings.path = "test_directory_act";
         settings.git = false;
 
         await act();
 
         const configFile = await Deno.readFile(
-          "./test_directory_act/deno.json",
+          `${settings.path}/deno.json`,
         );
 
         Rhum.asserts.assert(configFile);
@@ -90,20 +90,46 @@ Rhum.testPlan("act.test.ts", () => {
     );
 
     Rhum.testCase(
-      "should create .test file for module entrypoint if setting.testdriven is true",
+      "should create .test file for module entrypoint if settings.testdriven is true",
       async () => {
         settings.testdriven = true;
         settings.map = false;
-        settings.path = "test_directory_act";
         settings.git = false;
 
         await act();
 
         const mapFile = await Deno.readFile(
-          "./test_directory_act/mod.test.ts",
+          `${settings.path}/mod.test.ts`,
         );
 
         Rhum.asserts.assert(mapFile);
+      },
+    );
+
+    Rhum.testCase(
+      "should only create configuration file(s) and no module entrypoints if settings.configOnly is true",
+      async () => {
+        settings.configOnly = true;
+        settings.map = false;
+        settings.git = false;
+
+        await act();
+
+        const configFile = await Deno.readFile(
+          `${settings.path}/deno.json`,
+        );
+
+        Rhum.asserts.assert(configFile);
+
+        await assertThrowsAsync(async () => {
+          await Deno.readFile(`${settings.path}/mod.ts`);
+        });
+        await assertThrowsAsync(async () => {
+          await Deno.readFile(`${settings.path}/deps.ts`);
+        });
+        await assertThrowsAsync(async () => {
+          await Deno.readFile(`${settings.path}/dev_deps.ts`);
+        });
       },
     );
   });
