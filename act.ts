@@ -14,7 +14,7 @@ async function addProjectFile(path: string, content: Uint8Array) {
 
 export async function act() {
   if (settings.path !== ".") {
-    await mkdirSec(settings.path, { force: settings.force });
+    await mkdirSec(settings.path, { force: settings.force, recursive: true });
   }
 
   if (settings.map === true) {

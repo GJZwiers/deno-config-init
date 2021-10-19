@@ -115,8 +115,8 @@ blanks' in a project where not all of the files above are present yet.
 
 `--help` will print helpful information to the terminal.
 
-`--yes` or `-y` will initialize the project with all the defaults, skipping the
-prompts:
+`--yes` or `-y` will initialize the project in the current working directory
+with all the defaults, skipping the prompts:
 
 ```bash
 deno-init --yes
@@ -126,7 +126,16 @@ deno-init --yes
 working directory:
 
 ```bash
-deno-init --name awesome_deno_project
+deno-init --name my_project
+```
+
+```
+.
+├── my_project
+|   ├── .gitignore
+|   ├── deps.ts
+|   ├── dev_deps.ts
+|   ├── mod.ts
 ```
 
 `--map` or `-m` will add an (empty) `import_map.json` file to the project:
