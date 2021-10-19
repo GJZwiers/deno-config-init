@@ -1,4 +1,4 @@
-import { Rhum, assertThrowsAsync } from "./dev_deps.ts";
+import { assertThrowsAsync, Rhum } from "./dev_deps.ts";
 import { act, runCommand } from "./act.ts";
 import { settings } from "./settings.ts";
 
