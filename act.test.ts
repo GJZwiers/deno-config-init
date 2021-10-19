@@ -59,7 +59,7 @@ Rhum.testPlan("act.test.ts", () => {
     Rhum.testCase(
       "should create import_map.json if setting.map is true",
       async () => {
-        settings.map = true;  
+        settings.map = true;
 
         await act();
 
