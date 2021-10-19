@@ -1,5 +1,9 @@
 import { mkdirSec, writeFileSec } from "./utils.ts";
-import { defaultModuleContent, settings } from "./settings.ts";
+import {
+  defaultModuleContent,
+  defaultTestModuleContent,
+  settings,
+} from "./settings.ts";
 
 export async function act() {
   if (settings.path !== ".") {
@@ -20,6 +24,19 @@ export async function act() {
     settings.path + "/" + settings.devDepsEntrypoint,
     defaultModuleContent,
   );
+
+  if (settings.testdriven === true) {
+    const testFileName = settings.entrypoint.replace(
+      /^(.*)\.ts$/,
+      function (_fullmatch: string, p1: string): string {
+        return p1 + ".test." + settings.extension;
+      },
+    );
+    await writeFileSec(
+      settings.path + "/" + testFileName,
+      defaultTestModuleContent,
+    );
+  }
 
   if (settings.map === true) {
     await writeFileSec(
