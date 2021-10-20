@@ -107,9 +107,9 @@ If you choose to init with an import map an `import_map.json` file will be added
 to the above. If `git` is installed on the machine then `git init` will be run
 as well.
 
-Note that `deno-init` will not overwrite files unless the
-`--force` option is used explicitly. This means the program can 'fill in the
-blanks' in a project where not all of the files above are present yet.
+Note that `deno-init` will not overwrite files unless the `--force` option is
+used explicitly. This means the program can 'fill in the blanks' in a project
+where not all of the files above are present yet.
 
 ## Options
 
@@ -138,7 +138,8 @@ deno-init --name my_project
 |   ├── mod.ts
 ```
 
-the `name` argument can be any path in the local filesystem, and `deno-init` will make any missing directories along the way.
+the `name` argument can be any path in the local filesystem, and `deno-init`
+will make any missing directories along the way.
 
 `--map` or `-m` will add an (empty) `import_map.json` file to the project:
 
