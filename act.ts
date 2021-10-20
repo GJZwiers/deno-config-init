@@ -1,4 +1,4 @@
-import { mkdirSec, writeFileSec } from "./utils.ts";
+import { writeFileSec } from "./utils.ts";
 import {
   defaultModuleContent,
   defaultTestModuleContent,
@@ -14,7 +14,7 @@ async function addProjectFile(path: string, content: Uint8Array) {
 
 export async function act() {
   if (settings.path !== ".") {
-    await mkdirSec(settings.path, { force: settings.force, recursive: true });
+    await Deno.mkdir(settings.path, { recursive: true });
   }
 
   if (settings.map === true) {

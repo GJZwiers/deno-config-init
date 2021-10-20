@@ -1,5 +1,5 @@
 import { Rhum } from "./dev_deps.ts";
-import { hasFileExtension, mkdirSec, writeFileSec } from "./utils.ts";
+import { hasFileExtension, writeFileSec } from "./utils.ts";
 import { settings } from "./settings.ts";
 
 const testFilePath = "./foo.ts";
@@ -54,26 +54,11 @@ Rhum.testPlan("utils.test.ts", () => {
     Rhum.testCase(
       "should make a new directory if it does not exist yet",
       async () => {
-        await mkdirSec(testDirPath);
+        await Deno.mkdir(testDirPath);
 
         await Rhum.asserts.assertThrowsAsync(() => {
           return Deno.mkdir(testDirPath);
         });
-      },
-    );
-
-    Rhum.testCase("should warn when directory already exists", async () => {
-      await Deno.mkdir(testDirPath);
-      await mkdirSec(testDirPath);
-    });
-
-    Rhum.testCase(
-      "should not warn when directory already exists and force flag is set",
-      async () => {
-        await Deno.mkdir(testDirPath);
-        settings.force = true;
-        await mkdirSec(testDirPath);
-        settings.force = false;
       },
     );
   });
