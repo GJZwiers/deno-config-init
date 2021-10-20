@@ -1,9 +1,5 @@
 import { settings } from "./settings.ts";
 
-export interface MkdirSecOptions extends Deno.MkdirOptions {
-  force?: boolean;
-}
-
 /**
  * Attempts to write to a file, but warns instead of overwriting if it exists already.
  */
@@ -28,31 +24,8 @@ async function writeFileSec(
   }
 }
 
-/**
- * Attempts to make a directory, but warns instead of throwing if it exists already.
- */
-async function mkdirSec(
-  path: string | URL,
-  options?: MkdirSecOptions,
-): Promise<boolean> {
-  try {
-    // throws if dir exists
-    await Deno.mkdir(path, options);
-
-    return true;
-  } catch (_error) {
-    if (options?.force) return true;
-
-    console.warn(
-      `Warning: Directory ${path} already exists.`,
-    );
-
-    return false;
-  }
-}
-
 function hasFileExtension(filename: string, extension: string): boolean {
   return new RegExp(`\.${extension}$`).test(filename);
 }
 
-export { hasFileExtension, mkdirSec, writeFileSec };
+export { hasFileExtension, writeFileSec };
