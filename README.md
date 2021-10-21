@@ -97,10 +97,10 @@ directory:
 
 ```
 .
-│   .gitignore
-│   deps.ts
-|   dev_deps.ts
-│   mod.ts
+├── .gitignore
+├── deps.ts
+├── dev_deps.ts
+├── mod.ts
 ```
 
 If you choose to init with an import map an `import_map.json` file will be added
