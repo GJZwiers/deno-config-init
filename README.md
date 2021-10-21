@@ -6,7 +6,7 @@
 [![nest badge](https://nest.land/badge.svg)](https://nest.land/package/init)
 
 `deno-init` is a simple command line tool to initialize Deno projects from
-prompts.
+prompts. It can create module entrypoints, configuration files and a `.gitignore` with sensible defaults.
 
 ## Quickstart
 
@@ -57,15 +57,14 @@ deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init 
 <summary>github</summary>
 <p>
 
-```bash
+```
 deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://raw.githubusercontent.com/GJZwiers/deno-init/main/mod.ts
 ```
 
 </p>
 </details>
 
-If you have an older version and would like to upgrade, run the command with the
-new version number and include the `-f` flag.
+If you want to upgrade to a newer version, run the install command with `-f`.
 
 ## Permissions
 
@@ -87,13 +86,13 @@ deno-init
 This will prompt you for the following:
 
 - Use TypeScript? (default `y`)
-- Set entrypoint: (default `mod.ts`)
-- Set dependency entrypoint: (default `deps.ts`)
-- Set dev dependency entrypoint: (default `dev_deps.ts`)
+- App entrypoint: (default `mod.ts`)
+- Dependency entrypoint: (default `deps.ts`)
+- Development dependency entrypoint: (default `dev_deps.ts`)
 - Add import map? (default `n`)
 
-Choosing all defaults will create the following structure in the current
-directory:
+Choosing all defaults will create the following files in the current
+working directory:
 
 ```
 .
@@ -108,7 +107,7 @@ to the above. If `git` is installed on the machine then `git init` will be run
 as well.
 
 Note that `deno-init` will not overwrite files unless the `--force` option is
-used explicitly. This means the program can 'fill in the blanks' in a project
+used. This means the program can also 'fill in the blanks' in a project
 where not all of the files above are present yet.
 
 ## Options
@@ -141,13 +140,13 @@ deno-init --name my_project
 the `name` argument can be any path in the local filesystem, and `deno-init`
 will make any missing directories along the way.
 
-`--map` or `-m` will add an (empty) `import_map.json` file to the project:
+`--map` or `-m` will add an (empty) `import_map.json` file to the project files:
 
 ```bash
 deno-init --map
 ```
 
-`--config` or `-c` will add an (empty) `deno.json` file to the project:
+`--config` or `-c` will add an (empty) `deno.json` file to the project files:
 
 ```bash
 deno-init --config
@@ -160,8 +159,8 @@ that this also disables running `git init`:
 deno-init --config-only
 ```
 
-`--tdd` or `-t` will include a `.test` file to get started with a test-driven
-project, such as `mod.test.ts`:
+`--tdd` or `-t` will include a test file to get started with a test-driven
+project, such as `mod.test.ts` if you chose `mod.ts` as entrypoint:
 
 ```bash
 deno-init --tdd
@@ -183,4 +182,4 @@ deno-init --no-git
 
 ## Contributing
 
-Feel free to submit a bug report, issue or feature request.
+Feel free to submit a bug report, issue or feature request!
