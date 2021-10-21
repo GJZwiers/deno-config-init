@@ -5,9 +5,9 @@ import {
   settings,
 } from "./settings.ts";
 
-async function addProjectFile(path: string, content: Uint8Array) {
+async function addProjectFile(filename: string, content: Uint8Array) {
   await writeFileSec(
-    settings.path + "/" + path,
+    settings.path + "/" + filename,
     content,
   );
 }
