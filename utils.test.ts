@@ -1,75 +1,78 @@
-import { Rhum } from "./dev_deps.ts";
+import { assertEquals, assertThrowsAsync } from "./dev_deps.ts";
 import { hasFileExtension, writeFileSec } from "./utils.ts";
 import { defaults } from "./settings.ts";
 
-const testFilePath = "./foo.ts";
-const testDirPath = "./dir";
-const encoder = new TextEncoder();
-const decoder = new TextDecoder();
-const testFileContent = encoder.encode("foo");
+Deno.test("writeFileOrWarn()", async (t) => {
+  const testFilePath = "./foo.ts";
+  const testFileContent = new TextEncoder().encode("foo");
 
-Rhum.testPlan("utils.test.ts", () => {
-  Rhum.testSuite("writeFileOrWarn()", () => {
-    Rhum.afterEach(async () => {
-      try {
-        await Deno.remove(testFilePath, { recursive: true });
-      } catch (_error) {
-        console.log("Could not remove file");
-      }
-    });
+  const afterEach = async () => {
+    try {
+      await Deno.remove(testFilePath, { recursive: true });
+    } catch (_error) {
+      console.log("Could not remove file");
+    }
+  };
 
-    Rhum.testCase(
-      "should write a new file if the path does not exist yet",
-      async () => {
-        await writeFileSec(testFilePath, testFileContent);
-        const file = await Deno.readFile(testFilePath);
-
-        Rhum.asserts.assertEquals(decoder.decode(file), "foo");
-      },
-    );
-
-    Rhum.testCase("should overwrite when the force flag is set", async () => {
-      defaults.force = false;
+  await t.step(
+    "should write a new file if the path does not exist yet",
+    async () => {
       await writeFileSec(testFilePath, testFileContent);
-      defaults.force = true;
-      await writeFileSec(testFilePath, encoder.encode("bar"));
-
       const file = await Deno.readFile(testFilePath);
 
-      Rhum.asserts.assertEquals(decoder.decode(file), "bar");
-      defaults.force = false;
-    });
+      assertEquals(new TextDecoder().decode(file), "foo");
 
-    Rhum.testCase("should warn when file already exists", async () => {
-      await Deno.writeFile(testFilePath, testFileContent);
-      await writeFileSec(testFilePath, testFileContent);
-    });
+      await afterEach();
+    },
+  );
+
+  await t.step("should overwrite when the force flag is set", async () => {
+    defaults.force = false;
+    await writeFileSec(testFilePath, testFileContent);
+    defaults.force = true;
+    await writeFileSec(testFilePath, new TextEncoder().encode("bar"));
+
+    const file = await Deno.readFile(testFilePath);
+
+    assertEquals(new TextDecoder().decode(file), "bar");
+    defaults.force = false;
+    await afterEach();
   });
 
-  Rhum.testSuite("mkdirOrWarn()", () => {
-    Rhum.afterEach(async () => {
-      await Deno.remove(testDirPath);
-    });
+  await t.step("should warn when file already exists", async () => {
+    await Deno.writeFile(testFilePath, testFileContent);
 
-    Rhum.testCase(
-      "should make a new directory if it does not exist yet",
-      async () => {
-        await Deno.mkdir(testDirPath);
+    await writeFileSec(testFilePath, testFileContent);
 
-        await Rhum.asserts.assertThrowsAsync(() => {
-          return Deno.mkdir(testDirPath);
-        });
-      },
-    );
-  });
-
-  Rhum.testSuite("hasFileExtension()", () => {
-    Rhum.testCase("should validate a filename correctly", () => {
-      Rhum.asserts.assertEquals(hasFileExtension("mod.ts", "ts"), true);
-      Rhum.asserts.assertEquals(hasFileExtension("mod.ts", "js"), false);
-      Rhum.asserts.assertEquals(hasFileExtension("mod", "ts"), false);
-    });
+    await afterEach();
   });
 });
 
-Rhum.run();
+Deno.test("mkdirOrWarn()", async (t) => {
+  const testDirPath = "./dir";
+
+  const afterEach = async () => {
+    await Deno.remove(testDirPath);
+  };
+
+  await t.step(
+    "should make a new directory if it does not exist yet",
+    async () => {
+      await Deno.mkdir(testDirPath);
+
+      await assertThrowsAsync(() => {
+        return Deno.mkdir(testDirPath);
+      });
+
+      await afterEach();
+    },
+  );
+});
+
+Deno.test("hasFileExtension()", async (t) => {
+  await t.step("should validate a filename correctly", () => {
+    assertEquals(hasFileExtension("mod.ts", "ts"), true);
+    assertEquals(hasFileExtension("mod.ts", "js"), false);
+    assertEquals(hasFileExtension("mod", "ts"), false);
+  });
+});
