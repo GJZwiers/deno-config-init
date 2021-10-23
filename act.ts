@@ -18,7 +18,10 @@ export async function act(settings: Settings) {
   }
 
   if (settings.map === true) {
-    await addProjectFile(settings.path + "/import_map.json", settings.mapContent);
+    await addProjectFile(
+      settings.path + "/import_map.json",
+      settings.mapContent,
+    );
   }
 
   if (settings.config === true || settings.configOnly === true) {
@@ -26,11 +29,20 @@ export async function act(settings: Settings) {
   }
 
   if (!settings.configOnly) {
-    await addProjectFile(settings.path + "/" + settings.entrypoint, defaultModuleContent);
+    await addProjectFile(
+      settings.path + "/" + settings.entrypoint,
+      defaultModuleContent,
+    );
 
-    await addProjectFile(settings.path + "/" + settings.depsEntrypoint, defaultModuleContent);
+    await addProjectFile(
+      settings.path + "/" + settings.depsEntrypoint,
+      defaultModuleContent,
+    );
 
-    await addProjectFile(settings.path + "/" + settings.devDepsEntrypoint, defaultModuleContent);
+    await addProjectFile(
+      settings.path + "/" + settings.devDepsEntrypoint,
+      defaultModuleContent,
+    );
 
     if (settings.testdriven === true) {
       const testFileName = settings.entrypoint.replace(
@@ -39,14 +51,20 @@ export async function act(settings: Settings) {
           return p1 + ".test." + settings.extension;
         },
       );
-      await addProjectFile(settings.path + "/" + testFileName, defaultTestModuleContent);
+      await addProjectFile(
+        settings.path + "/" + testFileName,
+        defaultTestModuleContent,
+      );
     }
 
     if (settings.git === true) {
       await initGit(settings.path);
     }
 
-    await addProjectFile(settings.path + "/" + settings.gitignore, settings.gitignoreContent);
+    await addProjectFile(
+      settings.path + "/" + settings.gitignore,
+      settings.gitignoreContent,
+    );
   }
 }
 

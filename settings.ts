@@ -56,9 +56,10 @@ lcov/`,
   path: ".",
   map: false,
   mapContent: encoder.encode(
-`{
+    `{
   "imports": {}
 }
-`),
+`,
+  ),
   testdriven: false,
 };

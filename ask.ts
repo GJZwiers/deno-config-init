@@ -44,17 +44,22 @@ export function ask(options: any) {
   }
 
   if (hasFileExtension(depsEntrypoint, extension) === false) {
-    depsEntrypoint =
-      `${depsEntrypoint}.${extension}`;
+    depsEntrypoint = `${depsEntrypoint}.${extension}`;
   }
 
   if (
     hasFileExtension(devDepsEntrypoint, extension) === false
   ) {
-    devDepsEntrypoint =
-      `${devDepsEntrypoint}.${extension}`;
+    devDepsEntrypoint = `${devDepsEntrypoint}.${extension}`;
   }
 
-  const opts = { extension, entrypoint, depsEntrypoint, devDepsEntrypoint, map, config };
+  const opts = {
+    extension,
+    entrypoint,
+    depsEntrypoint,
+    devDepsEntrypoint,
+    map,
+    config,
+  };
   return opts;
 }
