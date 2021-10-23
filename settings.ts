@@ -33,7 +33,7 @@ Deno.test({
 });\n`,
 );
 
-export const settings: Settings = {
+export const defaults: Settings = {
   config: false,
   configContent: encoder.encode("{\n\t\n}"),
   configOnly: false,
@@ -55,9 +55,11 @@ lcov/`,
   module: defaultModuleContent,
   path: ".",
   map: false,
-  mapContent: encoder.encode(`{
+  mapContent: encoder.encode(
+    `{
   "imports": {}
 }
-`),
+`,
+  ),
   testdriven: false,
 };

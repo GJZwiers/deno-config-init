@@ -1,6 +1,6 @@
 import { Rhum } from "./dev_deps.ts";
 import { hasFileExtension, writeFileSec } from "./utils.ts";
-import { settings } from "./settings.ts";
+import { defaults } from "./settings.ts";
 
 const testFilePath = "./foo.ts";
 const testDirPath = "./dir";
@@ -29,15 +29,15 @@ Rhum.testPlan("utils.test.ts", () => {
     );
 
     Rhum.testCase("should overwrite when the force flag is set", async () => {
-      settings.force = false;
+      defaults.force = false;
       await writeFileSec(testFilePath, testFileContent);
-      settings.force = true;
+      defaults.force = true;
       await writeFileSec(testFilePath, encoder.encode("bar"));
 
       const file = await Deno.readFile(testFilePath);
 
       Rhum.asserts.assertEquals(decoder.decode(file), "bar");
-      settings.force = false;
+      defaults.force = false;
     });
 
     Rhum.testCase("should warn when file already exists", async () => {

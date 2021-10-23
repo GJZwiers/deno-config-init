@@ -1,6 +1,6 @@
 import { Command } from "./deps.ts";
 import { act } from "./act.ts";
-import { settings } from "./settings.ts";
+import { defaults } from "./settings.ts";
 import { ask } from "./ask.ts";
 
 /**
@@ -58,19 +58,11 @@ await new Command()
     },
   )
   .action((options) => {
-    settings.config = options.config;
-    settings.configOnly = options.configOnly;
-    settings.force = options.force;
-    settings.git = options.git;
-    settings.map = options.map;
-    settings.path = options.name ?? ".";
-    settings.testdriven = options.tdd;
-
     if (options.yes === true) {
-      act();
+      act({ ...defaults, ...options });
     } else {
-      ask();
-      act();
+      const choices = ask(options);
+      act({ ...defaults, ...choices });
     }
   })
   .parse(Deno.args);
