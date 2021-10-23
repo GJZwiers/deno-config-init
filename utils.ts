@@ -1,4 +1,4 @@
-import { settings } from "./settings.ts";
+import { defaults } from "./settings.ts";
 
 /**
  * Attempts to write to a file, but warns instead of overwriting if it exists already.
@@ -8,7 +8,7 @@ async function writeFileSec(
   data: Uint8Array,
   options?: Deno.WriteFileOptions,
 ): Promise<void> {
-  if (settings.force) {
+  if (defaults.force) {
     return await Deno.writeFile(path, data, options);
   }
 

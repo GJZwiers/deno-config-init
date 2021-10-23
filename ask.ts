@@ -1,55 +1,60 @@
-import { settings } from "./settings.ts";
+import { defaults } from "./settings.ts";
 import { hasFileExtension } from "./utils.ts";
 
-export function ask() {
+export function ask(options: any) {
   const ts = prompt("Use TypeScript?", "y");
 
-  settings.extension = (ts === "y" || ts === "Y") ? "ts" : "js";
+  const extension = (ts === "y" || ts === "Y") ? "ts" : "js";
 
-  settings.entrypoint = prompt(
+  let entrypoint = prompt(
     `Set entrypoint:`,
-    `mod.${settings.extension}`,
+    `mod.${defaults.extension}`,
   ) ?? "mod";
 
-  settings.depsEntrypoint = prompt(
+  let depsEntrypoint = prompt(
     "Set dependency entrypoint:",
-    `deps.${settings.extension}`,
+    `deps.${defaults.extension}`,
   ) ?? "deps";
 
-  settings.devDepsEntrypoint = prompt(
+  let devDepsEntrypoint = prompt(
     "Set dev dependency entrypoint:",
-    `dev_deps.${settings.extension}`,
+    `dev_deps.${defaults.extension}`,
   ) ?? "dev_deps";
 
-  if (!settings.map) {
+  let map = false;
+  if (!options.map) {
     const importMap = prompt(
       "Add import map?",
       "n",
     );
-    settings.map = (importMap === "y" || importMap === "Y") ? true : false;
+    map = (importMap === "y" || importMap === "Y") ? true : false;
   }
 
-  if (!settings.config) {
-    const config = prompt(
+  let config = false;
+  if (!options.config) {
+    const withConfig = prompt(
       "Add Deno configuration file?",
       "n",
     );
-    settings.config = (config === "y" || config === "Y") ? true : false;
+    config = (withConfig === "y" || withConfig === "Y") ? true : false;
   }
 
-  if (hasFileExtension(settings.entrypoint, settings.extension) === false) {
-    settings.entrypoint = `${settings.entrypoint}.${settings.extension}`;
+  if (hasFileExtension(entrypoint, extension) === false) {
+    entrypoint = `${entrypoint}.${extension}`;
   }
 
-  if (hasFileExtension(settings.depsEntrypoint, settings.extension) === false) {
-    settings.depsEntrypoint =
-      `${settings.depsEntrypoint}.${settings.extension}`;
+  if (hasFileExtension(depsEntrypoint, extension) === false) {
+    depsEntrypoint =
+      `${depsEntrypoint}.${extension}`;
   }
 
   if (
-    hasFileExtension(settings.devDepsEntrypoint, settings.extension) === false
+    hasFileExtension(devDepsEntrypoint, extension) === false
   ) {
-    settings.devDepsEntrypoint =
-      `${settings.devDepsEntrypoint}.${settings.extension}`;
+    devDepsEntrypoint =
+      `${devDepsEntrypoint}.${extension}`;
   }
+
+  const opts = { extension, entrypoint, depsEntrypoint, devDepsEntrypoint, map, config };
+  return opts;
 }
