@@ -1,6 +1,7 @@
 import { defaults } from "./settings.ts";
 import { hasFileExtension } from "./utils.ts";
 
+// deno-lint-ignore no-explicit-any
 export function ask(options: any) {
   const ts = prompt("Use TypeScript?", "y");
 
