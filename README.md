@@ -10,10 +10,16 @@ prompts.
 
 ## Quickstart
 
-```bash
-deno install --allow-read --allow-run=git --allow-write --unstable --name deno-init https://deno.land/x/init@v1.4.0/mod.ts
+```
+deno install --allow-read --allow-run=git --allow-write --name deno-init https://deno.land/x/init@v1.4.0/mod.ts
 
 deno-init -y --name awesome_deno_project
+```
+
+## Quickerstart (no install)
+
+```
+deno run --allow-read --allow-run=git --allow-write https://raw.githubusercontent.com/GJZwiers/deno-init/v1.4.0/mod.ts -y -n awesome_deno_project
 ```
 
 ## Table of Contents
@@ -29,43 +35,19 @@ deno-init -y --name awesome_deno_project
 First install `deno` and make sure it is available on a terminal. `git` is also
 recommended though not required.
 
-Next, run the `deno install` command below to install the executable:
+Next, run `deno install` to install the CLI:
 
-<details open>
-<summary>deno.land</summary>
-<p>
-
-```bash
+```
 deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://deno.land/x/init@v1.4.0/mod.ts
 ```
 
-</p>
-</details>
+You can install `deno-init` from a GitHub raw URL with a tag as well, or without one to get the latest and greatest (though also unreleased) version:
 
-<details>
-<summary>nest.land</summary>
-<p>
-
-```bash
-deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://x.nest.land/init@v1.4.0/mod.ts
 ```
-
-</p>
-</details>
-
-<details>
-<summary>github</summary>
-<p>
-
-```bash
 deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://raw.githubusercontent.com/GJZwiers/deno-init/main/mod.ts
 ```
 
-</p>
-</details>
-
-If you have an older version and would like to upgrade, run the command with the
-new version number and include the `-f` flag.
+To upgrade, run the command with a new version number and include `-f`.
 
 ## Permissions
 
@@ -80,7 +62,7 @@ The program needs the following permissions to run:
 
 ## Basic Usage
 
-```bash
+```
 deno-init
 ```
 
@@ -118,14 +100,14 @@ where not all of the files above are present yet.
 `--yes` or `-y` will initialize the project in the current working directory
 with all the defaults, skipping the prompts:
 
-```bash
+```
 deno-init --yes
 ```
 
 `--name` or `-n` will initialize the project in a new directory in the current
 working directory:
 
-```bash
+```
 deno-init --name my_project
 ```
 
@@ -143,41 +125,41 @@ will make any missing directories along the way.
 
 `--map` or `-m` will add an (empty) `import_map.json` file to the project:
 
-```bash
+```
 deno-init --map
 ```
 
 `--config` or `-c` will add an (empty) `deno.json` file to the project:
 
-```bash
+```
 deno-init --config
 ```
 
 `--config-only` or `-o` will add _only_ a `deno.json` file to the project. Note
 that this also disables running `git init`:
 
-```bash
+```
 deno-init --config-only
 ```
 
 `--tdd` or `-t` will include a `.test` file to get started with a test-driven
 project, such as `mod.test.ts`:
 
-```bash
+```
 deno-init --tdd
 ```
 
 `--force` or `-f` will allow the program to overwrite existing files. This can
 be helpful to re-initialize but use with caution.
 
-```bash
+```
 deno-init --force
 ```
 
 `--no-git` will disable running `git init` as part of the project
 initialization.
 
-```bash
+```
 deno-init --no-git
 ```
 
@@ -189,4 +171,4 @@ deno-init --ascii
 
 ## Contributing
 
-Feel free to submit a bug report, issue or feature request.
+Feel free to submit a bug report, issue or feature request!
