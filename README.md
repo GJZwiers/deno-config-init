@@ -181,6 +181,12 @@ initialization.
 deno-init --no-git
 ```
 
+`--ascii` will draw an ASCII Deno to the screen!
+
+```
+deno-init --ascii
+```
+
 ## Contributing
 
 Feel free to submit a bug report, issue or feature request.
