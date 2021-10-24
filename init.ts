@@ -8,7 +8,7 @@ import { ask } from "./ask.ts";
  */
 await new Command()
   .name("deno-init")
-  .version("v1.4.0")
+  .version("v1.5.0")
   .description("Start a new Deno project with a single command")
   .option(
     "-c, --config [config:boolean]",
