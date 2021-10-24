@@ -38,14 +38,14 @@ recommended though not required.
 Next, run `deno install` to install the CLI:
 
 ```
-deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://deno.land/x/init@v1.4.0/mod.ts
+deno install --allow-read --allow-run=git --allow-write -n deno-init https://deno.land/x/init@v1.4.0/mod.ts
 ```
 
 You can install `deno-init` from a GitHub raw URL with a tag as well, or without
 one to get the latest and greatest (though also unreleased) version:
 
 ```
-deno install --allow-read --allow-run=git --allow-write --unstable -n deno-init https://raw.githubusercontent.com/GJZwiers/deno-init/main/mod.ts
+deno install --allow-read --allow-run=git --allow-write -n deno-init https://raw.githubusercontent.com/GJZwiers/deno-init/main/mod.ts
 ```
 
 To upgrade, run the command with a new version number and include `-f`.
