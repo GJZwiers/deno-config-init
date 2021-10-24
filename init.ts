@@ -58,7 +58,7 @@ await new Command()
     },
   )
   .option(
-    "-a, --ascii [deno:boolean]",
+    "-a, --ascii [ascii:boolean]",
     "Initialize an ASCII Deno to the screen!",
     {
       default: false,
