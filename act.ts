@@ -4,6 +4,7 @@ import {
   defaultTestModuleContent,
   Settings,
 } from "./settings.ts";
+import { asciiDeno } from "./ascii.ts";
 
 async function addProjectFile(filename: string, content: Uint8Array) {
   await writeFileSec(
@@ -13,34 +14,34 @@ async function addProjectFile(filename: string, content: Uint8Array) {
 }
 
 export async function act(settings: Settings) {
-  if (settings.path !== ".") {
-    await Deno.mkdir(settings.path, { recursive: true });
+  if (settings.name !== ".") {
+    await Deno.mkdir(settings.name, { recursive: true });
   }
 
   if (settings.map === true) {
     await addProjectFile(
-      settings.path + "/import_map.json",
+      settings.name + "/import_map.json",
       settings.mapContent,
     );
   }
 
   if (settings.config === true || settings.configOnly === true) {
-    await addProjectFile(settings.path + "/deno.json", settings.configContent);
+    await addProjectFile(settings.name + "/deno.json", settings.configContent);
   }
 
   if (!settings.configOnly) {
     await addProjectFile(
-      settings.path + "/" + settings.entrypoint,
+      settings.name + "/" + settings.entrypoint,
       defaultModuleContent,
     );
 
     await addProjectFile(
-      settings.path + "/" + settings.depsEntrypoint,
+      settings.name + "/" + settings.depsEntrypoint,
       defaultModuleContent,
     );
 
     await addProjectFile(
-      settings.path + "/" + settings.devDepsEntrypoint,
+      settings.name + "/" + settings.devDepsEntrypoint,
       defaultModuleContent,
     );
 
@@ -52,26 +53,37 @@ export async function act(settings: Settings) {
         },
       );
       await addProjectFile(
-        settings.path + "/" + testFileName,
+        settings.name + "/" + testFileName,
         defaultTestModuleContent,
       );
     }
 
     if (settings.git === true) {
-      await initGit(settings.path);
+      await initGit(settings.name);
     }
 
     await addProjectFile(
-      settings.path + "/" + settings.gitignore,
+      settings.name + "/" + settings.gitignore,
       settings.gitignoreContent,
     );
+
+    if (settings.ascii === true) {
+      const lines = asciiDeno.split(/\n/);
+      let i = 0;
+      for (const line of lines) {
+        i += 50;
+        setTimeout(() => {
+          console.log(line);
+        }, 250 + i);
+      }
+    }
   }
 }
 
-async function initGit(path: string) {
+async function initGit(name: string) {
   try {
     await runCommand(Deno.run({
-      cmd: ["git", "init", path],
+      cmd: ["git", "init", name],
     }));
   } catch (error) {
     console.warn(
