@@ -1,4 +1,5 @@
 export interface Settings {
+  ascii: boolean;
   config: boolean;
   configOnly: boolean;
   depsEntrypoint: string;
@@ -11,7 +12,7 @@ export interface Settings {
   module: Uint8Array;
   force: boolean;
   git: boolean;
-  path: string;
+  name: string;
   map: boolean;
   mapContent: Uint8Array;
   configContent: Uint8Array;
@@ -34,6 +35,7 @@ Deno.test({
 );
 
 export const defaults: Settings = {
+  ascii: false,
   config: false,
   configContent: encoder.encode("{\n\t\n}"),
   configOnly: false,
@@ -53,7 +55,7 @@ cov/
 lcov/`,
   ),
   module: defaultModuleContent,
-  path: ".",
+  name: ".",
   map: false,
   mapContent: encoder.encode(
     `{

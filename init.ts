@@ -57,6 +57,13 @@ await new Command()
       default: false,
     },
   )
+  .option(
+    "-a, --ascii [ascii:boolean]",
+    "Initialize an ASCII Deno to the screen!",
+    {
+      default: false,
+    },
+  )
   .action((options) => {
     if (options.yes === true) {
       act({ ...defaults, ...options });

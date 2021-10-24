@@ -29,14 +29,14 @@ Deno.test("runCommand()", async (t) => {
 const settingsMock = self.structuredClone(defaults);
 
 Deno.test("act()", async (t) => {
-  settingsMock.path = "test_directory_act";
+  settingsMock.name = "test_directory_act";
 
   const beforeEach = async () => {
-    await Deno.mkdir(settingsMock.path, { recursive: true });
+    await Deno.mkdir(settingsMock.name, { recursive: true });
   };
 
   const afterEach = async () => {
-    await Deno.remove(settingsMock.path, { recursive: true });
+    await Deno.remove(settingsMock.name, { recursive: true });
     settingsMock.config = false;
     settingsMock.configOnly = false;
     settingsMock.git = false;
@@ -52,7 +52,7 @@ Deno.test("act()", async (t) => {
 
       await act(settingsMock);
 
-      assert(`${settingsMock.path}/.git`);
+      assert(`${settingsMock.name}/.git`);
 
       await afterEach();
     },
@@ -68,7 +68,7 @@ Deno.test("act()", async (t) => {
       await act(settingsMock);
 
       const mapFile = await Deno.readFile(
-        `${settingsMock.path}/import_map.json`,
+        `${settingsMock.name}/import_map.json`,
       );
 
       assert(mapFile);
@@ -87,7 +87,7 @@ Deno.test("act()", async (t) => {
       await act(settingsMock);
 
       const configFile = await Deno.readFile(
-        `${settingsMock.path}/deno.json`,
+        `${settingsMock.name}/deno.json`,
       );
 
       assert(configFile);
@@ -106,7 +106,7 @@ Deno.test("act()", async (t) => {
       await act(settingsMock);
 
       const mapFile = await Deno.readFile(
-        `${settingsMock.path}/mod.test.ts`,
+        `${settingsMock.name}/mod.test.ts`,
       );
 
       assert(mapFile);
@@ -125,19 +125,19 @@ Deno.test("act()", async (t) => {
       await act(settingsMock);
 
       const configFile = await Deno.readFile(
-        `${settingsMock.path}/deno.json`,
+        `${settingsMock.name}/deno.json`,
       );
 
       assert(configFile);
 
       await assertThrowsAsync(async () => {
-        await Deno.readFile(`${settingsMock.path}/mod.ts`);
+        await Deno.readFile(`${settingsMock.name}/mod.ts`);
       });
       await assertThrowsAsync(async () => {
-        await Deno.readFile(`${settingsMock.path}/deps.ts`);
+        await Deno.readFile(`${settingsMock.name}/deps.ts`);
       });
       await assertThrowsAsync(async () => {
-        await Deno.readFile(`${settingsMock.path}/dev_deps.ts`);
+        await Deno.readFile(`${settingsMock.name}/dev_deps.ts`);
       });
 
       await afterEach();
