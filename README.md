@@ -11,7 +11,7 @@ prompts.
 ## Quickstart
 
 ```
-deno install --allow-read --allow-run=git --allow-write --name deno-init https://deno.land/x/init@v1.5.0/mod.ts
+deno install --allow-read --allow-run=git --allow-write --name deno-init https://deno.land/x/init@v1.5.2/mod.ts
 
 deno-init -y --name awesome_deno_project
 ```
@@ -19,7 +19,7 @@ deno-init -y --name awesome_deno_project
 ## Quickerstart (no install)
 
 ```
-deno run --allow-read --allow-run=git --allow-write https://raw.githubusercontent.com/GJZwiers/deno-init/v1.5.0/mod.ts -y -n awesome_deno_project
+deno run --allow-read --allow-run=git --allow-write https://raw.githubusercontent.com/GJZwiers/deno-init/v1.5.2/mod.ts -y -n awesome_deno_project
 ```
 
 ## Table of Contents
@@ -38,7 +38,7 @@ recommended though not required.
 Next, run `deno install` to install the CLI:
 
 ```
-deno install --allow-read --allow-run=git --allow-write -n deno-init https://deno.land/x/init@v1.5.0/mod.ts
+deno install --allow-read --allow-run=git --allow-write -n deno-init https://deno.land/x/init@v1.5.2/mod.ts
 ```
 
 You can install `deno-init` from a GitHub raw URL with a tag as well, or without
