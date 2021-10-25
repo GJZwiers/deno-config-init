@@ -61,8 +61,8 @@ export function ask(options: any) {
     devDepsEntrypoint,
     map,
     config,
-    ...options
+    ...options,
   };
-  
+
   return opts;
 }
