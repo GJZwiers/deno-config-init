@@ -2,8 +2,8 @@ import { assert, assertEquals, assertThrowsAsync } from "./dev_deps.ts";
 import { act, runCommand } from "./act.ts";
 import { defaults } from "./settings.ts";
 
-Deno.test("runCommand()", async (t) => {
-  await t.step(
+Deno.test("runCommand()", async (test) => {
+  await test.step(
     "should return true when a command's exit code is 0",
     async () => {
       const cmd = Deno.run({
@@ -14,7 +14,7 @@ Deno.test("runCommand()", async (t) => {
     },
   );
 
-  await t.step(
+  await test.step(
     "should return false when a command's exit code is greater than 0",
     async () => {
       const cmd = Deno.run({
@@ -28,7 +28,7 @@ Deno.test("runCommand()", async (t) => {
 
 const settingsMock = self.structuredClone(defaults);
 
-Deno.test("act()", async (t) => {
+Deno.test("act()", async (test) => {
   settingsMock.name = "test_directory_act";
 
   const beforeEach = async () => {
@@ -43,7 +43,7 @@ Deno.test("act()", async (t) => {
     settingsMock.map = false;
   };
 
-  await t.step(
+  await test.step(
     "should init git if settings.git is true",
     async () => {
       await beforeEach();
@@ -58,7 +58,7 @@ Deno.test("act()", async (t) => {
     },
   );
 
-  await t.step(
+  await test.step(
     "should create import_map.json if setting.map is true",
     async () => {
       await beforeEach();
@@ -77,7 +77,7 @@ Deno.test("act()", async (t) => {
     },
   );
 
-  await t.step(
+  await test.step(
     "should create deno.json if setting.config is true",
     async () => {
       await beforeEach();
@@ -96,7 +96,7 @@ Deno.test("act()", async (t) => {
     },
   );
 
-  await t.step(
+  await test.step(
     "should create .test file for module entrypoint if settings.testdriven is true",
     async () => {
       await beforeEach();
@@ -115,7 +115,7 @@ Deno.test("act()", async (t) => {
     },
   );
 
-  await t.step(
+  await test.step(
     "should only create configuration file(s) and no module entrypoints if settings.configOnly is true",
     async () => {
       await beforeEach();
