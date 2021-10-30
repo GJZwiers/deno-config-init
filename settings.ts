@@ -1,22 +1,43 @@
-export interface Settings {
+import { addProjectFile, initGit } from "./act.ts";
+
+export interface FileContentSettings {
+  configContent: Uint8Array;
+  depsModuleContent: Uint8Array;
+  gitignoreContent: Uint8Array;
+  mapContent: Uint8Array;
+  moduleContent: Uint8Array;
+}
+
+export interface FlagSettings {
   ascii: boolean;
   config: boolean;
   configOnly: boolean;
-  depsEntrypoint: string;
-  devDepsEntrypoint: string;
-  depsModule: Uint8Array;
-  entrypoint: string;
-  extension: string;
-  gitignore: string;
-  gitignoreContent: Uint8Array;
-  module: Uint8Array;
   force: boolean;
   git: boolean;
-  name: string;
   map: boolean;
-  mapContent: Uint8Array;
-  configContent: Uint8Array;
   testdriven: boolean;
+}
+
+export interface InsertableTestSpies {
+  initGit: (name: string) => Promise<void>;
+  addProjectFile: (filename: string, content: Uint8Array) => Promise<void>;
+}
+
+export interface FileNameSettings {
+  depsEntrypoint: string;
+  devDepsEntrypoint: string;
+  entrypoint: string;
+  gitignore: string;
+}
+
+export interface Settings
+  extends
+    FlagSettings,
+    FileContentSettings,
+    FileNameSettings,
+    InsertableTestSpies {
+  extension: string;
+  name: string;
 }
 
 const encoder = new TextEncoder();
@@ -43,7 +64,7 @@ export const defaults: Settings = {
   entrypoint: "mod.ts",
   depsEntrypoint: "deps.ts",
   devDepsEntrypoint: "dev_deps.ts",
-  depsModule: defaultModuleContent,
+  depsModuleContent: defaultModuleContent,
   force: false,
   git: true,
   gitignore: ".gitignore",
@@ -54,7 +75,7 @@ coverage/
 cov/
 lcov/`,
   ),
-  module: defaultModuleContent,
+  moduleContent: defaultModuleContent,
   name: ".",
   map: false,
   mapContent: encoder.encode(
@@ -64,4 +85,6 @@ lcov/`,
 `,
   ),
   testdriven: false,
+  initGit: initGit,
+  addProjectFile: addProjectFile,
 };
