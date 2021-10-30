@@ -1,5 +1,5 @@
 import { assert, assertEquals, assertThrowsAsync } from "./dev_deps.ts";
-import { act, addProjectFile, initGit, runCommand } from "./act.ts";
+import { act, runCommand } from "./act.ts";
 import { defaults } from "./settings.ts";
 import sinon from "https://cdn.skypack.dev/sinon@11.1.2?dts";
 
@@ -9,7 +9,7 @@ Deno.test("runCommand()", async (test) => {
     async () => {
       const cmd = Deno.run({
         cmd: ["git", "init"],
-        stdout: "null"
+        stdout: "null",
       });
 
       assertEquals(await runCommand(cmd), true);
@@ -21,7 +21,7 @@ Deno.test("runCommand()", async (test) => {
     async () => {
       const cmd = Deno.run({
         cmd: ["git", "checkout", "foo"],
-        stderr: "null"
+        stderr: "null",
       });
 
       assertEquals(await runCommand(cmd), false);
@@ -52,11 +52,9 @@ Deno.test("act()", async (test) => {
       await beforeEach();
 
       defaults.git = true;
-      defaults.fn = initGit;
-      defaults.addProjectFile = addProjectFile;
 
       //const spy = sinon.spy(initGit);
-      const spy = sinon.spy(defaults, "fn");
+      const spy = sinon.spy(defaults, "initGit");
 
       const addSpy = sinon.spy(defaults, "addProjectFile");
 

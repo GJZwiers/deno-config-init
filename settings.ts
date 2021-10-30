@@ -19,7 +19,7 @@ export interface FlagSettings {
 }
 
 export interface InsertableTestSpies {
-  fn: (name: string) => Promise<void>;
+  initGit: (name: string) => Promise<void>;
   addProjectFile: (filename: string, content: Uint8Array) => Promise<void>;
 }
 
@@ -85,6 +85,6 @@ lcov/`,
 `,
   ),
   testdriven: false,
-  fn: initGit,
-  addProjectFile: addProjectFile
+  initGit: initGit,
+  addProjectFile: addProjectFile,
 };

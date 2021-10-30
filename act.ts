@@ -26,7 +26,10 @@ export async function act(settings: Settings) {
   }
 
   if (settings.config === true || settings.configOnly === true) {
-    await settings.addProjectFile(settings.name + "/deno.json", settings.configContent);
+    await settings.addProjectFile(
+      settings.name + "/deno.json",
+      settings.configContent,
+    );
   }
 
   if (!settings.configOnly) {
@@ -59,7 +62,7 @@ export async function act(settings: Settings) {
     }
 
     if (settings.git === true) {
-      await settings.fn(settings.name);
+      await settings.initGit(settings.name);
     }
 
     await settings.addProjectFile(
