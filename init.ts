@@ -64,7 +64,7 @@ await new Command()
       default: false,
     },
   )
-  .action((options) => {
+  .action(options => {
     if (options.yes === true) {
       act({ ...defaults, ...options });
     } else {
