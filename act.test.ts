@@ -1,13 +1,15 @@
 import { assert, assertEquals, assertThrowsAsync } from "./dev_deps.ts";
-import { act, runCommand } from "./act.ts";
+import { act, addProjectFile, initGit, runCommand } from "./act.ts";
 import { defaults } from "./settings.ts";
+import sinon from "https://cdn.skypack.dev/sinon@11.1.2?dts";
 
 Deno.test("runCommand()", async (test) => {
   await test.step(
-    "should return true when a command's exit code is 0",
+    "return true when a command's exit code is 0",
     async () => {
       const cmd = Deno.run({
         cmd: ["git", "init"],
+        stdout: "null"
       });
 
       assertEquals(await runCommand(cmd), true);
@@ -15,10 +17,11 @@ Deno.test("runCommand()", async (test) => {
   );
 
   await test.step(
-    "should return false when a command's exit code is greater than 0",
+    "return false when a command's exit code is greater than 0",
     async () => {
       const cmd = Deno.run({
         cmd: ["git", "checkout", "foo"],
+        stderr: "null"
       });
 
       assertEquals(await runCommand(cmd), false);
@@ -26,49 +29,61 @@ Deno.test("runCommand()", async (test) => {
   );
 });
 
-const settingsMock = self.structuredClone(defaults);
+// const defaults = self.structuredClone(defaults);
 
 Deno.test("act()", async (test) => {
-  settingsMock.name = "test_directory_act";
+  defaults.name = "test_directory_act";
 
   const beforeEach = async () => {
-    await Deno.mkdir(settingsMock.name, { recursive: true });
+    await Deno.mkdir(defaults.name, { recursive: true });
   };
 
   const afterEach = async () => {
-    await Deno.remove(settingsMock.name, { recursive: true });
-    settingsMock.config = false;
-    settingsMock.configOnly = false;
-    settingsMock.git = false;
-    settingsMock.map = false;
+    await Deno.remove(defaults.name, { recursive: true });
+    defaults.config = false;
+    defaults.configOnly = false;
+    defaults.git = false;
+    defaults.map = false;
   };
 
   await test.step(
-    "should init git if settings.git is true",
+    "initialize git if settings.git is true",
     async () => {
       await beforeEach();
 
-      settingsMock.git = true;
+      defaults.git = true;
+      defaults.fn = initGit;
+      defaults.addProjectFile = addProjectFile;
 
-      await act(settingsMock);
+      //const spy = sinon.spy(initGit);
+      const spy = sinon.spy(defaults, "fn");
 
-      assert(`${settingsMock.name}/.git`);
+      const addSpy = sinon.spy(defaults, "addProjectFile");
+
+      await act(defaults);
+
+      assertEquals(spy.called, true);
+
+      assertEquals(addSpy.called, true);
+      assertEquals(addSpy.getCalls().length, 4);
+
+      assert(`${defaults.name}/.git`);
 
       await afterEach();
     },
   );
 
   await test.step(
-    "should create import_map.json if setting.map is true",
+    "create import_map.json if settings.map is true",
     async () => {
       await beforeEach();
 
-      settingsMock.map = true;
+      defaults.map = true;
 
-      await act(settingsMock);
+      await act(defaults);
 
       const mapFile = await Deno.readFile(
-        `${settingsMock.name}/import_map.json`,
+        `${defaults.name}/import_map.json`,
       );
 
       assert(mapFile);
@@ -78,16 +93,16 @@ Deno.test("act()", async (test) => {
   );
 
   await test.step(
-    "should create deno.json if setting.config is true",
+    "create deno.json if settings.config is true",
     async () => {
       await beforeEach();
 
-      settingsMock.config = true;
+      defaults.config = true;
 
-      await act(settingsMock);
+      await act(defaults);
 
       const configFile = await Deno.readFile(
-        `${settingsMock.name}/deno.json`,
+        `${defaults.name}/deno.json`,
       );
 
       assert(configFile);
@@ -97,16 +112,16 @@ Deno.test("act()", async (test) => {
   );
 
   await test.step(
-    "should create .test file for module entrypoint if settings.testdriven is true",
+    "create .test file for module entrypoint if settings.testdriven is true",
     async () => {
       await beforeEach();
 
-      settingsMock.testdriven = true;
+      defaults.testdriven = true;
 
-      await act(settingsMock);
+      await act(defaults);
 
       const mapFile = await Deno.readFile(
-        `${settingsMock.name}/mod.test.ts`,
+        `${defaults.name}/mod.test.ts`,
       );
 
       assert(mapFile);
@@ -116,28 +131,28 @@ Deno.test("act()", async (test) => {
   );
 
   await test.step(
-    "should only create configuration file(s) and no module entrypoints if settings.configOnly is true",
+    "only create configuration file(s) and no module entrypoints if settings.configOnly is true",
     async () => {
       await beforeEach();
 
-      settingsMock.configOnly = true;
+      defaults.configOnly = true;
 
-      await act(settingsMock);
+      await act(defaults);
 
       const configFile = await Deno.readFile(
-        `${settingsMock.name}/deno.json`,
+        `${defaults.name}/deno.json`,
       );
 
       assert(configFile);
 
       await assertThrowsAsync(async () => {
-        await Deno.readFile(`${settingsMock.name}/mod.ts`);
+        await Deno.readFile(`${defaults.name}/mod.ts`);
       });
       await assertThrowsAsync(async () => {
-        await Deno.readFile(`${settingsMock.name}/deps.ts`);
+        await Deno.readFile(`${defaults.name}/deps.ts`);
       });
       await assertThrowsAsync(async () => {
-        await Deno.readFile(`${settingsMock.name}/dev_deps.ts`);
+        await Deno.readFile(`${defaults.name}/dev_deps.ts`);
       });
 
       await afterEach();

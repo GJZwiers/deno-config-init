@@ -6,7 +6,7 @@ import {
 } from "./settings.ts";
 import { asciiDeno } from "./ascii.ts";
 
-async function addProjectFile(filename: string, content: Uint8Array) {
+export async function addProjectFile(filename: string, content: Uint8Array) {
   await writeFileSec(
     filename,
     content,
@@ -19,28 +19,28 @@ export async function act(settings: Settings) {
   }
 
   if (settings.map === true) {
-    await addProjectFile(
+    await settings.addProjectFile(
       settings.name + "/import_map.json",
       settings.mapContent,
     );
   }
 
   if (settings.config === true || settings.configOnly === true) {
-    await addProjectFile(settings.name + "/deno.json", settings.configContent);
+    await settings.addProjectFile(settings.name + "/deno.json", settings.configContent);
   }
 
   if (!settings.configOnly) {
-    await addProjectFile(
+    await settings.addProjectFile(
       settings.name + "/" + settings.entrypoint,
       defaultModuleContent,
     );
 
-    await addProjectFile(
+    await settings.addProjectFile(
       settings.name + "/" + settings.depsEntrypoint,
       defaultModuleContent,
     );
 
-    await addProjectFile(
+    await settings.addProjectFile(
       settings.name + "/" + settings.devDepsEntrypoint,
       defaultModuleContent,
     );
@@ -52,17 +52,17 @@ export async function act(settings: Settings) {
           return p1 + ".test." + settings.extension;
         },
       );
-      await addProjectFile(
+      await settings.addProjectFile(
         settings.name + "/" + testFileName,
         defaultTestModuleContent,
       );
     }
 
     if (settings.git === true) {
-      await initGit(settings.name);
+      await settings.fn(settings.name);
     }
 
-    await addProjectFile(
+    await settings.addProjectFile(
       settings.name + "/" + settings.gitignore,
       settings.gitignoreContent,
     );
@@ -80,7 +80,7 @@ export async function act(settings: Settings) {
   }
 }
 
-async function initGit(name: string) {
+export async function initGit(name: string) {
   try {
     await runCommand(Deno.run({
       cmd: ["git", "init", name],
