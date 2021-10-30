@@ -54,10 +54,9 @@ To upgrade, run the command with a new version number and include `-f`.
 
 The program needs the following permissions to run:
 
-- `read`: to load files that are used to initialize projects
-- `run=git`: is used to allow the program to run `git` commands, of which only
-  `git init` is actually called by `deno-init`
-- `write`: to make files in order to initialize new projects
+- `read`: to check if files already exists before writing
+- `run=git`: to run `git` commands, more specifically `git init`
+- `write`: to make files as part of the project initialization
 
 ## Basic Usage
 
