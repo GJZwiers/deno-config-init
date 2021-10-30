@@ -58,8 +58,6 @@ The program needs the following permissions to run:
 - `run=git`: is used to allow the program to run `git` commands, of which only
   `git init` is actually called by `deno-init`
 - `write`: to make files in order to initialize new projects
-- `unstable`: to allow the use of unstable APIs. Right now these come from the
-  module's external dependencies.
 
 ## Basic Usage
 
