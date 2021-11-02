@@ -73,7 +73,8 @@ export const defaults: Settings = {
 .vscode/
 coverage/
 cov/
-lcov/`,
+lcov/
+target/`,
   ),
   moduleContent: defaultModuleContent,
   name: ".",
