@@ -1,4 +1,6 @@
-> This project's development has continued under a different name. You can find the new project [here](https://github.com/GJZwiers/mod). This module is still usable, but it's no longer maintained.
+> This project's development has continued under a different name. You can find
+> the new project [here](https://github.com/GJZwiers/mod). This module is still
+> usable, but it's no longer maintained.
 
 # init
 
