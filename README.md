@@ -10,7 +10,7 @@
 `deno-init` initializes a Deno configuration file from the command line.
 
 Previous versions also initialized entrypoints, but that functionality has been
-moved to a different [project](https://github.com/GJZwiers/mod). From v2.0.0
+moved to a different [project](https://github.com/GJZwiers/mod). From v2.0.1
 onwards this module is purely for generating config.
 
 ## Table of Contents
@@ -23,7 +23,7 @@ onwards this module is purely for generating config.
 ## Installation
 
 ```
-deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.0.0/mod.ts
+deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.0.1/mod.ts
 ```
 
 ## Usage
