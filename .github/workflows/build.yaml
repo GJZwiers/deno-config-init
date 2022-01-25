@@ -1,47 +1,50 @@
-name: Build
+name: build
 
-on:
-  push:
-  pull_request:
-    types: [ opened, edited, reopened, review_requested ]
+on: push
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.canary }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
-        # deno-version: [vx.x.x, canary]
+        os: [ ubuntu-20.04, macos-11, windows-2019 ]
+        deno-version: [ v1.x ]
+        canary: [ false ]
+        include:
+          - deno-version: canary
+            os: ubuntu-18.04
+            canary: true
+    env:
+      DENO_DIR: deno_dir
+
     steps:
       - name: Configure line-endings for Windows builds
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: matrix.os == 'windows-2019'
         run: |
           git config --system core.autocrlf false
           git config --system core.eol lf
 
-      - name: Setup Actions
-        uses: actions/checkout@v2
-
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1.1.0
+      - uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1.1.0
         with:
-          deno-version: v1.x.x
+          deno-version: ${{ matrix.deno-version }}
 
-      - name: Check formatting
-        run: deno fmt --check
+      - run: deno fmt --check
+      - run: deno lint
 
-      - name: Analyze code with Deno linter
-        run: deno lint
+      - name: Cache DENO_DIR
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.DENO_DIR }}
+          key: ${{ hashFiles('lock.json') }}
 
-      - name: Run unit tests
-        run: deno test -A --coverage=cov --doc --unstable
+      - run: deno test --allow-read --allow-write --lock=lock.json --coverage=cov
 
-      - name: Generate coverage report
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+      - if: matrix.os == 'ubuntu-20.04'
         run: deno coverage --lcov cov > cov.lcov
 
-      - name: Upload coverage report
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+      - if: matrix.os == 'ubuntu-20.04'
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

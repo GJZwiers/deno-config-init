@@ -1,9 +1,9 @@
 {
   "name": "init",
   "entry": "./mod.ts",
-  "description": "Simple command line tool to initialize Deno projects from prompts.",
+  "description": "Generate a Deno configuration file.",
   "unstable": false,
-  "version": "v1.5.2",
+  "version": "v2.0.0",
   "files": [
     "./**/*.ts",
     "./README.md",

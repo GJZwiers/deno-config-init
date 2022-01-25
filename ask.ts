@@ -1,68 +1,50 @@
-import { defaults } from "./settings.ts";
-import { hasFileExtension } from "./utils.ts";
+import { defaults } from "./writeConfigFile.ts";
 
-// deno-lint-ignore no-explicit-any
-export function ask(options: any) {
-  const ts = prompt("Use TypeScript?", "y");
+export function ask() {
+  const tsconfigResponse = prompt(
+    `Would you like to add custom TypeScript configuration? (y/n)`,
+    `y`,
+  );
 
-  const extension = (ts === "y" || ts === "Y") ? "ts" : "js";
+  const tsconfig = processResponse(tsconfigResponse, defaults.linting);
 
-  let entrypoint = prompt(
-    `Set entrypoint:`,
-    `mod.${defaults.extension}`,
-  ) ?? "mod";
+  const lintingResponse = prompt(
+    "Would you like to add custom linter configuration? (y/n)",
+    `y`,
+  );
 
-  let depsEntrypoint = prompt(
-    "Set dependency entrypoint:",
-    `deps.${defaults.extension}`,
-  ) ?? "deps";
+  const linting = processResponse(lintingResponse, defaults.linting);
 
-  let devDepsEntrypoint = prompt(
-    "Set dev dependency entrypoint:",
-    `dev_deps.${defaults.extension}`,
-  ) ?? "dev_deps";
+  const formattingResponse = prompt(
+    "Would you like to add custom formatter configuration? (y/n)",
+    `y`,
+  );
 
-  let map = false;
-  if (!options.map) {
-    const importMap = prompt(
-      "Add import map?",
-      "n",
-    );
-    map = (importMap === "y" || importMap === "Y") ? true : false;
-  }
+  const formatting = processResponse(formattingResponse, defaults.formatting);
 
-  let config = false;
-  if (!options.config) {
-    const withConfig = prompt(
-      "Add Deno configuration file?",
-      "n",
-    );
-    config = (withConfig === "y" || withConfig === "Y") ? true : false;
-  }
-
-  if (hasFileExtension(entrypoint, extension) === false) {
-    entrypoint = `${entrypoint}.${extension}`;
-  }
-
-  if (hasFileExtension(depsEntrypoint, extension) === false) {
-    depsEntrypoint = `${depsEntrypoint}.${extension}`;
-  }
-
-  if (
-    hasFileExtension(devDepsEntrypoint, extension) === false
-  ) {
-    devDepsEntrypoint = `${devDepsEntrypoint}.${extension}`;
-  }
-
-  const opts = {
-    extension,
-    entrypoint,
-    depsEntrypoint,
-    devDepsEntrypoint,
-    map,
-    config,
-    ...options,
+  const settings = {
+    tsconfig,
+    linting,
+    formatting,
   };
 
-  return opts;
+  return settings;
+}
+
+export function processResponse(
+  response: string | null,
+  defaultValue: boolean,
+): boolean {
+  let v;
+  if (!response) {
+    v = defaultValue;
+  } else if (/y(?:es)?/i.test(response)) {
+    v = true;
+  } else if (/n(?:o)?/i.test(response)) {
+    v = false;
+  } else {
+    v = defaultValue;
+  }
+
+  return v;
 }

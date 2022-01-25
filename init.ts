@@ -1,75 +1,31 @@
 import { Command } from "./deps.ts";
-import { act } from "./act.ts";
-import { defaults } from "./settings.ts";
+import { defaults, writeConfigFile } from "./writeConfigFile.ts";
 import { ask } from "./ask.ts";
 
-/**
- * Main CLI command, as of right now the CLI does not have sub-commands.
- */
 await new Command()
   .name("deno-init")
-  .version("v1.5.2")
-  .description("Start a new Deno project with a single command")
-  .option(
-    "-c, --config [config:boolean]",
-    "Add a Deno.json configuration file as part of the project.",
-    {
-      default: false,
-    },
-  )
-  .option(
-    "-o, --config-only [configOnly:boolean]",
-    "Make only a Deno.json configuration file.",
-    {
-      default: false,
-    },
-  )
-  .option(
-    "-f, --force [force:boolean]",
-    "Force overwrite of existing files/directories. Helpful to re-initialize, but use with caution!",
-  )
-  .option(
-    "-m, --map [map:boolean]",
-    "Add an import map as part of the project",
-    {
-      default: false,
-    },
-  )
-  .option(
-    "--no-git [git:boolean]",
-    "Do not initialize a local Git repository for the project",
-  )
+  .version("v2.0.0")
+  .description("Generate a Deno configuration file.")
   .option(
     "-n, --name [name:string]",
-    "Create the project in a new directory with the entered name",
-  )
-  .option(
-    "-t, --tdd [tdd:boolean]",
-    "Create the project with a file for tests",
+    "The name of the configuration file. Default: deno.json.",
     {
-      default: false,
+      default: "deno.json",
     },
   )
   .option(
     "-y, --yes [yes:boolean]",
-    "Use all default answers, skipping the prompts",
-    {
-      default: false,
-    },
-  )
-  .option(
-    "-a, --ascii [ascii:boolean]",
-    "Initialize an ASCII Deno to the screen!",
+    "Skip the prompts and use all defaults.",
     {
       default: false,
     },
   )
   .action((options) => {
-    if (options.yes === true) {
-      act({ ...defaults, ...options });
+    if (options.yes) {
+      writeConfigFile({ ...defaults, ...options });
     } else {
-      const choices = ask(options);
-      act({ ...defaults, ...choices });
+      const choices = ask();
+      writeConfigFile({ ...options, ...choices });
     }
   })
   .parse(Deno.args);
