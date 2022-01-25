@@ -1,155 +1,65 @@
-import { assert, assertEquals, assertThrowsAsync } from "./dev_deps.ts";
-import { act, runCommand } from "./act.ts";
-import { defaults } from "./settings.ts";
-import { sinon } from "./dev_deps.ts";
+import { assert, assertEquals } from "./dev_deps.ts";
+import { defaults, writeConfigFile, writeFileSec } from "./writeConfigFile.ts";
 
-Deno.test("runCommand()", async (test) => {
-  await test.step(
-    "return true when a command's exit code is 0",
+Deno.test("writeFileSec()", async (t) => {
+  const testFilePath = "./foo.ts";
+  const testFileContent = new TextEncoder().encode("foo");
+
+  const afterEach = async () => {
+    try {
+      await Deno.remove(testFilePath, { recursive: true });
+    } catch (_error) {
+      console.log("Could not remove file");
+    }
+  };
+
+  await t.step(
+    "should write a new file if the path does not exist yet",
     async () => {
-      const cmd = Deno.run({
-        cmd: ["git", "init"],
-        stdout: "null",
-      });
+      await writeFileSec(testFilePath, testFileContent);
+      const file = await Deno.readFile(testFilePath);
 
-      assertEquals(await runCommand(cmd), true);
+      assertEquals(new TextDecoder().decode(file), "foo");
+
+      await afterEach();
     },
   );
 
-  await test.step(
-    "return false when a command's exit code is greater than 0",
-    async () => {
-      const cmd = Deno.run({
-        cmd: ["git", "checkout", "foo"],
-        stderr: "null",
-      });
+  await t.step("should warn when file already exists", async () => {
+    await Deno.writeFile(testFilePath, testFileContent);
 
-      assertEquals(await runCommand(cmd), false);
-    },
-  );
+    await writeFileSec(testFilePath, testFileContent);
+
+    await afterEach();
+  });
 });
 
-// const defaults = self.structuredClone(defaults);
-
-Deno.test("act()", async (test) => {
-  defaults.name = "test_directory_act";
+Deno.test("writeConfigFile()", async (test) => {
+  const testDir = "test_directory";
 
   const beforeEach = async () => {
-    await Deno.mkdir(defaults.name, { recursive: true });
+    await Deno.mkdir(testDir, { recursive: true });
+    Deno.chdir(testDir);
   };
 
   const afterEach = async () => {
-    await Deno.remove(defaults.name, { recursive: true });
-    defaults.config = false;
-    defaults.configOnly = false;
-    defaults.git = false;
-    defaults.map = false;
+    Deno.chdir("..");
+    await Deno.remove(testDir, { recursive: true });
   };
 
   await test.step(
-    "initialize git if settings.git is true",
+    "create deno.json",
     async () => {
       await beforeEach();
 
-      defaults.git = true;
-
-      const spy = sinon.spy(defaults, "initGit");
-      const addSpy = sinon.spy(defaults, "addProjectFile");
-
-      await act(defaults);
-
-      assertEquals(spy.called, true);
-
-      assertEquals(addSpy.called, true);
-      assertEquals(addSpy.getCalls().length, 4);
-
-      assert(`${defaults.name}/.git`);
-
-      await afterEach();
-    },
-  );
-
-  await test.step(
-    "create import_map.json if settings.map is true",
-    async () => {
-      await beforeEach();
-
-      defaults.map = true;
-
-      await act(defaults);
-
-      const mapFile = await Deno.readFile(
-        `${defaults.name}/import_map.json`,
-      );
-
-      assert(mapFile);
-
-      await afterEach();
-    },
-  );
-
-  await test.step(
-    "create deno.json if settings.config is true",
-    async () => {
-      await beforeEach();
-
-      defaults.config = true;
-
-      await act(defaults);
+      await writeConfigFile(defaults);
 
       const configFile = await Deno.readFile(
-        `${defaults.name}/deno.json`,
+        `${defaults.name}`,
       );
 
+      assertEquals(defaults.name, "deno.json");
       assert(configFile);
-
-      await afterEach();
-    },
-  );
-
-  await test.step(
-    "create .test file for module entrypoint if settings.testdriven is true",
-    async () => {
-      await beforeEach();
-
-      defaults.testdriven = true;
-
-      await act(defaults);
-
-      const mapFile = await Deno.readFile(
-        `${defaults.name}/mod.test.ts`,
-      );
-
-      assert(mapFile);
-
-      await afterEach();
-    },
-  );
-
-  await test.step(
-    "only create configuration file(s) and no module entrypoints if settings.configOnly is true",
-    async () => {
-      await beforeEach();
-
-      defaults.configOnly = true;
-
-      await act(defaults);
-
-      const configFile = await Deno.readFile(
-        `${defaults.name}/deno.json`,
-      );
-
-      assert(configFile);
-
-      await assertThrowsAsync(async () => {
-        await Deno.readFile(`${defaults.name}/mod.ts`);
-      });
-      await assertThrowsAsync(async () => {
-        await Deno.readFile(`${defaults.name}/deps.ts`);
-      });
-      await assertThrowsAsync(async () => {
-        await Deno.readFile(`${defaults.name}/dev_deps.ts`);
-      });
 
       await afterEach();
     },
