@@ -10,8 +10,8 @@
 `deno-init` initializes a Deno configuration file from the command line.
 
 Previous versions also initialized entrypoints, but that functionality has been
-moved to a different [project](https://github.com/GJZwiers/mod). From v2.0.0
-onwards this module is purely for generating config.
+moved to a different [project](https://github.com/GJZwiers/mod). From v2 onwards
+this module is purely for generating config.
 
 ## Table of Contents
 
@@ -23,7 +23,7 @@ onwards this module is purely for generating config.
 ## Installation
 
 ```
-deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.0.1/mod.ts
+deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.1.0/mod.ts
 ```
 
 ## Usage
@@ -34,7 +34,7 @@ deno-init
 
 ## Options
 
-`--help` will print helpful information to the terminal.
+`--help` or `-h` will print the CLI documentation to the terminal.
 
 `--yes` or `-y` will skip the prompts and initialize the file in the current
 working directory with default values:
@@ -43,8 +43,26 @@ working directory with default values:
 deno-init --yes
 ```
 
-`--name` or `-n` will use a non-default name for the config file. The default is
-`deno.json`.
+`--fmt` or `-m` will set up `fmt` options only.
+
+```
+deno-init --fmt
+```
+
+`--lint` or `-l` will set up `lint` options only.
+
+```
+deno-init --lint
+```
+
+`--tsconfig` or `-t` will add `compilerOptions` only.
+
+```
+deno-init --tsconfig
+```
+
+`--name` or `-n` will use a non-default name for the config file. The default
+name is `deno.json`.
 
 ```
 deno-init --name config.json

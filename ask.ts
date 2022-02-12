@@ -6,26 +6,26 @@ export function ask() {
     `y`,
   );
 
-  const tsconfig = processResponse(tsconfigResponse, defaults.linting);
+  const tsconfig = processResponse(tsconfigResponse, defaults.lint);
 
   const lintingResponse = prompt(
     "Would you like to add custom linter configuration? (y/n)",
     `y`,
   );
 
-  const linting = processResponse(lintingResponse, defaults.linting);
+  const lint = processResponse(lintingResponse, defaults.lint);
 
   const formattingResponse = prompt(
     "Would you like to add custom formatter configuration? (y/n)",
     `y`,
   );
 
-  const formatting = processResponse(formattingResponse, defaults.formatting);
+  const fmt = processResponse(formattingResponse, defaults.fmt);
 
   const settings = {
     tsconfig,
-    linting,
-    formatting,
+    lint,
+    fmt,
   };
 
   return settings;
