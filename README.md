@@ -10,8 +10,8 @@
 `deno-init` initializes a Deno configuration file from the command line.
 
 Previous versions also initialized entrypoints, but that functionality has been
-moved to a different [project](https://github.com/GJZwiers/mod). From v2
-onwards this module is purely for generating config.
+moved to a different [project](https://github.com/GJZwiers/mod). From v2 onwards
+this module is purely for generating config.
 
 ## Table of Contents
 
@@ -61,8 +61,8 @@ deno-init --lint
 deno-init --tsconfig
 ```
 
-`--name` or `-n` will use a non-default name for the config file. The default name is
-`deno.json`.
+`--name` or `-n` will use a non-default name for the config file. The default
+name is `deno.json`.
 
 ```
 deno-init --name config.json
