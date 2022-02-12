@@ -43,6 +43,24 @@ working directory with default values:
 deno-init --yes
 ```
 
+`--fmt` or `-m` will set up `fmt` options only.
+
+```
+deno-init --fmt
+```
+
+`--lint` or `-l` will set up `lint` options only.
+
+```
+deno-init --lint
+```
+
+`--tsconfig` or `-t` will add `compilerOptions` only.
+
+```
+deno-init --tsconfig
+```
+
 `--name` or `-n` will use a non-default name for the config file. The default is
 `deno.json`.
 
