@@ -4,7 +4,7 @@ import { ask } from "./ask.ts";
 
 await new Command()
   .name("deno-init")
-  .version("v2.0.1")
+  .version("v2.1.0")
   .description("Generate a Deno configuration file.")
   .option(
     "-f, --force [force:boolean]",
