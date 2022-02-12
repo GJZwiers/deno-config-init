@@ -7,6 +7,13 @@ await new Command()
   .version("v2.0.1")
   .description("Generate a Deno configuration file.")
   .option(
+    "-f, --force [force:boolean]",
+    "Force overwriting any existing config file",
+    {
+      default: false,
+    },
+  )
+  .option(
     "-n, --name [name:string]",
     "The name of the configuration file. Default: deno.json.",
     {
@@ -15,21 +22,21 @@ await new Command()
   )
   .option(
     "-m, --fmt [fmt:boolean]",
-    "Add configuration for deno fmt",
+    "Set up config for deno fmt only",
     {
       default: false,
     },
   )
   .option(
     "-l, --lint [lint:boolean]",
-    "Add configuration for deno lint",
+    "Set up config for deno lint only",
     {
       default: false,
     },
   )
   .option(
     "-t, --tsconfig [tsconfig:boolean]",
-    "Add configuration for tsconfig",
+    "Ser up config for typescript compiler options only",
     {
       default: false,
     },
@@ -42,7 +49,7 @@ await new Command()
     },
   )
   .action((options) => {
-    if (options.yes) {
+    if (options.yes || options.fmt || options.lint || options.tsconfig) {
       inputHandler({ ...defaults, ...options });
     } else {
       const choices = ask();

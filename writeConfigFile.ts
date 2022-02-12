@@ -1,20 +1,22 @@
 export interface Settings {
+  force: boolean;
+  fmt: boolean;
+  lint: boolean;
   name: string;
   tsconfig: boolean;
-  lint: boolean;
-  fmt: boolean;
   yes: boolean;
 }
 
 export const defaults: Settings = {
+  force: false,
+  fmt: false,
+  lint: false,
   name: "deno.json",
   tsconfig: false,
-  lint: false,
-  fmt: false,
   yes: false,
 };
 
-type ConfigFile = {
+export type ConfigFile = {
   compilerOptions?: Record<string, unknown>;
   fmt?: {
     files?: {
@@ -36,43 +38,17 @@ type ConfigFile = {
   };
 };
 
-async function writeConfigFile(configFile: ConfigFile, settings: Settings) {
-  const denoJson = new TextEncoder()
-    .encode(JSON.stringify(configFile, null, 2));
-
-  await writeFileSec(
-    `./${settings.name}`,
-    denoJson,
-  );
+export interface WriteFileSecOptions extends Deno.WriteFileOptions {
+  force?: boolean;
 }
 
 export async function inputHandler(settings: Settings) {
-  let configFile: ConfigFile = {};
+  const configFile: ConfigFile = {};
 
-  if (!settings.fmt && !settings.lint && !settings.tsconfig && settings.yes) {
-    configFile = {
-      fmt: {
-        files: {
-          include: [],
-          exclude: [],
-        },
-        options: {},
-      },
-      lint: {
-        files: {
-          include: [],
-          exclude: [],
-        },
-        rules: {
-          tags: [],
-          include: [],
-          exclude: [],
-        },
-      },
-      compilerOptions: {},
-    };
-
-    await writeConfigFile(configFile, settings);
+  if (settings.yes) {
+    settings.fmt = true;
+    settings.lint = true;
+    settings.tsconfig = true;
   }
 
   if (settings.fmt) {
@@ -106,16 +82,35 @@ export async function inputHandler(settings: Settings) {
   await writeConfigFile(configFile, settings);
 }
 
+export async function writeConfigFile(
+  configFile: ConfigFile,
+  settings: Settings,
+) {
+  const denoJson = new TextEncoder()
+    .encode(JSON.stringify(configFile, null, 2));
+
+  await writeFileSec(
+    `./${settings.name}`,
+    denoJson,
+    { force: settings.force },
+  );
+}
+
 export async function writeFileSec(
   path: string | URL,
   data: Uint8Array,
-  options?: Deno.WriteFileOptions,
+  options?: WriteFileSecOptions,
 ): Promise<void> {
+  if (options?.force) {
+    return await Deno.writeFile(path, data, options);
+  }
+
   try {
     const file = await Deno.readFile(path);
+
     if (file) {
       console.warn(
-        `Warning: file ${path} already exists.`,
+        `Warning: file ${path} already exists. Use --force if you want to overwrite an existing file.`,
       );
     }
   } catch (_error) {
