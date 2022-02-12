@@ -1,5 +1,5 @@
 import { Command } from "./deps.ts";
-import { defaults, writeConfigFile } from "./writeConfigFile.ts";
+import { defaults, inputHandler } from "./writeConfigFile.ts";
 import { ask } from "./ask.ts";
 
 await new Command()
@@ -14,6 +14,27 @@ await new Command()
     },
   )
   .option(
+    "-m, --fmt [fmt:boolean]",
+    "Add configuration for deno fmt",
+    {
+      default: false,
+    },
+  )
+  .option(
+    "-l, --lint [lint:boolean]",
+    "Add configuration for deno lint",
+    {
+      default: false,
+    },
+  )
+  .option(
+    "-t, --tsconfig [tsconfig:boolean]",
+    "Add configuration for tsconfig",
+    {
+      default: false,
+    },
+  )
+  .option(
     "-y, --yes [yes:boolean]",
     "Skip the prompts and use all defaults.",
     {
@@ -22,10 +43,10 @@ await new Command()
   )
   .action((options) => {
     if (options.yes) {
-      writeConfigFile({ ...defaults, ...options });
+      inputHandler({ ...defaults, ...options });
     } else {
       const choices = ask();
-      writeConfigFile({ ...options, ...choices });
+      inputHandler({ ...options, ...choices });
     }
   })
   .parse(Deno.args);

@@ -1,5 +1,5 @@
 import { assert, assertEquals } from "./dev_deps.ts";
-import { defaults, writeConfigFile, writeFileSec } from "./writeConfigFile.ts";
+import { defaults, inputHandler, writeFileSec } from "./writeConfigFile.ts";
 
 Deno.test("writeFileSec()", async (t) => {
   const testFilePath = "./foo.ts";
@@ -52,7 +52,7 @@ Deno.test("writeConfigFile()", async (test) => {
     async () => {
       await beforeEach();
 
-      await writeConfigFile(defaults);
+      await inputHandler(defaults);
 
       const configFile = await Deno.readFile(
         `${defaults.name}`,

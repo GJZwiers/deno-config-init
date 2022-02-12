@@ -1,22 +1,64 @@
 export interface Settings {
   name: string;
   tsconfig: boolean;
-  linting: boolean;
-  formatting: boolean;
+  lint: boolean;
+  fmt: boolean;
+  yes: boolean;
 }
 
 export const defaults: Settings = {
   name: "deno.json",
-  tsconfig: true,
-  linting: true,
-  formatting: true,
+  tsconfig: false,
+  lint: false,
+  fmt: false,
+  yes: false,
 };
 
-export async function writeConfigFile(settings: Settings) {
-  const configFile = {
-    compilerOptions: (settings.tsconfig) ? {} : undefined,
-    lint: (settings.linting)
-      ? {
+type ConfigFile = {
+  compilerOptions?: Record<string, unknown>;
+  fmt?: {
+    files?: {
+      include?: string[];
+      exclude?: string[];
+    };
+    options?: Record<string, unknown>;
+  };
+  lint?: {
+    files?: {
+      include?: string[];
+      exclude?: string[];
+    };
+    rules?: {
+      tags?: string[];
+      include?: string[];
+      exclude?: string[];
+    };
+  };
+};
+
+async function writeConfigFile(configFile: ConfigFile, settings: Settings) {
+  const denoJson = new TextEncoder()
+    .encode(JSON.stringify(configFile, null, 2));
+
+  await writeFileSec(
+    `./${settings.name}`,
+    denoJson,
+  );
+}
+
+export async function inputHandler(settings: Settings) {
+  let configFile: ConfigFile = {};
+
+  if (!settings.fmt && !settings.lint && !settings.tsconfig && settings.yes) {
+    configFile = {
+      fmt: {
+        files: {
+          include: [],
+          exclude: [],
+        },
+        options: {},
+      },
+      lint: {
         files: {
           include: [],
           exclude: [],
@@ -26,27 +68,42 @@ export async function writeConfigFile(settings: Settings) {
           include: [],
           exclude: [],
         },
-      }
-      : undefined,
-    fmt: (settings.formatting)
-      ? {
-        files: {
-          include: [],
-          exclude: [],
-        },
-        options: {},
-      }
-      : undefined,
-  };
+      },
+      compilerOptions: {},
+    };
 
-  const json = JSON.stringify(configFile, null, 2);
+    await writeConfigFile(configFile, settings);
+  }
 
-  const denoJson = new TextEncoder().encode(json);
+  if (settings.fmt) {
+    configFile.fmt = {
+      files: {
+        include: [],
+        exclude: [],
+      },
+      options: {},
+    };
+  }
 
-  await writeFileSec(
-    `./${settings.name}`,
-    denoJson,
-  );
+  if (settings.lint) {
+    configFile.lint = {
+      files: {
+        include: [],
+        exclude: [],
+      },
+      rules: {
+        tags: [],
+        include: [],
+        exclude: [],
+      },
+    };
+  }
+
+  if (settings.tsconfig) {
+    configFile.compilerOptions = {};
+  }
+
+  await writeConfigFile(configFile, settings);
 }
 
 export async function writeFileSec(
