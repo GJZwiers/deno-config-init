@@ -86,6 +86,12 @@ export async function writeConfigFile(
   configFile: ConfigFile,
   settings: Settings,
 ) {
+  if (settings.name && !/\.jsonc?$/.test(settings.name)) {
+    throw new Error(
+      `Chosen filename has an unsupported file extension: ${settings.name}`,
+    );
+  }
+
   const denoJson = new TextEncoder()
     .encode(JSON.stringify(configFile, null, 2));
 
