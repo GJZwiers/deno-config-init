@@ -27,6 +27,12 @@ export function ask() {
     `deno.json`,
   );
 
+  if (name && !/\.jsonc?/.test(name)) {
+    throw new Error(
+      `Chosen filename has an unsupported file extension: ${name}`,
+    );
+  }
+
   const settings = {
     tsconfig,
     lint,
