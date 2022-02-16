@@ -3,7 +3,7 @@
   "entry": "./mod.ts",
   "description": "Generate a Deno configuration file.",
   "unstable": false,
-  "version": "v2.1.0",
+  "version": "v2.1.1",
   "files": [
     "./**/*.ts",
     "./README.md",
