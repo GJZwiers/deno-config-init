@@ -22,10 +22,16 @@ export function ask() {
 
   const fmt = processResponse(formattingResponse, defaults.fmt);
 
+  const name = prompt(
+    "What should the name of the config file be?",
+    `deno.json`,
+  );
+
   const settings = {
     tsconfig,
     lint,
     fmt,
+    name,
   };
 
   return settings;
