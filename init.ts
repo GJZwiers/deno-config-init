@@ -4,8 +4,11 @@ import { ask } from "./ask.ts";
 
 await new Command()
   .name("deno-init")
-  .version("v2.1.0")
+  .version("v2.1.1")
   .description("Generate a Deno configuration file.")
+  .help({
+    colors: (Deno.build.os === "windows") ? false : true,
+  })
   .option(
     "-f, --force [force:boolean]",
     "Force overwriting any existing config file.",
