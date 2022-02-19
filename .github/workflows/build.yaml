@@ -39,10 +39,10 @@ jobs:
           path: ${{ env.DENO_DIR }}
           key: ${{ hashFiles('lock.json') }}
 
-      - run: deno test --allow-read --allow-write --lock=lock.json --coverage=cov
+      - run: deno test --allow-read --allow-write --lock=lock.json --coverage=cov/
 
       - if: matrix.os == 'ubuntu-20.04'
-        run: deno coverage --lcov cov > cov.lcov
+        run: deno coverage --lcov --output=cov.lcov cov/
 
       - if: matrix.os == 'ubuntu-20.04'
         uses: coverallsapp/github-action@master
