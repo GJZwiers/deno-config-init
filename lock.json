@@ -1,8 +1,8 @@
 {
   "https://deno.land/std@0.113.0/fmt/colors.ts": "8368ddf2d48dfe413ffd04cdbb7ae6a1009cf0dccc9c7ff1d76259d9c61a0621",
-  "https://deno.land/std@0.122.0/fmt/colors.ts": "8368ddf2d48dfe413ffd04cdbb7ae6a1009cf0dccc9c7ff1d76259d9c61a0621",
-  "https://deno.land/std@0.122.0/testing/_diff.ts": "e6a10d2aca8d6c27a9c5b8a2dbbf64353874730af539707b5b39d4128140642d",
-  "https://deno.land/std@0.122.0/testing/asserts.ts": "e1e7325b449cc9c747c309690b22d8cf464e401f79f494ddb106e4842fdb4dda",
+  "https://deno.land/std@0.129.0/fmt/colors.ts": "30455035d6d728394781c10755351742dd731e3db6771b1843f9b9e490104d37",
+  "https://deno.land/std@0.129.0/testing/_diff.ts": "9d849cd6877694152e01775b2d93f9d6b7aef7e24bfe3bfafc4d7a1ac8e9f392",
+  "https://deno.land/std@0.129.0/testing/asserts.ts": "0a95d9e8076dd3e7f0eeb605a67c148078b4b11f4abcd5eef115b0361b0736a2",
   "https://deno.land/x/cliffy@v0.20.1/_utils/distance.ts": "02af166952c7c358ac83beae397aa2fbca4ad630aecfcd38d92edb1ea429f004",
   "https://deno.land/x/cliffy@v0.20.1/command/_errors.ts": "979a5d3f91b9da60a5871a14c4d7aa88ad4e3258da2df7b83bf40d00949ca944",
   "https://deno.land/x/cliffy@v0.20.1/command/_utils.ts": "1f56505da613df55b00a7f954b42c38b2bf0c5c0f13c1470d18e0a0fbd8c3619",

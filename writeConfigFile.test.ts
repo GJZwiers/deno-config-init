@@ -1,43 +1,5 @@
 import { assert, assertEquals } from "./dev_deps.ts";
-import {
-  defaults,
-  inputHandler,
-  Settings,
-  writeFileSec,
-} from "./writeConfigFile.ts";
-
-Deno.test("writeFileSec()", async (t) => {
-  const testFilePath = "./foo.ts";
-  const testFileContent = new TextEncoder().encode("foo");
-
-  const afterEach = async () => {
-    try {
-      await Deno.remove(testFilePath, { recursive: true });
-    } catch (_error) {
-      console.log("Could not remove file");
-    }
-  };
-
-  await t.step(
-    "should write a new file if the path does not exist yet",
-    async () => {
-      await writeFileSec(testFilePath, testFileContent);
-      const file = await Deno.readFile(testFilePath);
-
-      assertEquals(new TextDecoder().decode(file), "foo");
-
-      await afterEach();
-    },
-  );
-
-  await t.step("should warn when file already exists", async () => {
-    await Deno.writeFile(testFilePath, testFileContent);
-
-    await writeFileSec(testFilePath, testFileContent);
-
-    await afterEach();
-  });
-});
+import { defaults, inputHandler, Settings } from "./writeConfigFile.ts";
 
 Deno.test("writeConfigFile()", async (context) => {
   const testDir = "test_directory";
