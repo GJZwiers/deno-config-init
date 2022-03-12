@@ -4,11 +4,15 @@ import { ask } from "./ask.ts";
 
 await new Command()
   .name("deno-init")
-  .version("v2.1.1")
+  .version("v2.2.0")
   .description("Generate a Deno configuration file.")
   .help({
     colors: (Deno.build.os === "windows") ? false : true,
   })
+  .option(
+    "-c, --jsonc [jsonc:boolean]",
+    "Create the config file as .jsonc with the possible options listed as comments.",
+  )
   .option(
     "-f, --force [force:boolean]",
     "Force overwriting any existing config file.",
@@ -37,7 +41,10 @@ await new Command()
     "Skip the prompts and use all defaults.",
   )
   .action((options) => {
-    if (options.yes || options.fmt || options.lint || options.tsconfig) {
+    if (
+      options.yes || options.fmt || options.lint || options.tsconfig ||
+      options.jsonc
+    ) {
       inputHandler({ ...defaults, ...options });
     } else {
       const choices = ask();
