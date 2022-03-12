@@ -43,33 +43,34 @@ working directory with default values:
 deno-init --yes
 ```
 
-`--jsonc` or `-c` will create the config file as a `.jsonc` file with the
-possible options listed as comments.
+`--jsonc` or `-c` will create a `.jsonc` config file with all the possible
+configuration options listed as comments.
 
 ```
 deno-init --jsonc
 ```
 
-`--fmt` or `-m` will set up `fmt` options only.
+`--fmt` or `-m` will add a `fmt` section only.
 
 ```
 deno-init --fmt
 ```
 
-`--lint` or `-l` will set up `lint` options only.
+`--lint` or `-l` will add a `lint` section only.
 
 ```
 deno-init --lint
 ```
 
-`--tsconfig` or `-t` will add `compilerOptions` only.
+`--tsconfig` or `-t` will add a `compilerOptions` section only.
 
 ```
 deno-init --tsconfig
 ```
 
 `--name` or `-n` will use a non-default name for the config file. The default
-name is `deno.json`.
+name is `deno.json`. Note that using a non-default name may prevent config file
+auto-discovery.
 
 ```
 deno-init --name config.json
