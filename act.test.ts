@@ -53,6 +53,8 @@ Deno.test("writeConfigFile()", async (context) => {
   const afterEach = async () => {
     Deno.chdir("..");
     await Deno.remove(testDir, { recursive: true });
+    defaults.name = "deno.json";
+    defaults.jsonc = false;
   };
 
   const test = async (
@@ -75,6 +77,21 @@ Deno.test("writeConfigFile()", async (context) => {
       );
 
       assertEquals(defaults.name, "deno.json");
+      assert(configFile);
+    },
+  });
+
+  await test({
+    name: "create deno.jsonc",
+    fn: async () => {
+      defaults.jsonc = true;
+      await inputHandler(defaults);
+
+      const configFile = await Deno.readFile(
+        `${defaults.name}`,
+      );
+
+      assertEquals(defaults.name, "deno.jsonc");
       assert(configFile);
     },
   });
