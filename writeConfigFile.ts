@@ -74,9 +74,11 @@ export async function inputHandler(settings: Settings) {
 
     return await writeFileSec(
       settings.name,
-      new TextEncoder().encode(jsonc), {
-      force: settings.force,
-    });
+      new TextEncoder().encode(jsonc),
+      {
+        force: settings.force,
+      },
+    );
   }
 
   const configFile: ConfigFile = {};

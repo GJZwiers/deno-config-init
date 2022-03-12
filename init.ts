@@ -41,7 +41,10 @@ await new Command()
     "Skip the prompts and use all defaults.",
   )
   .action((options) => {
-    if (options.yes || options.fmt || options.lint || options.tsconfig || options.jsonc) {
+    if (
+      options.yes || options.fmt || options.lint || options.tsconfig ||
+      options.jsonc
+    ) {
       inputHandler({ ...defaults, ...options });
     } else {
       const choices = ask();
