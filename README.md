@@ -43,6 +43,8 @@ working directory with default values:
 deno-init --yes
 ```
 
+`--jsonc` or `-c` will create the config file as a `.jsonc` file with the possible options listed as comments.
+
 `--fmt` or `-m` will set up `fmt` options only.
 
 ```
