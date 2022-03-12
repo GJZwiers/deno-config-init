@@ -23,7 +23,7 @@ this module is purely for generating config.
 ## Installation
 
 ```
-deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.1.1/mod.ts
+deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.2.0/mod.ts
 ```
 
 ## Usage
