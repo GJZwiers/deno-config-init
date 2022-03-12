@@ -23,7 +23,7 @@ this module is purely for generating config.
 ## Installation
 
 ```
-deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.2.0/mod.ts
+deno install --allow-read --allow-write --allow-net=deno.land -fn deno-init https://deno.land/x/init@v2.2.0/mod.ts
 ```
 
 ## Usage
@@ -45,6 +45,10 @@ deno-init --yes
 
 `--jsonc` or `-c` will create the config file as a `.jsonc` file with the
 possible options listed as comments.
+
+```
+deno-init --jsonc
+```
 
 `--fmt` or `-m` will set up `fmt` options only.
 
