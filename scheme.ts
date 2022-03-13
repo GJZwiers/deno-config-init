@@ -1,39 +1,52 @@
-// get version, replace canary version hash if any
-const denoVersion = Deno.version.deno.replace(/\+[a-z0-9]+$/, "");
+// deno-lint-ignore-file no-explicit-any
+import json from "https://deno.land/x/deno@v1.19.3/cli/schemas/config-file.v1.json" assert {
+  type: "json",
+};
 
-const scheme = await import(
-  `https://deno.land/x/deno@v${denoVersion}/cli/schemas/config-file.v1.json`,
-  { assert: { type: "json" } }
-);
-
-// deno-lint-ignore no-explicit-any
+const anyJson = json as any;
 const jsonc: any = {};
 
-for (const prop in scheme.default.properties) {
-  if (prop !== "compilerOptions") continue;
+for (const prop in anyJson.properties) {
   jsonc[prop] = {};
-  const options = scheme.default.properties[prop].properties;
+  const options = anyJson.properties[prop].properties;
+  if (prop == "compilerOptions") {
+    for (const option in options) {
+      jsonc[prop][option] = [
+        options[option].type ?? "type",
+        options[option].default,
+        options[option].description,
+      ].join("|");
+    }
+  } else {
+    for (const option in options) {
+      jsonc[prop][option] = {};
+      for (const opt in options[option].properties) {
+        const o = options[option].properties[opt];
 
-  for (const option in options) {
-    jsonc[prop][option] = [
-      options[option].type ?? "type",
-      options[option].default,
-      options[option].description,
-    ].join("|");
+        jsonc[prop][option][opt] = [
+          o.type ?? "type",
+          o.default ?? "none",
+          o.description,
+        ].join("|");
+      }
+    }
   }
 }
 
 const jsoncString = JSON.stringify(jsonc, null, 2);
-//console.log(jsoncString);
+
 const final = jsoncString.replace(
   /^(\s+".+?": )"(.+?)\|(.+?)\|(.+?)",?$/gm,
-  (
+  function (
     _full_match: string,
     prop: string,
     type: string,
     defaultValue: string,
     desc: string,
-  ) => {
+  ) {
+    if (defaultValue === "none") {
+      return prop.replace(' "', ' // "') + "[] // " + desc;
+    }
     if (type === "array") {
       return prop.replace(' "', ' // "') + '[ "' + defaultValue + '" ]' +
         " // " + desc;
@@ -43,5 +56,9 @@ const final = jsoncString.replace(
   },
 );
 
-console.log(final);
 await Deno.writeTextFile("deno.jsonc", final);
+
+// const scheme = await import(
+//   `https://deno.land/x/deno@v${denoVersion}/cli/schemas/config-file.v1.json`,
+//   { assert: { type: "json" } }
+// );
