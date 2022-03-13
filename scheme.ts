@@ -38,11 +38,11 @@ const jsoncString = JSON.stringify(jsonc, null, 2);
 const final = jsoncString.replace(
   /^(\s+".+?": )"(.+?)\|(.+?)\|(.+?)",?$/gm,
   function (
-    _full_match: string,
-    prop: string,
-    type: string,
-    defaultValue: string,
-    desc: string,
+    _full_match,
+    prop,
+    type,
+    defaultValue,
+    desc,
   ) {
     if (defaultValue === "none") {
       return prop.replace(' "', ' // "') + "[] // " + desc;
@@ -56,9 +56,24 @@ const final = jsoncString.replace(
   },
 );
 
-await Deno.writeTextFile("deno.jsonc", final);
+let highest = 0;
+final.split("\n").forEach((line) => {
+  const matches = [...line.matchAll(/\/\//g)];
 
-// const scheme = await import(
-//   `https://deno.land/x/deno@v${denoVersion}/cli/schemas/config-file.v1.json`,
-//   { assert: { type: "json" } }
-// );
+  if (matches.length === 0 || !matches[1].index) return;
+  if (matches[1].index > highest) return highest = matches[1].index;
+});
+
+const finalFinal = final.split("\n").map((line) => {
+  const matches = [...line.matchAll(/(?<!^\s+)\/\//g)];
+
+  if (matches.length === 0 || !matches[0]) return line;
+
+  return line.replace(/(?<!^\s+)\/\//, function (match) {
+    const diff = highest - (matches[0].index || 0);
+
+    return " ".repeat(diff) + match;
+  });
+});
+
+await Deno.writeTextFile("deno.jsonc", finalFinal.join("\n"));
