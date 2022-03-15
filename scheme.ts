@@ -4,40 +4,29 @@ import json from "https://deno.land/x/deno@v1.19.3/cli/schemas/config-file.v1.js
 };
 
 const anyJson = json as any;
-const jsonc: any = {};
+const denoJson: any = {};
 
-if ("properties" in anyJson) {
-  for (const prop in anyJson.properties) {
-    jsonc[prop] = {};
-    const options = anyJson.properties[prop].properties;
-    for (const option in options) {
-      if ("properties" in options[option]) {
-        jsonc[prop][option] = {};
-        for (const opt in options[option].properties) {
-          const o = options[option].properties[opt];
-          jsonc[prop][option][opt] = [
-            o.type ?? "type",
-            o.default ?? "none",
-            o.description,
-          ].join("|");
-        }
-      } else {
-        jsonc[prop][option] = [
-          options[option].type ?? "type",
-          options[option].default ?? "none",
-          options[option].description,
-        ].join("|");
-      }
+function createFromSchema(obj: any, denoJson: any) {
+  for (const prop in obj) {
+    if (obj[prop].type === "object") {
+      denoJson[prop] = {};
+      createFromSchema(obj[prop].properties, denoJson[prop]);
+    } else {
+      denoJson[prop] = [
+        obj[prop].type ?? "type",
+        obj[prop].default ?? "none",
+        obj[prop].description,
+      ].join("|");
     }
   }
 }
 
-const jsoncString = JSON.stringify(jsonc, null, 2);
+createFromSchema(anyJson.properties, denoJson);
 
-//console.log(jsonc)
+const jsoncString = JSON.stringify(denoJson, null, 2);
 
-const final = jsoncString.replace(
-  /^(\s+".+?": )"(.+?)\|(.+?)\|(.+?)",?$/gm,
+const unformattedContents = jsoncString.replace(
+  /^(\s+".+?"): "(.+?)\|(.+?)\|(.+?)",?$/gm,
   function (
     _full_match,
     property,
@@ -55,29 +44,28 @@ const final = jsoncString.replace(
     } else {
       value = defaultValue;
     }
-    
-    // add property as: // "<key>": <value> /* <description> */
-    return property.replace(/^(\s*?)(?=")/, '$1// ') + value + " /* " + description + " */";
+
+    const commentedOption = property.replace(/^(\s*?)(?=")/, "$1// ");
+    return `${commentedOption}: ${value} /* ${description} */`;
   },
 );
 
-const lines = final.split("\n");
+const lines = unformattedContents.split("\n");
+// find the line with the highest index (right-most) description comment
 let highest = 0;
-
 lines.forEach((line) => {
-  const matches = [...line.matchAll(/\/\*/g)];
-
-  if (matches.length === 0 || !matches[0].index) return;
-  if (matches[0].index > highest) return highest = matches[0].index;
+  const start = line.match(/\/\*/);
+  if (!start) return;
+  if (!start.index) return;
+  if (start.index > highest) return highest = start.index;
 });
 
 const configFileContents = lines.map((line) => {
-  const matches = [...line.matchAll(/\/\*/g)];
-
-  if (matches.length === 0 || !matches[0]) return line;
+  const start = line.match(/\/\*/);
+  if (!start) return line;
 
   return line.replace(/\/\*/, function (match) {
-    const diff = highest - (matches[0].index || 0);
+    const diff = highest - (start.index || 0);
 
     return " ".repeat(diff) + match;
   });
