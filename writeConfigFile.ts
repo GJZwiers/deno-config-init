@@ -3,6 +3,7 @@ import { generateJsonc } from "./schema.ts";
 
 export interface Settings {
   force: boolean;
+  fill: boolean;
   fmt: boolean;
   jsonc: boolean;
   lint: boolean;
@@ -13,6 +14,7 @@ export interface Settings {
 
 export const defaults: Settings = {
   force: false,
+  fill: false,
   fmt: false,
   jsonc: false,
   lint: false,
@@ -44,7 +46,7 @@ export type ConfigFile = {
 };
 
 export async function inputHandler(settings: Settings) {
-  if (settings.jsonc) {
+  if (settings.fill || settings.jsonc) {
     settings.name = settings.name.replace(".json", ".jsonc");
 
     return await writeFileSec(

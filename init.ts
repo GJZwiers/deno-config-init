@@ -4,14 +4,18 @@ import { ask } from "./ask.ts";
 
 await new Command()
   .name("deno-init")
-  .version("v2.2.0")
+  .version("v2.3.0")
   .description("Generate a Deno configuration file.")
   .help({
     colors: (Deno.build.os === "windows") ? false : true,
   })
   .option(
-    "-c, --jsonc [jsonc:boolean]",
+    "-a, --fill [fill:boolean]",
     "Create the config file as .jsonc with the possible options listed as comments.",
+  )
+  .option(
+    "-c, --jsonc [jsonc:boolean]",
+    "Create the config file as .jsonc. Alias for --fill.",
   )
   .option(
     "-f, --force [force:boolean]",
@@ -42,7 +46,8 @@ await new Command()
   )
   .action((options) => {
     if (
-      options.yes || options.fmt || options.lint || options.tsconfig ||
+      options.yes || options.fill || options.fmt || options.lint ||
+      options.tsconfig ||
       options.jsonc
     ) {
       inputHandler({ ...defaults, ...options });

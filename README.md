@@ -23,13 +23,27 @@ this module is purely for generating config.
 ## Installation
 
 ```
-deno install --allow-read --allow-write --allow-net=deno.land -fn deno-init https://deno.land/x/init@v2.2.0/mod.ts
+deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.3.0/mod.ts
 ```
 
 ## Usage
 
+Make a config file based on a number of prompts:
+
 ```
 deno-init
+```
+
+Skip the prompts, use all defaults:
+
+```
+deno-init --yes
+```
+
+Add every possible option in comments (as a `.jsonc` file)
+
+```
+deno-init --fill
 ```
 
 ## Options
@@ -43,11 +57,12 @@ working directory with default values:
 deno-init --yes
 ```
 
-`--jsonc` or `-c` will create a `.jsonc` config file with all the possible
-configuration options listed as comments.
+`--fill` or `-i` will create a `deno.jsonc` config file with all the possible
+configuration options listed as comments. This style is very similar to the
+output of `tsc --init` for generating a `tsconfig.json`.
 
 ```
-deno-init --jsonc
+deno-init --fill
 ```
 
 `--fmt` or `-m` will add a `fmt` section only.
@@ -76,6 +91,10 @@ auto-discovery.
 deno-init --name config.json
 ```
 
+`--force` or `-f` will allow overwriting an existing config file.
+
 ## Contributing
 
-Bug reports, other issues or feature requests are welcome!
+You are welcome to report any bugs, other issues, or feature requests! If you
+want to add a fix/feature/other improvement fork this repository and make a pull
+request with your changes.

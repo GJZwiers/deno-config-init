@@ -39,7 +39,7 @@ jobs:
           path: ${{ env.DENO_DIR }}
           key: ${{ hashFiles('lock.json') }}
 
-      - run: deno test --allow-read --allow-write --allow-net=deno.land --lock=lock.json --coverage=cov/
+      - run: deno test --allow-read --allow-write --lock=lock.json --coverage=cov/
 
       - if: matrix.os == 'ubuntu-20.04'
         run: deno coverage --lcov --output=cov.lcov cov/
