@@ -44,5 +44,6 @@
   "https://deno.land/x/cliffy@v0.20.1/table/layout.ts": "b3055be2bc94dce0381094182121c026328ba9f173d6c1d0eb00a3dd7482b226",
   "https://deno.land/x/cliffy@v0.20.1/table/row.ts": "707c8f9c71f28e7ded22a053c13c0988a9598eec0a9e2a7aea7d15cad64d3cfe",
   "https://deno.land/x/cliffy@v0.20.1/table/table.ts": "3905c40d030626faab87a3e2e24982382c0d4c11eccae829a9e04db94d29e3e9",
-  "https://deno.land/x/cliffy@v0.20.1/table/utils.ts": "720bf8f10abf7bfbc8f3751708f3fafaf9a344706534e52b6cb30ed49882fd82"
+  "https://deno.land/x/cliffy@v0.20.1/table/utils.ts": "720bf8f10abf7bfbc8f3751708f3fafaf9a344706534e52b6cb30ed49882fd82",
+  "https://deno.land/x/deno@v1.19.3/cli/schemas/config-file.v1.json": "b7765da335c2512af37cab66253712ad95cc1e55cb09907b5886766895aa11e2"
 }

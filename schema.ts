@@ -1,7 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import schema from "https://deno.land/x/deno@v1.19.3/cli/schemas/config-file.v1.json" assert {
-  type: "json",
-};
+import { schema } from "./deps.ts";
 
 // TODO: better types
 export function createFromSchema(properties: any, configFile: any) {
