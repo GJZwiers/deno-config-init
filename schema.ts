@@ -42,8 +42,10 @@ export function generateJsonc(): string {
         value = "[]";
       } else if (type === "array") {
         value = `[ "${defaultValue}" ]`;
-      } else {
+      } else if (type === "boolean") {
         value = defaultValue;
+      } else { // if enum
+        value = `"${defaultValue}"`;
       }
       // TODO: maybe integrate with optionMatcher
       const commentedOption = option.replace(/^(\s*?)(?=")/, "$1// ");
