@@ -1,5 +1,5 @@
 // deno-lint-ignore-file no-explicit-any
-import json from "https://deno.land/x/deno@v1.19.3/cli/schemas/config-file.v1.json" assert {
+import schema from "https://deno.land/x/deno@v1.19.3/cli/schemas/config-file.v1.json" assert {
   type: "json",
 };
 
@@ -22,7 +22,7 @@ export function createFromSchema(properties: any, configFile: any) {
 export function generateJsonc(): string {
   const configFile: any = {};
 
-  createFromSchema(json.properties, configFile);
+  createFromSchema(schema.properties, configFile);
 
   const jsonString = JSON.stringify(configFile, null, 2);
 
