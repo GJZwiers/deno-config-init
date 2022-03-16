@@ -1,3 +1,6 @@
+import { writeFileSec } from "./writeFileSec.ts";
+import { generateJsonc } from "./schema.ts";
+
 export interface Settings {
   force: boolean;
   fmt: boolean;
@@ -40,41 +43,13 @@ export type ConfigFile = {
   };
 };
 
-export interface WriteFileSecOptions extends Deno.WriteFileOptions {
-  force?: boolean;
-}
-
 export async function inputHandler(settings: Settings) {
   if (settings.jsonc) {
     settings.name = settings.name.replace(".json", ".jsonc");
 
-    const canaryVersion = /\+[a-z0-9]+$/;
-    const denoVersionNoCanary = Deno.version.deno.replace(canaryVersion, "");
-
-    const schemaUrl =
-      `https://deno.land/x/deno@v${denoVersionNoCanary}/cli/schemas/config-file.v1.json`;
-    const response = await fetch(schemaUrl);
-    const schema = await response.json();
-
-    const config = JSON.stringify(generate(schema), null, 2);
-
-    const jsonc = config
-      .split("\n")
-      .map((line) => {
-        if (
-          !line.includes("{}") && !line.includes("[]") &&
-          (line.match(/[{}\[\]]/) && !/\[$/.test(line)) &&
-          !/\],?$/.test(line)
-        ) {
-          return line;
-        } else {
-          return "    // " + line.trimStart();
-        }
-      }).join("\n");
-
     return await writeFileSec(
       settings.name,
-      new TextEncoder().encode(jsonc),
+      new TextEncoder().encode(generateJsonc()),
       {
         force: settings.force,
       },
@@ -138,45 +113,4 @@ export async function writeConfigFile(
     denoJson,
     { force: settings.force },
   );
-}
-
-export async function writeFileSec(
-  path: string | URL,
-  data: Uint8Array,
-  options?: WriteFileSecOptions,
-): Promise<void> {
-  if (options?.force) {
-    return await Deno.writeFile(path, data, options);
-  }
-
-  try {
-    const file = await Deno.readFile(path);
-
-    if (file) {
-      console.warn(
-        `Warning: file ${path} already exists. Use --force if you want to overwrite an existing file.`,
-      );
-    }
-  } catch (_error) {
-    await Deno.writeFile(path, data, options);
-  }
-}
-
-// deno-lint-ignore no-explicit-any
-function generate(schema: any): any {
-  if ("default" in schema) {
-    return schema.default;
-  }
-  if ("type" in schema) {
-    switch (schema.type) {
-      case "object":
-        return Object.fromEntries(
-          Object.entries(schema.properties).map(([key, value]) => {
-            return [key, generate(value)];
-          }),
-        );
-      case "array":
-        return [];
-    }
-  }
 }
