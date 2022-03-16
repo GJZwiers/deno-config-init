@@ -3,33 +3,35 @@ import json from "https://deno.land/x/deno@v1.19.3/cli/schemas/config-file.v1.js
   type: "json",
 };
 
-const anyJson = json as any;
-const denoJson: any = {};
-
-function createFromSchema(obj: any, denoJson: any) {
-  for (const prop in obj) {
-    if (obj[prop].type === "object") {
-      denoJson[prop] = {};
-      createFromSchema(obj[prop].properties, denoJson[prop]);
+// TODO: better types
+function createFromSchema(properties: any, configFile: any) {
+  for (const key in properties) {
+    if (properties[key].type === "object") {
+      configFile[key] = {};
+      createFromSchema(properties[key].properties, configFile[key]);
     } else {
-      denoJson[prop] = [
-        obj[prop].type ?? "type",
-        obj[prop].default ?? "none",
-        obj[prop].description,
-      ].join("|");
+      configFile[key] = [
+        properties[key].type ?? "type",
+        properties[key].default ?? "none",
+        properties[key].description,
+      ].join("|"); // boolean|true|description
     }
   }
 }
 
-createFromSchema(anyJson.properties, denoJson);
+const configFile: any = {};
 
-const jsoncString = JSON.stringify(denoJson, null, 2);
+createFromSchema(json.properties, configFile);
 
-const unformattedContents = jsoncString.replace(
-  /^(\s+".+?"): "(.+?)\|(.+?)\|(.+?)",?$/gm,
+const jsonString = JSON.stringify(configFile, null, 2);
+
+const optionMatcher = /^(\s+".+?"): "(.+?)\|(.+?)\|(.+?)",?$/gm;
+// "allowJs": boolean|true|description -> // "allowJs": true /* description */
+const jsoncString = jsonString.replace(
+  optionMatcher,
   function (
     _full_match,
-    property,
+    option,
     type,
     defaultValue,
     description,
@@ -44,31 +46,32 @@ const unformattedContents = jsoncString.replace(
     } else {
       value = defaultValue;
     }
-
-    const commentedOption = property.replace(/^(\s*?)(?=")/, "$1// ");
+    // TODO: maybe integrate with optionMatcher
+    const commentedOption = option.replace(/^(\s*?)(?=")/, "$1// ");
     return `${commentedOption}: ${value} /* ${description} */`;
   },
 );
 
-const lines = unformattedContents.split("\n");
-// find the line with the highest index (right-most) description comment
+const lines = jsoncString.split("\n");
+const commentMultiLine = /\/\*/;
+// Find the line with the highest index (right-most) description comment.
 let highest = 0;
 lines.forEach((line) => {
-  const start = line.match(/\/\*/);
+  const start = line.match(commentMultiLine);
   if (!start) return;
   if (!start.index) return;
   if (start.index > highest) return highest = start.index;
 });
 
-const configFileContents = lines.map((line) => {
-  const start = line.match(/\/\*/);
+// Align description comments based on the highest index just found.
+const formattedJsoncString = lines.map((line) => {
+  const start = line.match(commentMultiLine);
   if (!start) return line;
 
-  return line.replace(/\/\*/, function (match) {
+  return line.replace(commentMultiLine, function (match) {
     const diff = highest - (start.index || 0);
-
     return " ".repeat(diff) + match;
   });
 }).join("\n");
 
-await Deno.writeTextFile("deno.jsonc", configFileContents);
+await Deno.writeTextFile("deno.jsonc", formattedJsoncString);
