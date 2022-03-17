@@ -27,7 +27,7 @@ export function ask() {
     `y`,
   );
 
-  const tasks = processResponse(taskResponse, defaults.tasks);
+  const tasks = processResponse(taskResponse, defaults.task);
 
   const importMapResponse = prompt(
     "Would you like to add an import map? (y/n)",

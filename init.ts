@@ -41,7 +41,7 @@ await new Command()
     "Set up config for deno lint only.",
   )
   .option(
-    "-k, --task [tasks:boolean]",
+    "-k, --task [task:boolean]",
     "Set up config for deno tasks only.",
   )
   .option(
@@ -55,8 +55,7 @@ await new Command()
   .action((options) => {
     if (
       options.yes || options.fill || options.fmt || options.lint ||
-      options.tsconfig ||
-      options.jsonc
+      options.tsconfig || options.jsonc || options.task || options.map
     ) {
       inputHandler({ ...defaults, ...options });
     } else {
