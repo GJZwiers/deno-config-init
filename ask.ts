@@ -31,7 +31,7 @@ export function ask() {
 
   const importMapResponse = prompt(
     "Would you like to add an import map? (y/n)",
-    `y`,
+    `n`,
   );
 
   const map = processResponse(importMapResponse, defaults.fmt);
