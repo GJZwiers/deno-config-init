@@ -34,7 +34,7 @@ export function ask() {
     `n`,
   );
 
-  const map = processResponse(importMapResponse, defaults.fmt);
+  const map = processResponse(importMapResponse, defaults.map);
 
   const name = prompt(
     "What should the config file be named?",
