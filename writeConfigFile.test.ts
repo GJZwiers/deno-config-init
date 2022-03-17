@@ -125,7 +125,7 @@ Deno.test("writeConfigFile()", async (context) => {
   await test({
     name: "create tasks",
     fn: async () => {
-      testSettings.tasks = true;
+      testSettings.task = true;
 
       await inputHandler(testSettings);
 
