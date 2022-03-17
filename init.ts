@@ -4,7 +4,7 @@ import { ask } from "./ask.ts";
 
 await new Command()
   .name("deno-init")
-  .version("v2.3.1")
+  .version("v2.4.0")
   .description("Generate a Deno configuration file.")
   .help({
     colors: (Deno.build.os === "windows") ? false : true,
@@ -33,8 +33,16 @@ await new Command()
     "Set up config for deno fmt only.",
   )
   .option(
+    "-p, --map [map:boolean]",
+    "Set up config for an import map.",
+  )
+  .option(
     "-l, --lint [lint:boolean]",
     "Set up config for deno lint only.",
+  )
+  .option(
+    "-k, --task [tasks:boolean]",
+    "Set up config for deno tasks only.",
   )
   .option(
     "-t, --tsconfig [tsconfig:boolean]",

@@ -15,8 +15,9 @@ Deno.test("writeConfigFile()", async (context) => {
   const afterEach = async () => {
     Deno.chdir("..");
     await Deno.remove(testDir, { recursive: true });
-    defaults.name = "deno.json";
-    defaults.jsonc = false;
+    testSettings.name = "deno.json";
+    testSettings.jsonc = false;
+    testSettings.map = false;
   };
 
   const test = async (
@@ -32,13 +33,13 @@ Deno.test("writeConfigFile()", async (context) => {
   await test({
     name: "create deno.json",
     fn: async () => {
-      await inputHandler(defaults);
+      await inputHandler(testSettings);
 
       const configFile = await Deno.readFile(
-        `${defaults.name}`,
+        `${testSettings.name}`,
       );
 
-      assertEquals(defaults.name, "deno.json");
+      assertEquals(testSettings.name, "deno.json");
       assert(configFile);
     },
   });
@@ -46,30 +47,31 @@ Deno.test("writeConfigFile()", async (context) => {
   await test({
     name: "create deno.jsonc",
     fn: async () => {
-      defaults.jsonc = true;
-      await inputHandler(defaults);
+      testSettings.jsonc = true;
+      await inputHandler(testSettings);
 
       const configFile = await Deno.readFile(
-        `${defaults.name}`,
+        `${testSettings.name}`,
       );
 
-      assertEquals(defaults.name, "deno.jsonc");
+      assertEquals(testSettings.name, "deno.jsonc");
       assert(configFile);
     },
   });
 
   await test({
     name: "create fmt options",
+    only: true,
     fn: async () => {
       testSettings.fmt = true;
 
       await inputHandler(testSettings);
 
       const configFile = await Deno.readFile(
-        `${defaults.name}`,
+        `${testSettings.name}`,
       );
 
-      assertEquals(defaults.name, "deno.json");
+      assertEquals(testSettings.name, "deno.json");
       assert(configFile);
 
       const contents = new TextDecoder().decode(configFile);
@@ -86,7 +88,7 @@ Deno.test("writeConfigFile()", async (context) => {
       await inputHandler(testSettings);
 
       const configFile = await Deno.readFile(
-        `${defaults.name}`,
+        `${testSettings.name}`,
       );
 
       assertEquals(defaults.name, "deno.json");
@@ -107,16 +109,58 @@ Deno.test("writeConfigFile()", async (context) => {
       await inputHandler(testSettings);
 
       const configFile = await Deno.readFile(
-        `${defaults.name}`,
+        `${testSettings.name}`,
       );
 
-      assertEquals(defaults.name, "deno.json");
+      assertEquals(testSettings.name, "deno.json");
       assert(configFile);
 
       const contents = new TextDecoder().decode(configFile);
       const json = JSON.parse(contents);
 
       assert(json.compilerOptions);
+    },
+  });
+
+  await test({
+    name: "create tasks",
+    fn: async () => {
+      testSettings.tasks = true;
+
+      await inputHandler(testSettings);
+
+      const configFile = await Deno.readFile(
+        `${testSettings.name}`,
+      );
+
+      assertEquals(testSettings.name, "deno.json");
+      assert(configFile);
+
+      const contents = new TextDecoder().decode(configFile);
+      const json = JSON.parse(contents);
+
+      assert(json.tasks);
+    },
+  });
+
+  await test({
+    name: "create importMap",
+    fn: async () => {
+      testSettings.map = true;
+
+      await inputHandler(testSettings);
+
+      const configFile = await Deno.readFile(
+        `${testSettings.name}`,
+      );
+
+      assertEquals(testSettings.name, "deno.json");
+      assert(configFile);
+
+      const contents = new TextDecoder().decode(configFile);
+      const json = JSON.parse(contents);
+
+      assertEquals(json.importMap, "");
     },
   });
 
@@ -128,10 +172,10 @@ Deno.test("writeConfigFile()", async (context) => {
       await inputHandler(testSettings);
 
       const configFile = await Deno.readFile(
-        `${defaults.name}`,
+        `${testSettings.name}`,
       );
 
-      assertEquals(defaults.name, "deno.json");
+      assertEquals(testSettings.name, "deno.json");
       assert(configFile);
 
       const contents = new TextDecoder().decode(configFile);

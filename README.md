@@ -23,7 +23,7 @@ this module is purely for generating config.
 ## Installation
 
 ```
-deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.3.1/mod.ts
+deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.4.0/mod.ts
 ```
 
 ## Usage
@@ -77,11 +77,26 @@ deno-init --fmt
 deno-init --lint
 ```
 
+`--map` or `-p` will add an `importMap` section only.
+
+```
+deno-init --map
+```
+
+`--task` or `-k` will add a `tasks` section only.
+
+```
+deno-init --tasks
+```
+
 `--tsconfig` or `-t` will add a `compilerOptions` section only.
 
 ```
 deno-init --tsconfig
 ```
+
+It is possible to combine the `fmt`, `lint`, `map`, `task` and `tsconfig`
+options.
 
 `--name` or `-n` will use a non-default name for the config file. The default
 name is `deno.json`. Note that using a non-default name may prevent config file
