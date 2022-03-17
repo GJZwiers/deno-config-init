@@ -60,8 +60,6 @@ await new Command()
       inputHandler({ ...defaults, ...options });
     } else {
       const choices = ask();
-      console.log(choices);
-      
       inputHandler({ ...options, ...choices });
     }
   })
