@@ -7,7 +7,9 @@ export interface Settings {
   fmt: boolean;
   jsonc: boolean;
   lint: boolean;
+  map: boolean;
   name: string;
+  tasks: boolean;
   tsconfig: boolean;
   yes: boolean;
 }
@@ -18,7 +20,9 @@ export const defaults: Settings = {
   fmt: false,
   jsonc: false,
   lint: false,
+  map: false,
   name: "deno.json",
+  tasks: false,
   tsconfig: false,
   yes: false,
 };
@@ -43,6 +47,8 @@ export type ConfigFile = {
       exclude?: string[];
     };
   };
+  tasks?: Record<string, unknown>;
+  importMap?: string;
 };
 
 export async function inputHandler(settings: Settings) {
@@ -88,6 +94,14 @@ export async function inputHandler(settings: Settings) {
         exclude: [],
       },
     };
+  }
+
+  if (settings.map) {
+    configFile.importMap = "";
+  }
+
+  if (settings.tasks) {
+    configFile.tasks = {};
   }
 
   if (settings.tsconfig) {

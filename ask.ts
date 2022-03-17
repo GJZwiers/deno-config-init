@@ -22,8 +22,22 @@ export function ask() {
 
   const fmt = processResponse(formattingResponse, defaults.fmt);
 
+  const taskResponse = prompt(
+    "Would you like to add tasks? (y/n)",
+    `y`,
+  );
+
+  const tasks = processResponse(taskResponse, defaults.tasks);
+
+  const importMapResponse = prompt(
+    "Would you like to add an import map? (y/n)",
+    `y`,
+  );
+
+  const map = processResponse(importMapResponse, defaults.fmt);
+
   const name = prompt(
-    "What should the name of the config file be?",
+    "What should the config file be named?",
     `deno.json`,
   );
 
@@ -31,6 +45,8 @@ export function ask() {
     tsconfig,
     lint,
     fmt,
+    tasks,
+    map,
     name,
   };
 

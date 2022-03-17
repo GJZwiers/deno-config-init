@@ -33,8 +33,16 @@ await new Command()
     "Set up config for deno fmt only.",
   )
   .option(
+    "-p, --map [map:boolean]",
+    "Set up config for an import map.",
+  )
+  .option(
     "-l, --lint [lint:boolean]",
     "Set up config for deno lint only.",
+  )
+  .option(
+    "-k, --task [tasks:boolean]",
+    "Set up config for deno tasks only.",
   )
   .option(
     "-t, --tsconfig [tsconfig:boolean]",
