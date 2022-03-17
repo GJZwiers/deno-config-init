@@ -86,7 +86,7 @@ deno-init --map
 `--task` or `-k` will add a `tasks` section only.
 
 ```
-deno-init --tasks
+deno-init --task
 ```
 
 `--tsconfig` or `-t` will add a `compilerOptions` section only.

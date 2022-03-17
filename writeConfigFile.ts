@@ -9,7 +9,7 @@ export interface Settings {
   lint: boolean;
   map: boolean;
   name: string;
-  tasks: boolean;
+  task: boolean;
   tsconfig: boolean;
   yes: boolean;
 }
@@ -22,7 +22,7 @@ export const defaults: Settings = {
   lint: false,
   map: false,
   name: "deno.json",
-  tasks: false,
+  task: false,
   tsconfig: false,
   yes: false,
 };
@@ -100,7 +100,7 @@ export async function inputHandler(settings: Settings) {
     configFile.importMap = "";
   }
 
-  if (settings.tasks) {
+  if (settings.task) {
     configFile.tasks = {};
   }
 
