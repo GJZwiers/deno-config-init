@@ -4,7 +4,7 @@ import { ask } from "./ask.ts";
 
 await new Command()
   .name("deno-init")
-  .version("v2.4.0")
+  .version("v2.4.1")
   .description("Generate a Deno configuration file.")
   .help({
     colors: (Deno.build.os === "windows") ? false : true,

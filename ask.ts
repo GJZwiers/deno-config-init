@@ -27,14 +27,14 @@ export function ask() {
     `y`,
   );
 
-  const tasks = processResponse(taskResponse, defaults.task);
+  const task = processResponse(taskResponse, defaults.task);
 
   const importMapResponse = prompt(
     "Would you like to add an import map? (y/n)",
     `n`,
   );
 
-  const map = processResponse(importMapResponse, defaults.map);
+  const importMap = processResponse(importMapResponse, defaults.map);
 
   const name = prompt(
     "What should the config file be named?",
@@ -45,8 +45,8 @@ export function ask() {
     tsconfig,
     lint,
     fmt,
-    tasks,
-    map,
+    task,
+    importMap,
     name,
   };
 
