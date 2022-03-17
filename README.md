@@ -77,11 +77,26 @@ deno-init --fmt
 deno-init --lint
 ```
 
+`--map` or `-p` will add an `importMap` section only.
+
+```
+deno-init --map
+```
+
+`--task` or `-k` will add a `tasks` section only.
+
+```
+deno-init --tasks
+```
+
 `--tsconfig` or `-t` will add a `compilerOptions` section only.
 
 ```
 deno-init --tsconfig
 ```
+
+It is possible to combine the `fmt`, `lint`, `map`, `task` and `tsconfig`
+options.
 
 `--name` or `-n` will use a non-default name for the config file. The default
 name is `deno.json`. Note that using a non-default name may prevent config file
