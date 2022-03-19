@@ -24,12 +24,13 @@ export function generateJsonc(): string {
 
   const jsonString = JSON.stringify(configFile, null, 2);
 
-  const optionMatcher = /^(\s+".+?"): "(.+?)\|(.+?)\|(.+?)",?$/gm;
+  const optionMatcher = /^(\s*?)(".+?"): "(.+?)\|(.+?)\|(.+?)",?$/gm;
   // "allowJs": boolean|true|description -> // "allowJs": true /* description */
   const jsoncString = jsonString.replace(
     optionMatcher,
     function (
       _full_match,
+      space,
       option,
       type,
       defaultValue,
@@ -38,20 +39,15 @@ export function generateJsonc(): string {
       let value;
       if (/importMap/.test(option)) {
         value = '"",';
-      } else if (type === "string") {
-        value = `"${defaultValue}"`;
       } else if (type === "boolean" || type === "number") {
         value = defaultValue;
-      } else if (type === "array" && defaultValue === "none") {
-        value = "[]";
       } else if (type === "array") {
-        value = `[ "${defaultValue}" ]`;
-      } else { // if enum
+        value = (defaultValue === "none") ? "[]" : `[ "${defaultValue}" ]`;
+      } else { // if string or enum
         value = `"${defaultValue}"`;
       }
-      // TODO: maybe integrate with optionMatcher
-      const commentedOption = option.replace(/^(\s*?)(?=")/, "$1// ");
-      return `${commentedOption}: ${value} /* ${description} */`;
+
+      return `${space}// ${option}: ${value} /* ${description} */`;
     },
   );
 
