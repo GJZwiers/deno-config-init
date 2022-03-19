@@ -23,7 +23,7 @@ this module is purely for generating config.
 ## Installation
 
 ```
-deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.4.2/mod.ts
+deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.4.3/mod.ts
 ```
 
 ## Usage
@@ -77,13 +77,15 @@ deno-init --fmt
 deno-init --lint
 ```
 
-`--map` or `-p` will add an `importMap` section only.
+`--map` or `-p` will add an `importMap` section only. Note that this option
+requires Deno 1.20 or higher.
 
 ```
 deno-init --map
 ```
 
-`--task` or `-k` will add a `tasks` section only.
+`--task` or `-k` will add a `tasks` section only. Note that this option requires
+Deno 1.20 or higher.
 
 ```
 deno-init --task
