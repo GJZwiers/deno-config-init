@@ -36,14 +36,16 @@ export function generateJsonc(): string {
       description,
     ) {
       let value;
-      if (type === "string") {
+      if (/importMap/.test(option)) {
+        value = '"",';
+      } else if (type === "string") {
         value = `"${defaultValue}"`;
+      } else if (type === "boolean" || type === "number") {
+        value = defaultValue;
       } else if (type === "array" && defaultValue === "none") {
         value = "[]";
       } else if (type === "array") {
         value = `[ "${defaultValue}" ]`;
-      } else if (type === "boolean") {
-        value = defaultValue;
       } else { // if enum
         value = `"${defaultValue}"`;
       }
