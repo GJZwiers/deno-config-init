@@ -4,7 +4,7 @@ import { ask } from "./ask.ts";
 
 await new Command()
   .name("deno-init")
-  .version("v2.4.2")
+  .version("v2.4.3")
   .description("Generate a Deno configuration file.")
   .help({
     colors: (Deno.build.os === "windows") ? false : true,
@@ -19,7 +19,7 @@ await new Command()
   )
   .option(
     "-f, --force [force:boolean]",
-    "Force overwriting any existing config file.",
+    "Allow overwriting an existing config file.",
   )
   .option(
     "-n, --name [name:string]",
@@ -34,7 +34,7 @@ await new Command()
   )
   .option(
     "-p, --map [map:boolean]",
-    "Set up config for an import map.",
+    "Set up config for an import map. Requires Deno 1.20 or higher",
   )
   .option(
     "-l, --lint [lint:boolean]",
@@ -42,7 +42,7 @@ await new Command()
   )
   .option(
     "-k, --task [task:boolean]",
-    "Set up config for deno tasks only.",
+    "Set up config for deno tasks only. Requires Deno 1.20 or higher",
   )
   .option(
     "-t, --tsconfig [tsconfig:boolean]",
