@@ -52,24 +52,22 @@ export function generateJsonc(): string {
   );
 
   const lines = jsoncString.split("\n");
-  const commentMultiLine = /\/\*/;
+  const descriptionComment = /\/\*/;
   // Find the line with the highest index (right-most) description comment.
   let highest = 0;
+  const indices: number[] = [];
   lines.forEach((line) => {
-    const start = line.match(commentMultiLine);
-    if (!start) return;
-    if (!start.index) return;
-    if (start.index > highest) return highest = start.index;
+    const comment = line.match(descriptionComment);
+    if (!comment || !comment.index) return indices.push(-1);
+    if (comment.index > highest) highest = comment.index;
+    indices.push(comment.index);
   });
 
   // Align description comments based on the highest index just found.
-  const formattedJsoncString = lines.map((line) => {
-    const start = line.match(commentMultiLine);
-    if (!start) return line;
-
-    return line.replace(commentMultiLine, function (match) {
-      const diff = highest - (start.index || 0);
-      return " ".repeat(diff) + match;
+  const formattedJsoncString = lines.map((line, index) => {
+    return line.replace(descriptionComment, (comment) => {
+      const diff = highest - (indices[index]);
+      return " ".repeat(diff) + comment;
     });
   }).join("\n");
 
