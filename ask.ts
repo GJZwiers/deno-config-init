@@ -6,7 +6,7 @@ export function ask() {
     `y`,
   );
 
-  const tsconfig = processResponse(tsconfigResponse, defaults.lint);
+  const tsconfig = processResponse(tsconfigResponse, defaults.tsconfig);
 
   const lintingResponse = prompt(
     "Would you like to add custom linter configuration? (y/n)",
