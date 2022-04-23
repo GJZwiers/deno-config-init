@@ -4,6 +4,7 @@ on: push
 
 jobs:
   build:
+    environment: build
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.canary }}
     strategy:
