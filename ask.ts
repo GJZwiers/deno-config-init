@@ -1,5 +1,3 @@
-import { defaults } from "./writeConfigFile.ts";
-
 export function ask() {
   const tsconfigResponse = prompt(
     `Would you like to add custom TypeScript configuration? (y/n)`,
