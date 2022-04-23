@@ -7,6 +7,7 @@ on:
 
 jobs:
   publish:
+    environment: release
     runs-on: ubuntu-20.04
     steps:
       - name: Setup Actions
