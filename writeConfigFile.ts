@@ -2,16 +2,16 @@ import { writeFileSec } from "./writeFileSec.ts";
 import { generateJsonc } from "./schema.ts";
 
 export interface Settings {
-  force: boolean;
-  fill: boolean;
-  fmt: boolean;
-  jsonc: boolean;
-  lint: boolean;
-  map: boolean;
+  force?: boolean;
+  fill?: boolean;
+  fmt?: boolean;
+  jsonc?: boolean;
+  lint?: boolean;
+  map?: boolean;
   name: string;
-  task: boolean;
-  tsconfig: boolean;
-  yes: boolean;
+  task?: boolean;
+  tsconfig?: boolean;
+  yes?: boolean;
 }
 
 export const defaults: Settings = {

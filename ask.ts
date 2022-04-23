@@ -6,35 +6,35 @@ export function ask() {
     `y`,
   );
 
-  const tsconfig = processResponse(tsconfigResponse, defaults.tsconfig);
+  const tsconfig = processResponse(tsconfigResponse, false);
 
   const lintingResponse = prompt(
     "Would you like to add custom linter configuration? (y/n)",
     `y`,
   );
 
-  const lint = processResponse(lintingResponse, defaults.lint);
+  const lint = processResponse(lintingResponse, false);
 
   const formattingResponse = prompt(
     "Would you like to add custom formatter configuration? (y/n)",
     `y`,
   );
 
-  const fmt = processResponse(formattingResponse, defaults.fmt);
+  const fmt = processResponse(formattingResponse, false);
 
   const taskResponse = prompt(
     "Would you like to add tasks? (y/n)",
     `y`,
   );
 
-  const task = processResponse(taskResponse, defaults.task);
+  const task = processResponse(taskResponse, false);
 
   const importMapResponse = prompt(
     "Would you like to add an import map? (y/n)",
     `n`,
   );
 
-  const importMap = processResponse(importMapResponse, defaults.map);
+  const importMap = processResponse(importMapResponse, false);
 
   const name = prompt(
     "What should the config file be named?",
@@ -47,7 +47,7 @@ export function ask() {
     fmt,
     task,
     importMap,
-    name,
+    name: name as string,
   };
 
   return settings;

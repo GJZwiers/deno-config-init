@@ -10,49 +10,49 @@ await new Command()
     colors: (Deno.build.os === "windows") ? false : true,
   })
   .option(
-    "-a, --fill [fill:boolean]",
+    "-a, --fill",
     "Create the config file as .jsonc with the possible options listed as comments.",
   )
   .option(
-    "-c, --jsonc [jsonc:boolean]",
+    "-c, --jsonc",
     "Create the config file as .jsonc. Alias for --fill.",
   )
   .option(
-    "-f, --force [force:boolean]",
+    "-f, --force",
     "Allow overwriting an existing config file.",
   )
   .option(
-    "-n, --name [name:string]",
+    "-n, --name <name:string>",
     "The name of the config file.",
     {
-      default: "deno.json",
-    },
+      default: "deno.json"
+    }
   )
   .option(
-    "-m, --fmt [fmt:boolean]",
+    "-m, --fmt",
     "Set up config for deno fmt only.",
   )
   .option(
-    "-p, --map [map:boolean]",
+    "-p, --map",
     "Set up config for an import map. Requires Deno 1.20 or higher",
   )
   .option(
-    "-l, --lint [lint:boolean]",
+    "-l, --lint",
     "Set up config for deno lint only.",
   )
   .option(
-    "-k, --task [task:boolean]",
+    "-k, --task",
     "Set up config for deno tasks only. Requires Deno 1.20 or higher",
   )
   .option(
-    "-t, --tsconfig [tsconfig:boolean]",
+    "-t, --tsconfig",
     "Set up config for typescript compiler options only.",
   )
   .option(
-    "-y, --yes [yes:boolean]",
+    "-y, --yes",
     "Skip the prompts and use all defaults.",
   )
-  .action((options) => {
+  .action((options) => {   
     if (
       options.yes || options.fill || options.fmt || options.lint ||
       options.tsconfig || options.jsonc || options.task || options.map
