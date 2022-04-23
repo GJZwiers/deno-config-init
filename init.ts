@@ -25,8 +25,8 @@ await new Command()
     "-n, --name <name:string>",
     "The name of the config file.",
     {
-      default: "deno.json"
-    }
+      default: "deno.json",
+    },
   )
   .option(
     "-m, --fmt",
@@ -52,7 +52,7 @@ await new Command()
     "-y, --yes",
     "Skip the prompts and use all defaults.",
   )
-  .action((options) => {   
+  .action((options) => {
     if (
       options.yes || options.fill || options.fmt || options.lint ||
       options.tsconfig || options.jsonc || options.task || options.map
