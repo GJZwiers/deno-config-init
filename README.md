@@ -27,7 +27,7 @@ this module is purely for generating config.
 ## Installation
 
 ```
-deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.4.4/mod.ts
+deno install --allow-read --allow-write -fn deno-init https://deno.land/x/init@v2.5.0/mod.ts
 ```
 
 ## Usage
@@ -67,6 +67,13 @@ output of `tsc --init` for generating a `tsconfig.json`.
 
 ```
 deno-init --fill
+```
+
+It is also possible to add only specific fields to the config file and fill them
+with options in comments, for example:
+
+```
+deno-init --fmt --fill
 ```
 
 `--fmt` or `-m` will add a `fmt` section only.

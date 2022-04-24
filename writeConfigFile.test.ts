@@ -16,8 +16,9 @@ Deno.test("writeConfigFile()", async (context) => {
     Deno.chdir("..");
     await Deno.remove(testDir, { recursive: true });
     testSettings.name = "deno.json";
-    testSettings.jsonc = false;
     testSettings.map = false;
+    testSettings.fill = false;
+    testSettings.fmt = false;
   };
 
   const test = async (
@@ -45,17 +46,47 @@ Deno.test("writeConfigFile()", async (context) => {
   });
 
   await test({
-    name: "create deno.jsonc",
+    name: "create filled deno.jsonc if --fill is used",
     fn: async () => {
-      testSettings.jsonc = true;
+      testSettings.fill = true;
       await inputHandler(testSettings);
 
-      const configFile = await Deno.readFile(
+      assertEquals(testSettings.name, "deno.jsonc");
+
+      const bytes = await Deno.readFile(
         `${testSettings.name}`,
       );
 
-      assertEquals(testSettings.name, "deno.jsonc");
-      assert(configFile);
+      const file = new TextDecoder().decode(bytes);
+
+      assert(file.indexOf("fmt") > 0);
+      assert(file.indexOf("lint") > 0);
+      assert(file.indexOf("importMap") > 0);
+      assert(file.indexOf("compilerOptions") > 0);
+      assert(file.indexOf("tasks") > 0);
+    },
+  });
+
+  await test({
+    name:
+      "create deno.jsonc with fmt section only if fill is used in combination with fmt",
+    fn: async () => {
+      testSettings.fill = true;
+      testSettings.fmt = true;
+      await inputHandler(testSettings);
+
+      const bytes = await Deno.readFile(
+        `${testSettings.name}`,
+      );
+
+      const file = new TextDecoder().decode(bytes);
+
+      assert(file.indexOf("fmt") > 0);
+
+      assert(file.indexOf("lint") === -1);
+      assert(file.indexOf("importMap") === -1);
+      assert(file.indexOf("compilerOptions") === -1);
+      assert(file.indexOf("tasks") === -1);
     },
   });
 

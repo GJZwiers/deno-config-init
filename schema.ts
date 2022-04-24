@@ -1,5 +1,6 @@
 // deno-lint-ignore-file no-explicit-any
 import { schema } from "./deps.ts";
+import { Settings } from "./writeConfigFile.ts";
 
 // TODO: better types
 export function createFromSchema(properties: any, configFile: any) {
@@ -17,10 +18,41 @@ export function createFromSchema(properties: any, configFile: any) {
   }
 }
 
-export function generateJsonc(): string {
+const mapOfKeys: { [key: string]: string } = {
+  fmt: "fmt",
+  lint: "lint",
+  map: "importMap",
+  task: "tasks",
+  tsconfig: "compilerOptions",
+};
+
+export function generateJsonc(settings: Settings): string {
   const configFile: any = {};
 
+  // Find which settings are true and map it to fields in the deno.jsonc file
+  // TODO: refactor
+  let opts = 0;
+  const keep = Object.entries(settings)
+    .filter((setting) => {
+      return setting[1] === true;
+    }).map((v) => {
+      if (mapOfKeys[v[0]]) {
+        opts += 1;
+        return mapOfKeys[v[0]];
+      }
+    });
+
   createFromSchema(schema.properties, configFile);
+
+  // When e.g. both --fill and --fmt are true
+  if (opts > 0) {
+    for (const key in configFile) {
+      // Delete fields except the ones passed in the settings
+      if (keep.indexOf(key) === -1) {
+        delete configFile[key];
+      }
+    }
+  }
 
   const jsonString = JSON.stringify(configFile, null, 2);
 

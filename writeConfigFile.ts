@@ -57,7 +57,7 @@ export async function inputHandler(settings: Settings) {
 
     return await writeFileSec(
       settings.name,
-      new TextEncoder().encode(generateJsonc()),
+      new TextEncoder().encode(generateJsonc(settings)),
       {
         force: settings.force,
       },

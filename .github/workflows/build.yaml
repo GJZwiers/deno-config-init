@@ -20,7 +20,7 @@ jobs:
       DENO_DIR: deno_dir
 
     steps:
-      - name: Configure line-endings for Windows builds
+      - name: Configure line-endings for Windows build
         if: matrix.os == 'windows-2019'
         run: |
           git config --system core.autocrlf false
