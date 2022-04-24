@@ -2,13 +2,10 @@ name: Publish Egg
 
 on:
   release:
-    branches: 
-    - main
-    - ci_release
+    branches: main
     types:
       - published
   
-
 jobs:
   publish:
     environment: release
