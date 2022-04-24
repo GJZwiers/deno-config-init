@@ -69,6 +69,9 @@ output of `tsc --init` for generating a `tsconfig.json`.
 deno-init --fill
 ```
 
+It is possible to add specific fields only and fill them with options in
+comments, using for example `deno-init --fmt --fill`.
+
 `--fmt` or `-m` will add a `fmt` section only.
 
 ```
