@@ -29,7 +29,8 @@ const mapOfKeys: { [key: string]: string } = {
 export function generateJsonc(settings: Settings): string {
   const configFile: any = {};
 
-  // retain all true properties in settings, delete others
+  // Find which settings are true and map it to fields in the deno.jsonc file
+  // TODO: refactor
   let opts = 0;
   const keep = Object.entries(settings)
     .filter((setting) => {
@@ -40,12 +41,13 @@ export function generateJsonc(settings: Settings): string {
         return mapOfKeys[v[0]];
       }
     });
-  // console.log(keep, opts);
 
   createFromSchema(schema.properties, configFile);
 
+  // When e.g. both --fill and --fmt are true
   if (opts > 0) {
     for (const key in configFile) {
+      // Delete fields except the ones passed in the settings
       if (keep.indexOf(key) === -1) {
         delete configFile[key];
       }
