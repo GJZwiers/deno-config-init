@@ -20,6 +20,10 @@ this module is purely for generating config.
 - [Options](#options)
 - [Contributing](#contributing)
 
+## Requirements
+
+- Deno 1.17 or higher
+
 ## Installation
 
 ```
@@ -77,15 +81,15 @@ deno-init --fmt
 deno-init --lint
 ```
 
-`--map` or `-p` will add an `importMap` section only. Note that this option
-requires Deno 1.20 or higher.
+`--map` or `-p` will add an `importMap` section only. Note that using
+`importMap` requires Deno 1.20 or higher.
 
 ```
 deno-init --map
 ```
 
-`--task` or `-k` will add a `tasks` section only. Note that this option requires
-Deno 1.20 or higher.
+`--task` or `-k` will add a `tasks` section only. Note that using `tasks`
+requires Deno 1.20 or higher.
 
 ```
 deno-init --task
@@ -113,5 +117,5 @@ deno-init --name config.json
 ## Contributing
 
 You are welcome to report any bugs, other issues, or feature requests! If you
-want to add a fix/feature/other improvement fork this repository and make a pull
-request with your changes.
+want to add a fix/feature/other improvement, fork this repository and make a
+pull request with your changes.
