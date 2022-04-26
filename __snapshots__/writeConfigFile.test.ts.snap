@@ -1,0 +1,17 @@
+export const snapshot = {};
+
+snapshot[`isSnapshotMatch 1`] = `
+{
+  fmt: {
+    files: {
+      exclude: [
+
+      ],
+      include: [
+        
+      ],
+    },
+    options: {},
+  },
+}
+`;

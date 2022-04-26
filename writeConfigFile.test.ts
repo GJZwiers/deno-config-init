@@ -1,5 +1,18 @@
-import { assert, assertEquals } from "./dev_deps.ts";
+import { assert, assertEquals, assertSnapshot } from "./dev_deps.ts";
 import { defaults, inputHandler, Settings } from "./writeConfigFile.ts";
+
+Deno.test("isSnapshotMatch", async (test) => {
+  const config = {
+    fmt: {
+      files: {
+        exclude: [],
+        include: []
+      },
+      options: {},
+    },
+  };
+  await assertSnapshot(test, config);
+});
 
 Deno.test("writeConfigFile()", async (context) => {
   const testDir = "test_directory";
