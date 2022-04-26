@@ -73,6 +73,7 @@ export async function inputHandler(settings: Settings) {
     settings.fmt = true;
     settings.lint = true;
     settings.tsconfig = true;
+    settings.task = true;
   }
 
   if (settings.fmt) {
