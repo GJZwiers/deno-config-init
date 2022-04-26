@@ -55,13 +55,16 @@ export async function inputHandler(settings: Settings) {
   if (settings.fill || settings.jsonc) {
     settings.name = settings.name.replace(".json", ".jsonc");
 
-    return await writeFileSec(
+    const file = generateJsonc(settings);
+
+    await writeFileSec(
       settings.name,
-      new TextEncoder().encode(generateJsonc(settings)),
+      new TextEncoder().encode(file),
       {
         force: settings.force,
       },
     );
+    return file;
   }
 
   const configFile: ConfigFile = {};
@@ -109,6 +112,7 @@ export async function inputHandler(settings: Settings) {
   }
 
   await writeConfigFile(configFile, settings);
+  return JSON.stringify(configFile, null, 2);
 }
 
 export async function writeConfigFile(

@@ -1,17 +1,172 @@
 export const snapshot = {};
 
-snapshot[`isSnapshotMatch 1`] = `
-{
-  fmt: {
-    files: {
-      exclude: [
+snapshot[`writeConfigFile 1`] = `
+[
+  "{}",
+]
+`;
 
-      ],
-      include: [
-        
-      ],
-    },
-    options: {},
-  },
-}
+snapshot[`writeConfigFile 2`] = `
+[
+  "{",
+  '  "fmt": {',
+  '    "files": {',
+  '      "include": [],',
+  '      "exclude": []',
+  "    },",
+  '    "options": {}',
+  "  }",
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 3`] = `
+[
+  "{",
+  '  "compilerOptions": {',
+  '    // "allowJs": true                         /* Allow JavaScript files to be a part of your progra...',
+  '    // "allowUnreachableCode": false           /* Disable error reporting for unreachable code. */',
+  '    // "allowUnusedLabels": false              /* Disable error reporting for unused labels. */',
+  '    // "checkJs": false                        /* Enable error reporting in type-checked JavaScript ...',
+  '    // "experimentalDecorators": true          /* Enable experimental support for TC39 stage 2 draft...',
+  '    // "jsx": "react"                          /* Specify what JSX code is generated. */',
+  '    // "jsxFactory": "React.createElement"     /* Specify the JSX factory function used when targeti...',
+  '    // "jsxFragmentFactory": "React.Fragment"  /* Specify the JSX Fragment reference used for fragme...',
+  '    // "jsxImportSource": "react"              /* Specify module specifier used to import the JSX fa...',
+  '    // "keyofStringsOnly": false               /* Make keyof only return strings instead of string, ...',
+  '    // "lib": [ "deno.window" ]                /* Specify a set of bundled library declaration files...',
+  '    // "noFallthroughCasesInSwitch": false     /* Enable error reporting for fallthrough cases in sw...',
+  '    // "noImplicitAny": true                   /* Enable error reporting for expressions and declara...',
+  '    // "noImplicitOverride": false             /* Ensure overriding members in derived classes are m...',
+  '    // "noImplicitReturns": false              /* Enable error reporting for codepaths that do not e...',
+  '    // "noImplicitThis": true                  /* Enable error reporting when \`this\` is given the ty...',
+  \`    // "noImplicitUseStrict": true             /* Disable adding 'use strict' directives in emitted ...\`,
+  '    // "noStrictGenericChecks": false          /* Disable strict checking of generic signatures in f...',
+  '    // "noUnusedLocals": false                 /* Enable error reporting when a local variables aren...',
+  \`    // "noUnusedParameters": false             /* Raise an error when a function parameter isn't rea...\`,
+  '    // "noUncheckedIndexedAccess": false       /* Add \`undefined\` to a type when accessed using an i...',
+  '    // "strict": true                          /* Enable all strict type checking options. */',
+  '    // "strictBindCallApply": true             /* Check that the arguments for \`bind\`, \`call\`, and \`...',
+  '    // "strictFunctionTypes": true             /* When assigning functions, check to ensure paramete...',
+  '    // "strictPropertyInitialization": true    /* Check for class properties that are declared but n...',
+  '    // "strictNullChecks": true                /* When type checking, take into account \`null\` and \`...',
+  '    // "suppressExcessPropertyErrors": false   /* Disable reporting of excess property errors during...',
+  '    // "suppressImplicitAnyIndexErrors": false /* Suppress \`noImplicitAny\` errors when indexing obje...',
+  "  },",
+  '  // "importMap": "",                          /* The location of an import map to be used when reso...',
+  '  "lint": {',
+  '    "files": {',
+  '      // "include": []                         /* List of files or directories that will be linted. ...',
+  '      // "exclude": []                         /* List of files or directories that will not be lint...',
+  "    },",
+  '    "rules": {',
+  '      // "tags": []                            /* List of tag names that will be run. Empty list dis...',
+  '      // "exclude": []                         /* List of rule names that will be excluded from conf...',
+  '      // "include": []                         /* List of rule names that will be run. Even if the s...',
+  "    }",
+  "  },",
+  '  "fmt": {',
+  '    "files": {',
+  '      // "include": []                         /* List of files or directories that will be formatte...',
+  '      // "exclude": []                         /* List of files or directories that will not be form...',
+  "    },",
+  '    "options": {',
+  '      // "useTabs": false                      /* Whether to use tabs (true) or spaces (false) for i...',
+  '      // "lineWidth": 80                       /* The width of a line the printer will try to stay u...',
+  '      // "indentWidth": 2                      /* The number of characters for an indent. */',
+  '      // "singleQuote": false                  /* Whether to use single quote (true) or double quote...',
+  '      // "proseWrap": "always"                 /* Define how prose should be wrapped in Markdown fil...',
+  "    }",
+  "  },",
+  '  "tasks": {}',
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 4`] = `
+[
+  "{",
+  '  "fmt": {',
+  '    "files": {',
+  '      // "include": []         /* List of files or directories that will be formatted. */',
+  '      // "exclude": []         /* List of files or directories that will not be formatted. */',
+  "    },",
+  '    "options": {',
+  '      // "useTabs": false      /* Whether to use tabs (true) or spaces (false) for indentation. */',
+  '      // "lineWidth": 80       /* The width of a line the printer will try to stay under. Note that ...',
+  '      // "indentWidth": 2      /* The number of characters for an indent. */',
+  '      // "singleQuote": false  /* Whether to use single quote (true) or double quote (false) for quo...',
+  '      // "proseWrap": "always" /* Define how prose should be wrapped in Markdown files. */',
+  "    }",
+  "  }",
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 5`] = `
+[
+  "{",
+  '  "lint": {',
+  '    "files": {',
+  '      "include": [],',
+  '      "exclude": []',
+  "    },",
+  '    "rules": {',
+  '      "tags": [],',
+  '      "include": [],',
+  '      "exclude": []',
+  "    }",
+  "  }",
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 6`] = `
+[
+  "{",
+  '  "compilerOptions": {}',
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 7`] = `
+[
+  "{",
+  '  "tasks": {}',
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 8`] = `
+[
+  "{",
+  '  "importMap": ""',
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 9`] = `
+[
+  "{",
+  '  "fmt": {',
+  '    "files": {',
+  '      "include": [],',
+  '      "exclude": []',
+  "    },",
+  '    "options": {}',
+  "  },",
+  '  "lint": {',
+  '    "files": {',
+  '      "include": [],',
+  '      "exclude": []',
+  "    },",
+  '    "rules": {',
+  '      "tags": [],',
+  '      "include": [],',
+  '      "exclude": []',
+  "    }",
+  "  },",
+  '  "compilerOptions": {}',
+  "}",
+]
 `;
