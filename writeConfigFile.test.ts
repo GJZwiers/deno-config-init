@@ -1,24 +1,21 @@
-import { assert, assertEquals } from "./dev_deps.ts";
+import { assert, assertEquals, assertSnapshot } from "./dev_deps.ts";
 import { defaults, inputHandler, Settings } from "./writeConfigFile.ts";
 
-Deno.test("writeConfigFile()", async (context) => {
+Deno.test("writeConfigFile", async (context) => {
   const testDir = "test_directory";
   let testSettings: Settings;
 
   const beforeEach = async () => {
     await Deno.mkdir(testDir, { recursive: true });
-    Deno.chdir(testDir);
 
+    Deno.chdir(testDir);
     testSettings = self.structuredClone(defaults);
   };
 
   const afterEach = async () => {
     Deno.chdir("..");
+
     await Deno.remove(testDir, { recursive: true });
-    testSettings.name = "deno.json";
-    testSettings.map = false;
-    testSettings.fill = false;
-    testSettings.fmt = false;
   };
 
   const test = async (
@@ -34,59 +31,15 @@ Deno.test("writeConfigFile()", async (context) => {
   await test({
     name: "create deno.json",
     fn: async () => {
-      await inputHandler(testSettings);
+      const output = await inputHandler(defaults);
 
-      const configFile = await Deno.readFile(
+      const bytes = await Deno.readFile(
         `${testSettings.name}`,
       );
 
+      assert(bytes.length > 0);
       assertEquals(testSettings.name, "deno.json");
-      assert(configFile);
-    },
-  });
-
-  await test({
-    name: "create filled deno.jsonc if --fill is used",
-    fn: async () => {
-      testSettings.fill = true;
-      await inputHandler(testSettings);
-
-      assertEquals(testSettings.name, "deno.jsonc");
-
-      const bytes = await Deno.readFile(
-        `${testSettings.name}`,
-      );
-
-      const file = new TextDecoder().decode(bytes);
-
-      assert(file.indexOf("fmt") > 0);
-      assert(file.indexOf("lint") > 0);
-      assert(file.indexOf("importMap") > 0);
-      assert(file.indexOf("compilerOptions") > 0);
-      assert(file.indexOf("tasks") > 0);
-    },
-  });
-
-  await test({
-    name:
-      "create deno.jsonc with fmt section only if fill is used in combination with fmt",
-    fn: async () => {
-      testSettings.fill = true;
-      testSettings.fmt = true;
-      await inputHandler(testSettings);
-
-      const bytes = await Deno.readFile(
-        `${testSettings.name}`,
-      );
-
-      const file = new TextDecoder().decode(bytes);
-
-      assert(file.indexOf("fmt") > 0);
-
-      assert(file.indexOf("lint") === -1);
-      assert(file.indexOf("importMap") === -1);
-      assert(file.indexOf("compilerOptions") === -1);
-      assert(file.indexOf("tasks") === -1);
+      await assertSnapshot(context, output.split("\n"));
     },
   });
 
@@ -96,18 +49,52 @@ Deno.test("writeConfigFile()", async (context) => {
     fn: async () => {
       testSettings.fmt = true;
 
-      await inputHandler(testSettings);
+      const output = await inputHandler(testSettings);
 
-      const configFile = await Deno.readFile(
+      const bytes = await Deno.readFile(
         `${testSettings.name}`,
       );
 
       assertEquals(testSettings.name, "deno.json");
-      assert(configFile);
+      assert(bytes.length > 0);
 
-      const contents = new TextDecoder().decode(configFile);
-      const json = JSON.parse(contents);
-      assert(json.fmt);
+      await assertSnapshot(context, output.split("\n"));
+    },
+  });
+
+  await test({
+    name: "create filled deno.jsonc if --fill is used",
+    fn: async () => {
+      testSettings.fill = true;
+
+      const output = await inputHandler(testSettings);
+
+      const bytes = await Deno.readFile(
+        `${testSettings.name}`,
+      );
+      assert(bytes.length > 0);
+      assertEquals(testSettings.name, "deno.jsonc");
+
+      await assertSnapshot(context, output.split("\n"));
+    },
+  });
+
+  await test({
+    name:
+      "create filled deno.jsonc with a specific section only if --fill is used together with another option",
+    fn: async () => {
+      testSettings.fmt = true;
+      testSettings.fill = true;
+
+      const output = await inputHandler(testSettings);
+
+      const bytes = await Deno.readFile(
+        `${testSettings.name}`,
+      );
+      assert(bytes.length > 0);
+      assertEquals(testSettings.name, "deno.jsonc");
+
+      await assertSnapshot(context, output.split("\n"));
     },
   });
 
@@ -116,19 +103,15 @@ Deno.test("writeConfigFile()", async (context) => {
     fn: async () => {
       testSettings.lint = true;
 
-      await inputHandler(testSettings);
+      const output = await inputHandler(testSettings);
 
-      const configFile = await Deno.readFile(
+      const bytes = await Deno.readFile(
         `${testSettings.name}`,
       );
+      assert(bytes.length > 0);
+      assertEquals(testSettings.name, "deno.json");
 
-      assertEquals(defaults.name, "deno.json");
-      assert(configFile);
-
-      const contents = new TextDecoder().decode(configFile);
-      const json = JSON.parse(contents);
-
-      assert(json.lint);
+      await assertSnapshot(context, output.split("\n"));
     },
   });
 
@@ -137,19 +120,16 @@ Deno.test("writeConfigFile()", async (context) => {
     fn: async () => {
       testSettings.tsconfig = true;
 
-      await inputHandler(testSettings);
+      const output = await inputHandler(testSettings);
 
-      const configFile = await Deno.readFile(
+      const bytes = await Deno.readFile(
         `${testSettings.name}`,
       );
 
+      assert(bytes.length > 0);
       assertEquals(testSettings.name, "deno.json");
-      assert(configFile);
 
-      const contents = new TextDecoder().decode(configFile);
-      const json = JSON.parse(contents);
-
-      assert(json.compilerOptions);
+      await assertSnapshot(context, output.split("\n"));
     },
   });
 
@@ -158,19 +138,16 @@ Deno.test("writeConfigFile()", async (context) => {
     fn: async () => {
       testSettings.task = true;
 
-      await inputHandler(testSettings);
+      const output = await inputHandler(testSettings);
 
-      const configFile = await Deno.readFile(
+      const bytes = await Deno.readFile(
         `${testSettings.name}`,
       );
 
+      assert(bytes.length > 0);
       assertEquals(testSettings.name, "deno.json");
-      assert(configFile);
 
-      const contents = new TextDecoder().decode(configFile);
-      const json = JSON.parse(contents);
-
-      assert(json.tasks);
+      await assertSnapshot(context, output.split("\n"));
     },
   });
 
@@ -179,19 +156,16 @@ Deno.test("writeConfigFile()", async (context) => {
     fn: async () => {
       testSettings.map = true;
 
-      await inputHandler(testSettings);
+      const output = await inputHandler(testSettings);
 
-      const configFile = await Deno.readFile(
+      const bytes = await Deno.readFile(
         `${testSettings.name}`,
       );
 
+      assert(bytes.length > 0);
       assertEquals(testSettings.name, "deno.json");
-      assert(configFile);
 
-      const contents = new TextDecoder().decode(configFile);
-      const json = JSON.parse(contents);
-
-      assertEquals(json.importMap, "");
+      await assertSnapshot(context, output.split("\n"));
     },
   });
 
@@ -200,21 +174,16 @@ Deno.test("writeConfigFile()", async (context) => {
     fn: async () => {
       testSettings.yes = true;
 
-      await inputHandler(testSettings);
+      const output = await inputHandler(testSettings);
 
-      const configFile = await Deno.readFile(
+      const bytes = await Deno.readFile(
         `${testSettings.name}`,
       );
 
+      assert(bytes.length > 0);
       assertEquals(testSettings.name, "deno.json");
-      assert(configFile);
 
-      const contents = new TextDecoder().decode(configFile);
-      const json = JSON.parse(contents);
-
-      assert(json.fmt);
-      assert(json.lint);
-      assert(json.compilerOptions);
+      await assertSnapshot(context, output.split("\n"));
     },
   });
 });
