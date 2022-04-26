@@ -166,6 +166,7 @@ snapshot[`writeConfigFile 9`] = `
   '      "exclude": []',
   "    }",
   "  },",
+  '  "tasks": {},',
   '  "compilerOptions": {}',
   "}",
 ]
