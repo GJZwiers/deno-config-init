@@ -118,11 +118,11 @@ export async function inputHandler(opts: Options) {
 
 export async function writeConfigFile(
   configFile: ConfigFile,
-  settings: Options,
+  opts: Options,
 ) {
-  if (settings.name && !/\.jsonc?$/.test(settings.name)) {
+  if (opts.name && !/\.jsonc?$/.test(opts.name)) {
     throw new Error(
-      `Chosen filename has an unsupported file extension: ${settings.name}`,
+      `Chosen filename has an unsupported file extension: ${opts.name}`,
     );
   }
 
@@ -130,8 +130,8 @@ export async function writeConfigFile(
     .encode(JSON.stringify(configFile, null, 2));
 
   await writeFileSec(
-    `./${settings.name}`,
+    `./${opts.name}`,
     denoJson,
-    { force: settings.force },
+    { force: opts.force },
   );
 }
