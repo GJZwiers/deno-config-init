@@ -140,7 +140,7 @@ snapshot[`writeConfigFile 7`] = `
 snapshot[`writeConfigFile 8`] = `
 [
   "{",
-  '  "importMap": ""',
+  '  "importMap": "import_map.json"',
   "}",
 ]
 `;
