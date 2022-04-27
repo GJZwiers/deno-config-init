@@ -1,6 +1,6 @@
 import { Command } from "./deps.ts";
-import { defaults, inputHandler } from "./writeConfigFile.ts";
-import { ask } from "./ask.ts";
+import { process } from "./processOptions.ts";
+import { inputHandler } from "./writeConfigFile.ts";
 
 await new Command()
   .name("deno-init")
@@ -52,15 +52,8 @@ await new Command()
     "-y, --yes [yes:boolean]",
     "Skip the prompts and use all defaults.",
   )
-  .action((options) => {
-    if (
-      options.yes || options.fill || options.fmt || options.lint ||
-      options.tsconfig || options.jsonc || options.task || options.map
-    ) {
-      inputHandler({ ...defaults, ...options });
-    } else {
-      const choices = ask();
-      inputHandler({ ...options, ...choices });
-    }
+  .action(async (options) => {
+    const processedOptions = process(options);
+    await inputHandler(processedOptions);
   })
   .parse(Deno.args);
