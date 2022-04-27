@@ -70,7 +70,7 @@ export function generateJsonc(opts: Options): string {
     ) {
       let value;
       if (/importMap/.test(option)) {
-        value = '"",';
+        value = '"import_map.json",';
       } else if (type === "boolean" || type === "number") {
         value = defaultValue;
       } else if (type === "array") {
