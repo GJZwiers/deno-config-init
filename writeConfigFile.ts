@@ -1,7 +1,7 @@
 import { writeFileSec } from "./writeFileSec.ts";
 import { generateJsonc } from "./schema.ts";
 
-export interface Settings {
+export interface Options {
   force: boolean;
   fill: boolean;
   fmt: boolean;
@@ -14,7 +14,7 @@ export interface Settings {
   yes: boolean;
 }
 
-export const defaults: Settings = {
+export const defaultOpts: Options = {
   force: false,
   fill: false,
   fmt: false,
@@ -51,17 +51,17 @@ export type ConfigFile = {
   importMap?: string;
 };
 
-export async function inputHandler(settings: Settings) {
-  if (settings.fill || settings.jsonc) {
-    settings.name = settings.name.replace(".json", ".jsonc");
+export async function inputHandler(opts: Options) {
+  if (opts.fill || opts.jsonc) {
+    opts.name = opts.name.replace(".json", ".jsonc");
 
-    const file = generateJsonc(settings);
+    const file = generateJsonc(opts);
 
     await writeFileSec(
-      settings.name,
+      opts.name,
       new TextEncoder().encode(file),
       {
-        force: settings.force,
+        force: opts.force,
       },
     );
     return file;
@@ -69,14 +69,14 @@ export async function inputHandler(settings: Settings) {
 
   const configFile: ConfigFile = {};
 
-  if (settings.yes) {
-    settings.fmt = true;
-    settings.lint = true;
-    settings.tsconfig = true;
-    settings.task = true;
+  if (opts.yes) {
+    opts.fmt = true;
+    opts.lint = true;
+    opts.tsconfig = true;
+    opts.task = true;
   }
 
-  if (settings.fmt) {
+  if (opts.fmt) {
     configFile.fmt = {
       files: {
         include: [],
@@ -86,7 +86,7 @@ export async function inputHandler(settings: Settings) {
     };
   }
 
-  if (settings.lint) {
+  if (opts.lint) {
     configFile.lint = {
       files: {
         include: [],
@@ -100,29 +100,29 @@ export async function inputHandler(settings: Settings) {
     };
   }
 
-  if (settings.map) {
+  if (opts.map) {
     configFile.importMap = "";
   }
 
-  if (settings.task) {
+  if (opts.task) {
     configFile.tasks = {};
   }
 
-  if (settings.tsconfig) {
+  if (opts.tsconfig) {
     configFile.compilerOptions = {};
   }
 
-  await writeConfigFile(configFile, settings);
+  await writeConfigFile(configFile, opts);
   return JSON.stringify(configFile, null, 2);
 }
 
 export async function writeConfigFile(
   configFile: ConfigFile,
-  settings: Settings,
+  opts: Options,
 ) {
-  if (settings.name && !/\.jsonc?$/.test(settings.name)) {
+  if (opts.name && !/\.jsonc?$/.test(opts.name)) {
     throw new Error(
-      `Chosen filename has an unsupported file extension: ${settings.name}`,
+      `Chosen filename has an unsupported file extension: ${opts.name}`,
     );
   }
 
@@ -130,8 +130,8 @@ export async function writeConfigFile(
     .encode(JSON.stringify(configFile, null, 2));
 
   await writeFileSec(
-    `./${settings.name}`,
+    `./${opts.name}`,
     denoJson,
-    { force: settings.force },
+    { force: opts.force },
   );
 }

@@ -1,4 +1,4 @@
-import { defaults } from "./writeConfigFile.ts";
+import { defaultOpts } from "./writeConfigFile.ts";
 
 export function ask() {
   const tsconfigResponse = prompt(
@@ -6,42 +6,46 @@ export function ask() {
     `y`,
   );
 
-  const tsconfig = processResponse(tsconfigResponse, defaults.tsconfig);
+  const tsconfig = processResponse(tsconfigResponse, defaultOpts.tsconfig);
 
   const lintingResponse = prompt(
     "Would you like to add custom linter configuration? (y/n)",
     `y`,
   );
 
-  const lint = processResponse(lintingResponse, defaults.lint);
+  const lint = processResponse(lintingResponse, defaultOpts.lint);
 
   const formattingResponse = prompt(
     "Would you like to add custom formatter configuration? (y/n)",
     `y`,
   );
 
-  const fmt = processResponse(formattingResponse, defaults.fmt);
+  const fmt = processResponse(formattingResponse, defaultOpts.fmt);
 
   const taskResponse = prompt(
     "Would you like to add tasks? (y/n)",
     `y`,
   );
 
-  const task = processResponse(taskResponse, defaults.task);
+  const task = processResponse(taskResponse, defaultOpts.task);
 
   const importMapResponse = prompt(
     "Would you like to add an import map? (y/n)",
     `n`,
   );
 
-  const importMap = processResponse(importMapResponse, defaults.map);
+  const importMap = processResponse(importMapResponse, defaultOpts.map);
 
-  const name = prompt(
+  let name = prompt(
     "What should the config file be named?",
     `deno.json`,
   );
 
-  const settings = {
+  if (!name) {
+    name = defaultOpts.name;
+  }
+
+  const opts = {
     tsconfig,
     lint,
     fmt,
@@ -50,7 +54,7 @@ export function ask() {
     name,
   };
 
-  return settings;
+  return opts;
 }
 
 export function processResponse(
