@@ -53,7 +53,7 @@ snapshot[`writeConfigFile 3`] = `
   '    // "suppressExcessPropertyErrors": false   /* Disable reporting of excess property errors during...',
   '    // "suppressImplicitAnyIndexErrors": false /* Suppress \`noImplicitAny\` errors when indexing obje...',
   "  },",
-  '  // "importMap": "",                          /* The location of an import map to be used when reso...',
+  '  // "importMap": "import_map.json",           /* The location of an import map to be used when reso...',
   '  "lint": {',
   '    "files": {',
   '      // "include": []                         /* List of files or directories that will be linted. ...',
