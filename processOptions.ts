@@ -2,11 +2,13 @@ import { promptUserInputs } from "./promptUserInputs.ts";
 import { defaultOpts, type Options } from "./writeConfigFile.ts";
 
 export function process(opts: Options): Options {
-  if (
-    opts.yes &&
-    (opts.lint || opts.fmt || opts.task || opts.tsconfig)
-  ) {
-    throw new Error("--yes can only be used together with --name and --map.");
+  if (opts.yes) {
+    if (
+      opts.tsconfig || opts.fmt || opts.lint || opts.task || opts.map ||
+      opts.name
+    ) {
+      throw new Error("--yes cannot be used together with other options.");
+    }
   }
 
   if (

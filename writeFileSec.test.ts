@@ -17,8 +17,8 @@ Deno.test("writeFileSec()", async (t) => {
     "should write a new file if the path does not exist yet",
     async () => {
       await writeFileSec(testFilePath, testFileContent);
-      const file = await Deno.readFile(testFilePath);
 
+      const file = await Deno.readFile(testFilePath);
       assertEquals(new TextDecoder().decode(file), "foo");
 
       await afterEach();
@@ -32,4 +32,23 @@ Deno.test("writeFileSec()", async (t) => {
 
     await afterEach();
   });
+
+  await t.step(
+    "should write a new file if the path exists and the force option is used",
+    async () => {
+      await writeFileSec(testFilePath, testFileContent);
+
+      const file = await Deno.readFile(testFilePath);
+      assertEquals(new TextDecoder().decode(file), "foo");
+
+      await writeFileSec(testFilePath, new TextEncoder().encode("bar"), {
+        force: true,
+      });
+
+      const overwrittenFile = await Deno.readFile(testFilePath);
+      assertEquals(new TextDecoder().decode(overwrittenFile), "bar");
+
+      await afterEach();
+    },
+  );
 });

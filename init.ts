@@ -24,9 +24,6 @@ await new Command()
   .option(
     "-n, --name [name:string]",
     "The name of the config file.",
-    {
-      default: "deno.json",
-    },
   )
   .option(
     "-m, --fmt [fmt:boolean]",
