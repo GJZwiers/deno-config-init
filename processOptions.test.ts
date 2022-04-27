@@ -1,4 +1,4 @@
-import { assertThrows } from "./dev_deps.ts";
+import { assertEquals, assertThrows } from "./dev_deps.ts";
 import { process } from "./processOptions.ts";
 import { defaultOpts, Options } from "./writeConfigFile.ts";
 
@@ -74,6 +74,74 @@ Deno.test("processOptions", async (context) => {
       assertThrows(() => {
         process(testOpts);
       });
+    },
+  });
+
+  await test({
+    name: "throw if --yes is used with --name",
+    fn: () => {
+      testOpts.yes = true;
+      testOpts.name = "foo.json";
+
+      assertThrows(() => {
+        process(testOpts);
+      });
+    },
+  });
+
+  await test({
+    name: "throw if --yes is used with --map",
+    fn: () => {
+      testOpts.yes = true;
+      testOpts.map = true;
+
+      assertThrows(() => {
+        process(testOpts);
+      });
+    },
+  });
+
+  await test({
+    name: "Returns object with map: true if --map option is true",
+    fn: () => {
+      testOpts.map = true;
+
+      const expected: Options = { ...defaultOpts, map: true };
+
+      assertEquals(process(testOpts), expected);
+    },
+  });
+
+  await test({
+    name: "Returns object with map: true if --task option is true",
+    fn: () => {
+      testOpts.task = true;
+
+      const expected: Options = { ...defaultOpts, task: true };
+
+      assertEquals(process(testOpts), expected);
+    },
+  });
+
+  await test({
+    name: "Returns object with jsonc: true if --jsonc option is true",
+    fn: () => {
+      testOpts.jsonc = true;
+
+      const expected: Options = { ...defaultOpts, jsonc: true };
+
+      assertEquals(process(testOpts), expected);
+    },
+  });
+
+  await test({
+    name: "Returns object with tsconfig: true if --tsconfig option is true",
+    fn: () => {
+      testOpts.tsconfig = true;
+
+      const expected: Options = { ...defaultOpts, tsconfig: true };
+
+      assertEquals(process(testOpts), expected);
     },
   });
 });

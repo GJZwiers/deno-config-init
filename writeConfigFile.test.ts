@@ -1,5 +1,15 @@
-import { assert, assertEquals, assertSnapshot } from "./dev_deps.ts";
-import { defaultOpts, inputHandler, Options } from "./writeConfigFile.ts";
+import {
+  assert,
+  assertEquals,
+  assertRejects,
+  assertSnapshot,
+} from "./dev_deps.ts";
+import {
+  defaultOpts,
+  inputHandler,
+  Options,
+  writeConfigFile,
+} from "./writeConfigFile.ts";
 
 Deno.test("writeConfigFile", async (context) => {
   const testDir = "test_directory";
@@ -27,6 +37,16 @@ Deno.test("writeConfigFile", async (context) => {
 
     await afterEach();
   };
+
+  await test({
+    name: "throws if config filename is not .json or .jsonc",
+    fn: () => {
+      testOpts.name = "deno.yaml";
+      assertRejects(async () => {
+        await writeConfigFile({}, testOpts);
+      });
+    },
+  });
 
   await test({
     name: "create deno.json",
