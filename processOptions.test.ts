@@ -30,6 +30,21 @@ Deno.test("processOptions", async (context) => {
   };
 
   await test({
+    name: "throw if --name is not used with other options",
+    fn: () => {
+      testOpts.name = "foo.json";
+
+      assertThrows(
+        () => {
+          process(testOpts);
+        },
+        Error,
+        "'--name' must be used together with other options.",
+      );
+    },
+  });
+
+  await test({
     name: "throw if --yes is used with --fmt",
     fn: () => {
       testOpts.yes = true;
