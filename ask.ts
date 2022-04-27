@@ -45,7 +45,7 @@ export function ask() {
     name = defaultOpts.name;
   }
 
-  const settings = {
+  const opts = {
     tsconfig,
     lint,
     fmt,
@@ -54,7 +54,7 @@ export function ask() {
     name,
   };
 
-  return settings;
+  return opts;
 }
 
 export function processResponse(

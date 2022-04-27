@@ -29,7 +29,7 @@ const mapOfKeys: { [key: string]: string } = {
 export function generateJsonc(opts: Options): string {
   const configFile: any = {};
 
-  // Find which settings are true and map it to fields in the deno.jsonc file
+  // Find which options are true and map it to fields in the deno.jsonc file
   // TODO: refactor
   let numberOfOpts = 0;
   const keep = Object.entries(opts)
@@ -47,7 +47,7 @@ export function generateJsonc(opts: Options): string {
   // When e.g. both --fill and --fmt are true
   if (numberOfOpts > 0) {
     for (const key in configFile) {
-      // Delete fields except the ones passed in the settings
+      // Delete fields except the ones passed in the options
       if (keep.indexOf(key) === -1) {
         delete configFile[key];
       }

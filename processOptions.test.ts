@@ -10,13 +10,13 @@ function randomElement(array: string[]) {
 
 Deno.test("processOptions", async (context) => {
   const testDir = "test_directory";
-  let testSettings: Options;
+  let testOpts: Options;
 
   const beforeEach = async () => {
     await Deno.mkdir(testDir, { recursive: true });
 
     Deno.chdir(testDir);
-    testSettings = self.structuredClone(defaultOpts);
+    testOpts = self.structuredClone(defaultOpts);
   };
 
   const afterEach = async () => {
@@ -38,27 +38,27 @@ Deno.test("processOptions", async (context) => {
   await test({
     name: "throw if --yes is used with an option other than --name or --map",
     fn: () => {
-      testSettings.yes = true;
+      testOpts.yes = true;
 
       const opt = randomElement(["fmt", "lint", "task", "tsconfig"]);
 
       switch (opt) {
         case "fmt":
-          testSettings.fmt = true;
+          testOpts.fmt = true;
           break;
         case "lint":
-          testSettings.lint = true;
+          testOpts.lint = true;
           break;
         case "task":
-          testSettings.task = true;
+          testOpts.task = true;
           break;
         case "tsconfig":
-          testSettings.tsconfig = true;
+          testOpts.tsconfig = true;
           break;
       }
 
       assertThrows(() => {
-        process(testSettings);
+        process(testOpts);
       });
     },
   });
