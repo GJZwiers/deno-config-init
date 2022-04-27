@@ -101,7 +101,7 @@ export async function inputHandler(opts: Options) {
   }
 
   if (opts.map) {
-    configFile.importMap = "";
+    configFile.importMap = "import_map.json";
   }
 
   if (opts.task) {
