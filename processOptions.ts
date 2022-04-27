@@ -7,7 +7,13 @@ export function process(opts: Options): Options {
       opts.tsconfig || opts.fmt || opts.lint || opts.task || opts.map ||
       opts.name
     ) {
-      throw new Error("--yes cannot be used together with other options.");
+      throw new Error("'--yes' cannot be used together with other options.");
+    }
+  }
+
+  if (opts.name && !opts.jsonc && !opts.fill) {
+    if (!opts.tsconfig && !opts.fmt && !opts.lint && !opts.task && !opts.map) {
+      throw new Error("'--name' must be used together with other options.")
     }
   }
 
