@@ -13,7 +13,7 @@ export function process(opts: Options): Options {
 
   if (opts.name && !opts.jsonc && !opts.fill) {
     if (!opts.tsconfig && !opts.fmt && !opts.lint && !opts.task && !opts.map) {
-      throw new Error("'--name' must be used together with other options.")
+      throw new Error("'--name' must be used together with other options.");
     }
   }
 
