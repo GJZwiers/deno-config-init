@@ -1,4 +1,4 @@
-import { ask } from "./ask.ts";
+import { promptUserInputs } from "./promptUserInputs.ts";
 import { defaultOpts, type Options } from "./writeConfigFile.ts";
 
 export function process(opts: Options): Options {
@@ -15,7 +15,7 @@ export function process(opts: Options): Options {
   ) {
     return { ...defaultOpts, ...opts };
   } else {
-    const choices = ask();
+    const choices = promptUserInputs({ testmode: false });
     return { ...opts, ...choices };
   }
 }

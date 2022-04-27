@@ -2,12 +2,6 @@ import { assertThrows } from "./dev_deps.ts";
 import { process } from "./processOptions.ts";
 import { defaultOpts, Options } from "./writeConfigFile.ts";
 
-function randomElement(array: string[]) {
-  const rand = Math.random() * array.length | 0;
-  const rValue = array[rand];
-  return rValue;
-}
-
 Deno.test("processOptions", async (context) => {
   const testDir = "test_directory";
   let testOpts: Options;
@@ -36,26 +30,46 @@ Deno.test("processOptions", async (context) => {
   };
 
   await test({
-    name: "throw if --yes is used with an option other than --name or --map",
+    name: "throw if --yes is used with --fmt",
     fn: () => {
       testOpts.yes = true;
+      testOpts.fmt = true;
 
-      const opt = randomElement(["fmt", "lint", "task", "tsconfig"]);
+      assertThrows(() => {
+        process(testOpts);
+      });
+    },
+  });
 
-      switch (opt) {
-        case "fmt":
-          testOpts.fmt = true;
-          break;
-        case "lint":
-          testOpts.lint = true;
-          break;
-        case "task":
-          testOpts.task = true;
-          break;
-        case "tsconfig":
-          testOpts.tsconfig = true;
-          break;
-      }
+  await test({
+    name: "throw if --yes is used with --lint",
+    fn: () => {
+      testOpts.yes = true;
+      testOpts.lint = true;
+
+      assertThrows(() => {
+        process(testOpts);
+      });
+    },
+  });
+
+  await test({
+    name: "throw if --yes is used with --task",
+    fn: () => {
+      testOpts.yes = true;
+      testOpts.task = true;
+
+      assertThrows(() => {
+        process(testOpts);
+      });
+    },
+  });
+
+  await test({
+    name: "throw if --yes is used with --tsconfig",
+    fn: () => {
+      testOpts.yes = true;
+      testOpts.tsconfig = true;
 
       assertThrows(() => {
         process(testOpts);
