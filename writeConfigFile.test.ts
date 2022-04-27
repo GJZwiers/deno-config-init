@@ -170,7 +170,7 @@ Deno.test("writeConfigFile", async (context) => {
   });
 
   await test({
-    name: "create all if yes option is true",
+    name: "create fmt, lint, compilerOptions and tasks if yes option is true",
     fn: async () => {
       testSettings.yes = true;
 
