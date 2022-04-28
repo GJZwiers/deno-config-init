@@ -1,5 +1,5 @@
 import { assertEquals, assertThrows } from "./dev_deps.ts";
-import { process } from "./processOptions.ts";
+import { OptionValidationError, process } from "./processOptions.ts";
 import { defaultOpts, Options } from "./writeConfigFile.ts";
 
 Deno.test("processOptions", async (context) => {
@@ -38,7 +38,7 @@ Deno.test("processOptions", async (context) => {
         () => {
           process(testOpts);
         },
-        Error,
+        OptionValidationError,
         "'--name' must be used together with other options.",
       );
     },
@@ -50,9 +50,13 @@ Deno.test("processOptions", async (context) => {
       testOpts.yes = true;
       testOpts.fmt = true;
 
-      assertThrows(() => {
-        process(testOpts);
-      });
+      assertThrows(
+        () => {
+          process(testOpts);
+        },
+        OptionValidationError,
+        "'--yes' cannot be used together with other options.",
+      );
     },
   });
 
@@ -62,9 +66,13 @@ Deno.test("processOptions", async (context) => {
       testOpts.yes = true;
       testOpts.lint = true;
 
-      assertThrows(() => {
-        process(testOpts);
-      });
+      assertThrows(
+        () => {
+          process(testOpts);
+        },
+        OptionValidationError,
+        "'--yes' cannot be used together with other options.",
+      );
     },
   });
 
@@ -76,7 +84,9 @@ Deno.test("processOptions", async (context) => {
 
       assertThrows(() => {
         process(testOpts);
-      });
+      }),
+        OptionValidationError,
+        "'--yes' cannot be used together with other options.";
     },
   });
 
@@ -86,9 +96,13 @@ Deno.test("processOptions", async (context) => {
       testOpts.yes = true;
       testOpts.tsconfig = true;
 
-      assertThrows(() => {
-        process(testOpts);
-      });
+      assertThrows(
+        () => {
+          process(testOpts);
+        },
+        OptionValidationError,
+        "'--yes' cannot be used together with other options.",
+      );
     },
   });
 
@@ -98,9 +112,13 @@ Deno.test("processOptions", async (context) => {
       testOpts.yes = true;
       testOpts.name = "foo.json";
 
-      assertThrows(() => {
-        process(testOpts);
-      });
+      assertThrows(
+        () => {
+          process(testOpts);
+        },
+        OptionValidationError,
+        "'--yes' cannot be used together with other options.",
+      );
     },
   });
 
@@ -110,9 +128,13 @@ Deno.test("processOptions", async (context) => {
       testOpts.yes = true;
       testOpts.map = true;
 
-      assertThrows(() => {
-        process(testOpts);
-      });
+      assertThrows(
+        () => {
+          process(testOpts);
+        },
+        OptionValidationError,
+        "'--yes' cannot be used together with other options.",
+      );
     },
   });
 
