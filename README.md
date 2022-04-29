@@ -122,6 +122,6 @@ deno-init --name config.json
 
 ## Contributing
 
-You are welcome to report any bugs, other issues, or feature requests! If you
+You are welcome to report bugs, other issues, or make a feature request! If you
 want to add a fix/feature/other improvement, fork this repository and make a
 pull request with your changes.
