@@ -1,0 +1,5 @@
+{
+  "tasks": {
+    "cov": "rm -r cov/ && deno test --allow-read --allow-write --coverage=cov/"
+  }
+}
