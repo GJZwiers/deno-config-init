@@ -1,0 +1,19 @@
+name: release
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: denoland/setup-deno@v1.1.0
+        with:
+          deno-version: v1.x.x
+      - run: |
+          TAG=$(deno run --allow-run=git --unstable https://deno.land/x/denotation@v0.1.1/mod.ts)
+          gh release create $TAG --generate-notes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
