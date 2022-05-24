@@ -9,12 +9,12 @@ jobs:
     continue-on-error: ${{ matrix.canary }}
     strategy:
       matrix:
-        os: [ ubuntu-22.04, macos-11, windows-2019 ]
+        os: [ ubuntu-22.04, macos-12, windows-2022 ]
         deno-version: [ v1.x ]
         canary: [ false ]
         include:
           - deno-version: canary
-            os: ubuntu-18.04
+            os: ubuntu-20.04
             canary: true
     env:
       DENO_DIR: deno_dir
