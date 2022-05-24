@@ -21,12 +21,12 @@ jobs:
 
     steps:
       - name: Configure line-endings for Windows build
-        if: matrix.os == 'windows-2019'
+        if: matrix.os == 'windows-2022'
         run: |
           git config --system core.autocrlf false
           git config --system core.eol lf
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: denoland/setup-deno@v1.1.0
         with:
           deno-version: ${{ matrix.deno-version }}
@@ -42,10 +42,10 @@ jobs:
 
       - run: deno test --allow-read --allow-write --lock=lock.json --coverage=cov/
 
-      - if: matrix.os == 'ubuntu-20.04'
+      - if: matrix.os == 'ubuntu-22.04'
         run: deno coverage --lcov --output=cov.lcov cov/
 
-      - if: matrix.os == 'ubuntu-20.04'
+      - if: matrix.os == 'ubuntu-22.04'
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
