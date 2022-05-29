@@ -1,6 +1,6 @@
 import { Command } from "./deps.ts";
 import { process } from "./processOptions.ts";
-import { inputHandler } from "./writeConfigFile.ts";
+import { defaultOpts, inputHandler } from "./writeConfigFile.ts";
 
 await new Command()
   .name("deno-init")
@@ -22,7 +22,7 @@ await new Command()
     "Allow overwriting an existing config file.",
   )
   .option(
-    "-n, --name [name:string]",
+    "-n, --name <name:string>",
     "The name of the config file.",
   )
   .option(
@@ -50,7 +50,7 @@ await new Command()
     "Skip the prompts and use all defaults.",
   )
   .action(async (options) => {
-    const processedOptions = process(options);
+    const processedOptions = process({ ...defaultOpts, ...options });
     await inputHandler(processedOptions);
   })
   .parse(Deno.args);

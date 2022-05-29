@@ -1,4 +1,4 @@
-export { Command } from "https://deno.land/x/cliffy@v0.22.2/command/mod.ts";
+export { Command } from "https://deno.land/x/cliffy@v0.24.2/command/mod.ts";
 export {
   default as schema,
 } from "https://deno.land/x/deno@v1.22.1/cli/schemas/config-file.v1.json" assert {
