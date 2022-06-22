@@ -4,7 +4,7 @@ import { defaultOpts, inputHandler } from "./writeConfigFile.ts";
 
 await new Command()
   .name("deno-init")
-  .version("v2.5.3")
+  .version("v2.5.4")
   .description("Generate a Deno configuration file.")
   .help({
     colors: (Deno.build.os === "windows") ? false : true,
