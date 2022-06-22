@@ -33,6 +33,7 @@ jobs:
 
       - run: deno fmt --check
       - run: deno lint
+      - run: deno check mod.ts
 
       - name: Cache DENO_DIR
         uses: actions/cache@v2
