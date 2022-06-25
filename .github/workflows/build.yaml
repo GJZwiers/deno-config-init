@@ -43,10 +43,10 @@ jobs:
 
       - run: deno test --allow-read --allow-write --lock=lock.json --coverage=cov/
 
-      - if: matrix.os == 'ubuntu-22.04'
+      - if: matrix.os == 'ubuntu-22.04' && matrix.deno-version != 'canary'
         run: deno coverage --lcov --output=cov.lcov cov/
 
-      - if: matrix.os == 'ubuntu-22.04'
+      - if: matrix.os == 'ubuntu-22.04' && matrix.deno-version != 'canary'
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
