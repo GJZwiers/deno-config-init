@@ -206,4 +206,20 @@ Deno.test("writeConfigFile", async (context) => {
       await assertSnapshot(context, output.split("\n"));
     },
   });
+
+  await test({
+    name: "can set a custom file name if yes option is true",
+    fn: async () => {
+      testOpts.yes = true;
+      testOpts.name = "config.json";
+
+      await inputHandler(testOpts);
+
+      const bytes = await Deno.readFile(
+        `${testOpts.name}`,
+      );
+
+      assert(bytes.length > 0);
+    },
+  });
 });
