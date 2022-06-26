@@ -78,18 +78,6 @@ Deno.test("processOptions", async (context) => {
   });
 
   await test({
-    name: "throw if --yes is used with --name",
-    fn: () => {
-      testOpts.yes = true;
-      testOpts.name = "foo.json";
-
-      assertThrows(() => {
-        process(testOpts);
-      });
-    },
-  });
-
-  await test({
     name: "throw if --yes is used with --map",
     fn: () => {
       testOpts.yes = true;
