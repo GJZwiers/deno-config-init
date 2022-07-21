@@ -1,5 +1,6 @@
 {
   "tasks": {
-    "cov": "rm -r cov/ ; deno test --allow-read --allow-write --coverage=cov/"
+    "cov": "deno test --allow-read --allow-write --coverage=cov/",
+    "upt_lock": "deno cache --reload --lock=lock.json --lock-write deps.ts dev_deps.ts"
   }
 }
