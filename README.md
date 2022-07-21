@@ -98,6 +98,13 @@ requires Deno 1.20 or higher.
 deno-init --task
 ```
 
+`--test` or `-s` will add a `test` section only. Note that using `test`
+requires Deno 1.24 or higher.
+
+```
+deno-init --test
+```
+
 `--tsconfig` or `-t` will add a `compilerOptions` section only.
 
 ```
