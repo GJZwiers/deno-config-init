@@ -42,6 +42,10 @@ await new Command()
     "Set up config for deno tasks only. Requires Deno 1.20 or higher",
   )
   .option(
+    "-s, --test [test:boolean]",
+    "Set up config for deno test only. Requires Deno 1.24 or higher",
+  )
+  .option(
     "-t, --tsconfig [tsconfig:boolean]",
     "Set up config for typescript compiler options only.",
   )

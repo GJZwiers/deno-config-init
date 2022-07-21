@@ -9,6 +9,7 @@ Deno.test("returns choices collected from user prompts", () => {
     lint: true,
     fmt: true,
     task: true,
+    test: true,
     importMap: false,
     name: "deno.json",
   });

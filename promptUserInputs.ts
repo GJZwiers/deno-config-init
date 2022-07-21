@@ -40,6 +40,14 @@ export function promptUserInputs(promptOpts: PromptAnswerOptions) {
 
   const fmt = processAnswer(formattingAnswer, defaultOpts.fmt);
 
+  const testingAnswer = promptAnswer(
+    "Would you like to add custom testing configuration? (y/n)",
+    `y`,
+    promptOpts.testmode,
+  );
+
+  const test = processAnswer(testingAnswer, defaultOpts.test);
+
   const taskAnswer = promptAnswer(
     "Would you like to add tasks? (y/n)",
     `y`,
@@ -71,6 +79,7 @@ export function promptUserInputs(promptOpts: PromptAnswerOptions) {
     lint,
     fmt,
     task,
+    test,
     importMap,
     name,
   };

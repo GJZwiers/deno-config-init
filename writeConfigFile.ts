@@ -10,6 +10,7 @@ export interface Options {
   map: boolean;
   name: string;
   task: boolean;
+  test: boolean;
   tsconfig: boolean;
   yes: boolean;
 }
@@ -23,6 +24,7 @@ export const defaultOpts: Options = {
   map: false,
   name: "deno.json",
   task: false,
+  test: false,
   tsconfig: false,
   yes: false,
 };
@@ -48,6 +50,12 @@ export type ConfigFile = {
     };
   };
   tasks?: Record<string, unknown>;
+  test?: {
+    files?: {
+      include: string[];
+      exclude: string[];
+    };
+  };
   importMap?: string;
 };
 
@@ -74,6 +82,7 @@ export async function inputHandler(opts: Options) {
     opts.lint = true;
     opts.tsconfig = true;
     opts.task = true;
+    opts.test = true;
   }
 
   if (opts.fmt) {
@@ -106,6 +115,15 @@ export async function inputHandler(opts: Options) {
 
   if (opts.task) {
     configFile.tasks = {};
+  }
+
+  if (opts.test) {
+    configFile.test = {
+      files: {
+        include: [],
+        exclude: [],
+      },
+    };
   }
 
   if (opts.tsconfig) {

@@ -78,7 +78,13 @@ snapshot[`writeConfigFile 3`] = `
   '      // "proseWrap": "always"                 /* Define how prose should be wrapped in Markdown fil...',
   "    }",
   "  },",
-  '  "tasks": {}',
+  '  "tasks": {},',
+  '  "test": {',
+  '    "files": {',
+  '      // "include": []                         /* List of files or directories that will be searched...',
+  '      // "exclude": []                         /* List of files or directories that will not be sear...',
+  "    }",
+  "  }",
   "}",
 ]
 `;
@@ -167,7 +173,26 @@ snapshot[`writeConfigFile 9`] = `
   "    }",
   "  },",
   '  "tasks": {},',
+  '  "test": {',
+  '    "files": {',
+  '      "include": [],',
+  '      "exclude": []',
+  "    }",
+  "  },",
   '  "compilerOptions": {}',
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 10`] = `
+[
+  "{",
+  '  "test": {',
+  '    "files": {',
+  '      "include": [],',
+  '      "exclude": []',
+  "    }",
+  "  }",
   "}",
 ]
 `;
