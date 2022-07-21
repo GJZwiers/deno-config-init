@@ -222,4 +222,22 @@ Deno.test("writeConfigFile", async (context) => {
       assert(bytes.length > 0);
     },
   });
+
+  await test({
+    name: "create test",
+    fn: async () => {
+      testOpts.test = true;
+
+      const output = await inputHandler(testOpts);
+
+      const bytes = await Deno.readFile(
+        `${testOpts.name}`,
+      );
+
+      assert(bytes.length > 0);
+      assertEquals(testOpts.name, "deno.json");
+
+      await assertSnapshot(context, output.split("\n"));
+    },
+  });
 });
