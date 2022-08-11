@@ -42,7 +42,7 @@ jobs:
         id: test
         continue-on-error: true
         run: |
-          deno test --allow-read --allow-write
+          deno test --allow-read --allow-write --lock=lock.json --lock-write
       - name: Set commit status with outcome
         uses: Sibz/github-status-action@v1
         with:
@@ -51,3 +51,7 @@ jobs:
           description: "To run other CI actions close/reopen this PR"
           state: ${{ steps.test.outcome }}
           sha: ${{ steps.commit.outputs.sha }}
+      
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Apply lockfile changes
