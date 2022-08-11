@@ -20,8 +20,8 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         id: pr
         with:
-          commit-message: "Update dependencies"
-          title: Update dependencies
+          commit-message: "chore(deps): update dependencies"
+          title: "chore(deps): update dependencies"
           body: >
             Dependencies updated by [udd](https://github.com/hayd/deno-udd).
           branch: deno-dependency-updates
