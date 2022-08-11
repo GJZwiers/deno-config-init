@@ -51,6 +51,8 @@ jobs:
           description: "To run other CI actions close/reopen this PR"
           state: ${{ steps.test.outcome }}
           sha: ${{ steps.commit.outputs.sha }}
+
+      - run: git push --set-upstream origin deno-dependency-updates
       
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
