@@ -18,7 +18,8 @@ modeled after `tsc --init` and `npm init`.
 
 ## Requirements
 
-- Deno v1.17 is the bare minimum required to run this module, although Deno v1.24 is recommended in order to use all features.
+- Deno v1.17 is the bare minimum required to run this module, although Deno
+  v1.24 is recommended in order to use all features.
 
 ## Installation
 
