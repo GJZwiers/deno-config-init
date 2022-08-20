@@ -24,7 +24,7 @@ modeled after `tsc --init` and `npm init`.
 ## Installation
 
 ```
-deno install --allow-read --allow-write -fn dci https://deno.land/x/dci@v2.6.2/mod.ts
+deno install --allow-read --allow-write -fn dci https://deno.land/x/dci@v2.6.3/mod.ts
 ```
 
 ## Usage
