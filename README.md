@@ -1,4 +1,4 @@
-# init
+# dci
 
 [![deno module](https://shield.deno.dev/x/init)](https://deno.land/x/dci)
 ![deno compatibility](https://shield.deno.dev/deno/^1.17)
