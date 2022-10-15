@@ -1,6 +1,6 @@
 import { Command } from "./deps.ts";
 import { process } from "./processOptions.ts";
-import { defaultOpts, inputHandler, Options } from "./writeConfigFile.ts";
+import { defaultOpts, inputHandler } from "./writeConfigFile.ts";
 
 await new Command()
   .name("dci")
@@ -53,7 +53,8 @@ await new Command()
     "-y, --yes [yes:boolean]",
     "Skip the prompts and use all defaults.",
   )
-  .action(async (options: Options) => {
+  // deno-lint-ignore no-explicit-any
+  .action(async (options: any) => {
     const processedOptions = process({ ...defaultOpts, ...options });
     await inputHandler(processedOptions);
   })
