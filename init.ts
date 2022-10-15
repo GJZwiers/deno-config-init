@@ -53,7 +53,8 @@ await new Command()
     "-y, --yes [yes:boolean]",
     "Skip the prompts and use all defaults.",
   )
-  .action(async (options) => {
+  // deno-lint-ignore no-explicit-any
+  .action(async (options: any) => {
     const processedOptions = process({ ...defaultOpts, ...options });
     await inputHandler(processedOptions);
   })
