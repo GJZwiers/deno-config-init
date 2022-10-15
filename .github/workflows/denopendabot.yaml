@@ -1,0 +1,13 @@
+name: Denopendabot
+on:
+  schedule:
+    - cron: "0 21 * * *" # modify to your convinient time
+jobs:
+  update:
+    name: Update dependencies
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: hasundue/denopendabot@0.6.1 # @denopendabot hasundue/denopendabot
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          user-token: ${{ secrets.GH_TOKEN }}
