@@ -1,7 +1,7 @@
 name: Denopendabot
 on:
   schedule:
-    - cron: "0 19 * * *"
+    - cron: "0 20 * * *"
 jobs:
   update:
     name: Update dependencies
