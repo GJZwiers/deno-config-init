@@ -1,6 +1,6 @@
 # dci
 
-[![deno module](https://shield.deno.dev/x/init)](https://deno.land/x/dci)
+[![deno module](https://shield.deno.dev/x/dci)](https://deno.land/x/dci)
 ![deno compatibility](https://shield.deno.dev/deno/^1.17)
 [![Build](https://github.com/GJZwiers/dci/actions/workflows/build.yaml/badge.svg)](https://github.com/GJZwiers/dci/actions/workflows/build.yaml)
 [![Coverage Status](https://coveralls.io/repos/github/GJZwiers/dci/badge.svg?branch=main)](https://coveralls.io/github/GJZwiers/dci?branch=main)
