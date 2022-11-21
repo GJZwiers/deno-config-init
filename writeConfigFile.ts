@@ -102,7 +102,6 @@ export async function inputHandler(opts: Options) {
         exclude: [],
       },
       rules: {
-        tags: [],
         include: [],
         exclude: [],
       },
