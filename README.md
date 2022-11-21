@@ -23,7 +23,7 @@ modeled after `npm init` and `tsc --init`.
 ## Installation
 
 ```
-deno install --allow-read --allow-write -fn dci https://deno.land/x/dci@v2.6.6/mod.ts
+deno install --allow-read --allow-write -fn dci https://deno.land/x/dci@v2.6.7/mod.ts
 ```
 
 ## Usage
