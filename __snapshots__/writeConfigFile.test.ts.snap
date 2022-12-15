@@ -85,7 +85,14 @@ snapshot[`writeConfigFile 3`] = `
   '      // "include": []                         /* List of files or directories that will be searched for tests. */',
   '      // "exclude": []                         /* List of files or directories that will not be searched for tests. */',
   "    }",
-  "  }",
+  "  },",
+  '  "bench": {',
+  '    "files": {',
+  '      // "include": []                         /* List of files or directories that will be searched for benchmarks. */',
+  '      // "exclude": []                         /* List of files or directories that will not be searched for benchmarks. */',
+  "    }",
+  "  },",
+  '  // "lock": "true"                            /* Whether to use a lock file or the path to use for the lock file. Can be overridden by CLI arguments. */',
   "}",
 ]
 `;
@@ -187,6 +194,19 @@ snapshot[`writeConfigFile 10`] = `
 [
   "{",
   '  "test": {',
+  '    "files": {',
+  '      "include": [],',
+  '      "exclude": []',
+  "    }",
+  "  }",
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 11`] = `
+[
+  "{",
+  '  "bench": {',
   '    "files": {',
   '      "include": [],',
   '      "exclude": []',
