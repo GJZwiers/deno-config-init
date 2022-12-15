@@ -2,6 +2,7 @@ import { writeFileSec } from "./writeFileSec.ts";
 import { generateJsonc } from "./schema.ts";
 
 export interface Options {
+  bench: boolean;
   force: boolean;
   fill: boolean;
   fmt: boolean;
@@ -16,6 +17,7 @@ export interface Options {
 }
 
 export const defaultOpts: Options = {
+  bench: false,
   force: false,
   fill: false,
   fmt: false,
@@ -51,6 +53,12 @@ export type ConfigFile = {
   };
   tasks?: Record<string, unknown>;
   test?: {
+    files?: {
+      include: string[];
+      exclude: string[];
+    };
+  };
+  bench?: {
     files?: {
       include: string[];
       exclude: string[];
@@ -118,6 +126,15 @@ export async function inputHandler(opts: Options) {
 
   if (opts.test) {
     configFile.test = {
+      files: {
+        include: [],
+        exclude: [],
+      },
+    };
+  }
+
+  if (opts.bench) {
+    configFile.bench = {
       files: {
         include: [],
         exclude: [],

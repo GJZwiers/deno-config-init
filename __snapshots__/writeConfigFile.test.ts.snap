@@ -202,3 +202,16 @@ snapshot[`writeConfigFile 10`] = `
   "}",
 ]
 `;
+
+snapshot[`writeConfigFile 11`] = `
+[
+  "{",
+  '  "bench": {',
+  '    "files": {',
+  '      "include": [],',
+  '      "exclude": []',
+  "    }",
+  "  }",
+  "}",
+]
+`;

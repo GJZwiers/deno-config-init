@@ -14,6 +14,10 @@ await new Command()
     "Create the config file as .jsonc with the possible options listed as comments.",
   )
   .option(
+    "-b, --bench [bench:boolean]",
+    "Set up config for deno bench only. Requires Deno 1.29 or higher",
+  )
+  .option(
     "-c, --jsonc [jsonc:boolean]",
     "Create the config file as .jsonc. Alias for --fill.",
   )
