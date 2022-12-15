@@ -8,6 +8,7 @@ export interface Options {
   fmt: boolean;
   jsonc: boolean;
   lint: boolean;
+  lock: boolean;
   map: boolean;
   name: string;
   task: boolean;
@@ -23,6 +24,7 @@ export const defaultOpts: Options = {
   fmt: false,
   jsonc: false,
   lint: false,
+  lock: false,
   map: false,
   name: "deno.json",
   task: false,
@@ -65,6 +67,7 @@ export type ConfigFile = {
     };
   };
   importMap?: string;
+  lock?: boolean;
 };
 
 export async function inputHandler(opts: Options) {
@@ -91,6 +94,8 @@ export async function inputHandler(opts: Options) {
     opts.tsconfig = true;
     opts.task = true;
     opts.test = true;
+    opts.bench = true;
+    opts.lock = true;
   }
 
   if (opts.fmt) {
@@ -118,6 +123,10 @@ export async function inputHandler(opts: Options) {
 
   if (opts.map) {
     configFile.importMap = "import_map.json";
+  }
+
+  if (opts.lock) {
+    configFile.lock = true;
   }
 
   if (opts.task) {

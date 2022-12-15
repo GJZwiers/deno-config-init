@@ -178,8 +178,15 @@ snapshot[`writeConfigFile 9`] = `
   '      "exclude": []',
   "    }",
   "  },",
+  '  "lock": true,',
   '  "tasks": {},',
   '  "test": {',
+  '    "files": {',
+  '      "include": [],',
+  '      "exclude": []',
+  "    }",
+  "  },",
+  '  "bench": {',
   '    "files": {',
   '      "include": [],',
   '      "exclude": []',
@@ -212,6 +219,14 @@ snapshot[`writeConfigFile 11`] = `
   '      "exclude": []',
   "    }",
   "  }",
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 12`] = `
+[
+  "{",
+  '  "lock": true',
   "}",
 ]
 `;

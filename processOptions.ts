@@ -16,7 +16,7 @@ export function process(opts: Options): Options {
   if (opts.yes) {
     if (
       opts.tsconfig || opts.fmt || opts.lint || opts.task || opts.map ||
-      opts.test
+      opts.test || opts.bench || opts.lock
     ) {
       throw new Error("--yes cannot be used together with other options.");
     }
@@ -24,7 +24,8 @@ export function process(opts: Options): Options {
 
   if (
     opts.yes || opts.fill || opts.fmt || opts.lint ||
-    opts.tsconfig || opts.jsonc || opts.task || opts.map || opts.test
+    opts.tsconfig || opts.jsonc || opts.task || opts.map || opts.test ||
+    opts.bench || opts.lock
   ) {
     return { ...defaultOpts, ...opts };
   } else {

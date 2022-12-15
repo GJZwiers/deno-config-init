@@ -42,6 +42,10 @@ await new Command()
     "Set up config for deno lint only.",
   )
   .option(
+    "-o, --lock <lock:string>",
+    "The name of the lock file.",
+  )
+  .option(
     "-k, --task [task:boolean]",
     "Set up config for deno tasks only. Requires Deno 1.20 or higher",
   )
