@@ -90,6 +90,30 @@ Deno.test("processOptions", async (context) => {
   });
 
   await test({
+    name: "throw if --yes is used with --bench",
+    fn: () => {
+      testOpts.yes = true;
+      testOpts.bench = true;
+
+      assertThrows(() => {
+        process(testOpts);
+      });
+    },
+  });
+
+  await test({
+    name: "throw if --yes is used with --lock",
+    fn: () => {
+      testOpts.yes = true;
+      testOpts.lock = true;
+
+      assertThrows(() => {
+        process(testOpts);
+      });
+    },
+  });
+
+  await test({
     name: "Returns object with map: true if --map option is true",
     fn: () => {
       testOpts.map = true;
