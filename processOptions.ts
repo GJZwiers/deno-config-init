@@ -33,7 +33,7 @@ export function process(opts: Options): Options {
       throw new Error("--yes cannot be used with other options");
     }
   }
-  
+
   if (
     opts.yes || opts.fill || opts.fmt || opts.lint ||
     opts.tsconfig || opts.jsonc || opts.task || opts.map || opts.test ||
@@ -73,7 +73,7 @@ const featureVersionReqs: FeatureVersions = {
   lockfile: {
     major: 1,
     minor: 29,
-  }
+  },
 };
 
 function isSupported(feature: string, v: string): boolean {
