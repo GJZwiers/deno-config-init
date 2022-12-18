@@ -114,6 +114,18 @@ Deno.test("processOptions", async (context) => {
   });
 
   await test({
+    name: "throw if --yes is used with --lockfile",
+    fn: () => {
+      testOpts.yes = true;
+      testOpts.lockfile = "deno_lock.json";
+
+      assertThrows(() => {
+        process(testOpts);
+      });
+    },
+  });
+
+  await test({
     name: "Returns object with map: true if --map option is true",
     fn: () => {
       testOpts.map = true;
