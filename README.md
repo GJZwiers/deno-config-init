@@ -111,8 +111,8 @@ dci --test
 dci --tsconfig
 ```
 
-`--lock` or `-o` will add the `lock` field as a boolean. Note that using `lock` requires
-Deno 1.29 or higher.
+`--lock` or `-o` will add the `lock` field as a boolean. Note that using `lock`
+requires Deno 1.29 or higher.
 
 ```
 dci --test
