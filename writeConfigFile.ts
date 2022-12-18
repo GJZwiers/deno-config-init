@@ -9,6 +9,7 @@ export interface Options {
   jsonc: boolean;
   lint: boolean;
   lock: boolean;
+  lockfile: string;
   map: boolean;
   name: string;
   task: boolean;
@@ -25,6 +26,7 @@ export const defaultOpts: Options = {
   jsonc: false,
   lint: false,
   lock: false,
+  lockfile: "",
   map: false,
   name: "deno.json",
   task: false,
@@ -67,7 +69,7 @@ export type ConfigFile = {
     };
   };
   importMap?: string;
-  lock?: boolean;
+  lock?: boolean | string;
 };
 
 export async function inputHandler(opts: Options) {
@@ -127,6 +129,8 @@ export async function inputHandler(opts: Options) {
 
   if (opts.lock) {
     configFile.lock = true;
+  } else if (opts.lockfile) {
+    configFile.lock = opts.lockfile;
   }
 
   if (opts.task) {

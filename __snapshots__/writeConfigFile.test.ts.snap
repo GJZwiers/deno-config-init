@@ -230,3 +230,19 @@ snapshot[`writeConfigFile 12`] = `
   "}",
 ]
 `;
+
+snapshot[`writeConfigFile 13`] = `
+[
+  "{",
+  '  "lock": "deno-lock.json"',
+  "}",
+]
+`;
+
+snapshot[`writeConfigFile 14`] = `
+[
+  "{",
+  '  "lock": "deno.lock"',
+  "}",
+]
+`;

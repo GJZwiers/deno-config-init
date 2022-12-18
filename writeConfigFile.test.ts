@@ -260,9 +260,45 @@ Deno.test("writeConfigFile", async (context) => {
   });
 
   await test({
-    name: "create lock",
+    name: "create lock as boolean",
     fn: async () => {
       testOpts.lock = true;
+
+      const output = await inputHandler(testOpts);
+
+      const bytes = await Deno.readFile(
+        `${testOpts.name}`,
+      );
+
+      assert(bytes.length > 0);
+      assertEquals(testOpts.name, "deno.json");
+
+      await assertSnapshot(context, output.split("\n"));
+    },
+  });
+
+  await test({
+    name: "set lockFile to create lock as string",
+    fn: async () => {
+      testOpts.lockfile = "deno-lock.json";
+
+      const output = await inputHandler(testOpts);
+
+      const bytes = await Deno.readFile(
+        `${testOpts.name}`,
+      );
+
+      assert(bytes.length > 0);
+      assertEquals(testOpts.name, "deno.json");
+
+      await assertSnapshot(context, output.split("\n"));
+    },
+  });
+
+  await test({
+    name: "set lockFile to create lock as string",
+    fn: async () => {
+      testOpts.lockfile = "deno.lock";
 
       const output = await inputHandler(testOpts);
 

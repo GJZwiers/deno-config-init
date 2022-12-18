@@ -1,7 +1,7 @@
 {
   "tasks": {
     "cov": "deno test --allow-read --allow-write --coverage=cov/",
-    "upt_lock": "deno cache --reload --lock=lock.json --lock-write deps.ts dev_deps.ts",
-    "update": "deno run --allow-read=./ --allow-net --allow-write=./ https://deno.land/x/deno_outdated@0.2.4/cli.ts --ignore README.md"
-  }
+    "upt_lock": "deno cache --reload --lock=lock.json --lock-write deps.ts dev_deps.ts"
+  },
+  "lock": "lock.json"
 }
