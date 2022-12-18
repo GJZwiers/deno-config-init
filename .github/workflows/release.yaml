@@ -12,6 +12,6 @@ jobs:
       - uses: denoland/setup-deno@v1.1.1
         with:
           deno-version: v1.x.x
-      - run: deno run --allow-run='gh,git' --unstable https://deno.land/x/denotation@v0.5.3/cli.ts
+      - run: deno run --allow-run='gh,git' --unstable https://deno.land/x/denotation@v0.5.4/cli.ts
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
