@@ -1,22 +1,8 @@
 // deno-lint-ignore-file no-explicit-any
-import { schema } from "./deps.ts";
-import { Options } from "./writeConfigFile.ts";
-
-// TODO: better types
-export function createFromSchema(properties: any, configFile: any) {
-  for (const key in properties) {
-    if (properties[key].type === "object") {
-      configFile[key] = {};
-      createFromSchema(properties[key].properties, configFile[key]);
-    } else {
-      configFile[key] = [
-        properties[key].type ?? "type",
-        properties[key].default ?? "none",
-        properties[key].description,
-      ].join("|"); // boolean|true|description
-    }
-  }
-}
+import schema from "https://deno.land/x/deno@v1.29.0/cli/schemas/config-file.v1.json" assert {
+  type: "json",
+};
+import { Options } from "./types.ts";
 
 const mapOfKeys: { [key: string]: string } = {
   fmt: "fmt",
@@ -30,7 +16,6 @@ export function generateJsonc(opts: Options): string {
   const configFile: any = {};
 
   // Find which options are true and map it to fields in the deno.jsonc file
-  // TODO: refactor
   let numberOfOpts = 0;
   const keep = Object.entries(opts)
     .filter((setting) => {
@@ -104,4 +89,20 @@ export function generateJsonc(opts: Options): string {
   }).join("\n");
 
   return formattedJsoncString;
+}
+
+// TODO: better types
+export function createFromSchema(properties: any, configFile: any) {
+  for (const key in properties) {
+    if (properties[key].type === "object") {
+      configFile[key] = {};
+      createFromSchema(properties[key].properties, configFile[key]);
+    } else {
+      configFile[key] = [
+        properties[key].type ?? "type",
+        properties[key].default ?? "none",
+        properties[key].description,
+      ].join("|"); // boolean|true|description
+    }
+  }
 }

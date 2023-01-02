@@ -1,6 +1,5 @@
-import { Command } from "./deps.ts";
-import { process } from "./processOptions.ts";
-import { defaultOpts, inputHandler } from "./writeConfigFile.ts";
+import { Command } from "https://deno.land/x/cliffy@v0.25.4/command/mod.ts";
+import { defaultOptions, inputHandler, process } from "./writeConfigFile.ts";
 
 await new Command()
   .name("dci")
@@ -67,7 +66,7 @@ await new Command()
   )
   // deno-lint-ignore no-explicit-any
   .action(async (options: any) => {
-    const processedOptions = process({ ...defaultOpts, ...options });
+    const processedOptions = process({ ...defaultOptions, ...options });
     await inputHandler(processedOptions);
   })
   .parse(Deno.args);
