@@ -77,6 +77,7 @@
     "https://deno.land/x/cliffy@v0.25.4/table/table.ts": "ec204c9d08bb3ff1939c5ac7412a4c9ed7d00925d4fc92aff9bfe07bd269258d",
     "https://deno.land/x/cliffy@v0.25.4/table/utils.ts": "187bb7dcbcfb16199a5d906113f584740901dfca1007400cba0df7dcd341bc29",
     "https://deno.land/x/deno@v1.28.2/cli/schemas/config-file.v1.json": "c4fe37a4f4cd0c57e1616e2f767bc52edc2e7637d42bb456b81d678f7963d3c9",
-    "https://deno.land/x/deno@v1.29.0/cli/schemas/config-file.v1.json": "4aa162376f0fa2094e4df2e36306120cc99866c33cb8462857551e942c5d1b2a"
+    "https://deno.land/x/deno@v1.29.0/cli/schemas/config-file.v1.json": "4aa162376f0fa2094e4df2e36306120cc99866c33cb8462857551e942c5d1b2a",
+    "https://deno.land/x/deno@v1.29.2/cli/schemas/config-file.v1.json": "40dbb89ee8a0525fd955ab2903d5728c278248239a74a7c187c43b453d31ea16"
   }
 }
