@@ -1,7 +1,7 @@
 {
   "tasks": {
     "cov": "deno test --allow-read --allow-write --coverage=cov/",
-    "upt_lock": "deno cache --reload --lock=lock.json --lock-write deps.ts dev_deps.ts"
+    "update_lock": "deno cache --lock-write init.ts schema.ts ./writeConfigFile.test.ts"
   },
   "lock": "lock.json"
 }
