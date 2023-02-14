@@ -121,7 +121,7 @@ dci --test
 `--lockfile` or `-i` will add the `lock` field as a string.
 
 ```
-dci --test
+dci --lockfile
 ```
 
 `--name` or `-n` will use a non-default name for the config file. The default
