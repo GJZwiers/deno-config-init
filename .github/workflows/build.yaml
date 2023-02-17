@@ -39,7 +39,7 @@ jobs:
       - run: deno check mod.ts
 
       - name: Cache DENO_DIR
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ env.DENO_DIR }}
           key: ${{ hashFiles('lock.json') }}
