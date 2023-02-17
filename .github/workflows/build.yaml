@@ -12,18 +12,19 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.deno-version == 'canary' }}
+    env:
+      DENO_DIR: deno_dir
     strategy:
       matrix:
         os: 
           - ubuntu-22.04
           - macos-12
           - windows-2022
-        deno-version: [ v1.x ]
+        deno-version: 
+          - v1.x
         include:
           - deno-version: canary
             os: ubuntu-22.04
-    env:
-      DENO_DIR: deno_dir
 
     steps:
       - name: Configure line-endings for Windows build
