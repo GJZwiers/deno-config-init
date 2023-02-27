@@ -42,9 +42,9 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ${{ env.DENO_DIR }}
-          key: ${{ hashFiles('lock.json') }}
+          key: ${{ hashFiles('deno.lock') }}
 
-      - run: deno test --allow-read --allow-write --lock=lock.json --coverage=cov/
+      - run: deno test --allow-read --allow-write --coverage=cov/
 
       - if: matrix.os == 'ubuntu-22.04' && matrix.deno-version != 'canary'
         run: deno coverage --lcov --output=cov.lcov cov/
