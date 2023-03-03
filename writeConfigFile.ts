@@ -235,7 +235,7 @@ function isSupported(feature: string, v: string): boolean {
 }
 
 export function promptUserInputs(promptOpts: PromptAnswerOptions) {
-  const tsconfigAnswer = promptAnswer(
+  const tsconfigAnswer = promptQuestion(
     `Would you like to add custom TypeScript configuration? (y/n)`,
     `y`,
     promptOpts.testmode,
@@ -243,7 +243,7 @@ export function promptUserInputs(promptOpts: PromptAnswerOptions) {
 
   const tsconfig = processAnswer(tsconfigAnswer, defaultOptions.tsconfig);
 
-  const lintingAnswer = promptAnswer(
+  const lintingAnswer = promptQuestion(
     "Would you like to add custom linter configuration? (y/n)",
     `y`,
     promptOpts.testmode,
@@ -251,7 +251,7 @@ export function promptUserInputs(promptOpts: PromptAnswerOptions) {
 
   const lint = processAnswer(lintingAnswer, defaultOptions.lint);
 
-  const formattingAnswer = promptAnswer(
+  const formattingAnswer = promptQuestion(
     "Would you like to add custom formatter configuration? (y/n)",
     `y`,
     promptOpts.testmode,
@@ -259,7 +259,7 @@ export function promptUserInputs(promptOpts: PromptAnswerOptions) {
 
   const fmt = processAnswer(formattingAnswer, defaultOptions.fmt);
 
-  const testingAnswer = promptAnswer(
+  const testingAnswer = promptQuestion(
     "Would you like to add custom testing configuration? (y/n)",
     `y`,
     promptOpts.testmode,
@@ -267,7 +267,7 @@ export function promptUserInputs(promptOpts: PromptAnswerOptions) {
 
   const test = processAnswer(testingAnswer, defaultOptions.test);
 
-  const taskAnswer = promptAnswer(
+  const taskAnswer = promptQuestion(
     "Would you like to add tasks? (y/n)",
     `y`,
     promptOpts.testmode,
@@ -275,7 +275,7 @@ export function promptUserInputs(promptOpts: PromptAnswerOptions) {
 
   const task = processAnswer(taskAnswer, defaultOptions.task);
 
-  const importMapAnswer = promptAnswer(
+  const importMapAnswer = promptQuestion(
     "Would you like to add an import map? (y/n)",
     `n`,
     promptOpts.testmode,
@@ -283,7 +283,7 @@ export function promptUserInputs(promptOpts: PromptAnswerOptions) {
 
   const importMap = processAnswer(importMapAnswer, defaultOptions.map);
 
-  let name = promptAnswer(
+  let name = promptQuestion(
     "What should the config file be named?",
     `deno.json`,
     promptOpts.testmode,
@@ -306,7 +306,7 @@ export function promptUserInputs(promptOpts: PromptAnswerOptions) {
   return opts;
 }
 
-function promptAnswer(
+function promptQuestion(
   question: string,
   defaultValue: string,
   testmode: boolean,
