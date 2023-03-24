@@ -386,7 +386,7 @@ Deno.test("returns choices collected from user prompts", () => {
     name: "deno.json",
   });
 });
- 
+
 Deno.test("processOptions", async (context) => {
   const testDir = "test_directory";
   let testOpts: Options;
