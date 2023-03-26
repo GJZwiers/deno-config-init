@@ -3,10 +3,10 @@ import {
   assertEquals,
   assertRejects,
   assertThrows,
-} from "https://deno.land/std@0.166.0/testing/asserts.ts";
+} from "https://deno.land/std@0.181.0/testing/asserts.ts";
 import {
   assertSnapshot,
-} from "https://deno.land/std@0.166.0/testing/snapshot.ts";
+} from "https://deno.land/std@0.181.0/testing/snapshot.ts";
 import { Options } from "./types.ts";
 import {
   defaultOptions,
