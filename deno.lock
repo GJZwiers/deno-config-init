@@ -45,6 +45,7 @@
     "https://deno.land/x/cicada@v0.1.41/mod.ts": "f1681e493f9c2d1c1adeb7a718d17c9fe6db70494c7df7449f5ed10083fb764f",
     "https://deno.land/x/cicada@v0.1.45/mod.ts": "4187be583f261442efe6e90606bf86035d9687a2ca663a0ccd52fb05a9b77ba5",
     "https://deno.land/x/cicada@v0.1.46/deps.ts": "f764a4398765d489aefd3bbfc1c51768329a5912efe4c4bf68570efb3e0fac00",
+    "https://deno.land/x/cicada@v0.1.46/mod.ts": "4187be583f261442efe6e90606bf86035d9687a2ca663a0ccd52fb05a9b77ba5",
     "https://deno.land/x/cicada@v0.1.46/types/dockerImages.ts": "09f025be29a3e702dbd837d86ab87f4e68f0400520d9c1fee1e728aecb4b48d6",
     "https://deno.land/x/cliffy@v0.25.4/_utils/distance.ts": "02af166952c7c358ac83beae397aa2fbca4ad630aecfcd38d92edb1ea429f004",
     "https://deno.land/x/cliffy@v0.25.4/command/_errors.ts": "4fa6e1fa7d363a6ba20c401970da4634bca5a5352ece7005accc706a57407ae3",
