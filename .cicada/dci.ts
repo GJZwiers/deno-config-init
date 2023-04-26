@@ -22,4 +22,9 @@ const job = new Job({
   ],
 });
 
-export default new Pipeline([job]);
+export default new Pipeline([job], {
+  on: {
+    pullRequest: ["main"],
+    push: ["main"],
+  },
+});
