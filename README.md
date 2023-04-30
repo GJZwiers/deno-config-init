@@ -1,5 +1,7 @@
 # dci
 
+> Deprecated - this module is no longer actively maintained.
+
 [![deno module](https://shield.deno.dev/x/dci)](https://deno.land/x/dci)
 ![deno compatibility](https://shield.deno.dev/deno/^1.30)
 [![Build](https://github.com/GJZwiers/dci/actions/workflows/build.yaml/badge.svg)](https://github.com/GJZwiers/dci/actions/workflows/build.yaml)
@@ -23,7 +25,7 @@ modeled after `npm init` and `tsc --init`.
 ## Installation
 
 ```
-deno install --allow-read --allow-write -fn dci https://deno.land/x/dci@v2.8.0/mod.ts
+deno install --allow-read --allow-write -fn dci https://deno.land/x/dci@v2.8.1/mod.ts
 ```
 
 ## Usage
